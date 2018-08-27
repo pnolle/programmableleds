@@ -32,13 +32,14 @@ void setup() {
 }
 
 void loop() {
-  switch(mode) { 
+  mode=0;
+  switch(mode) {
     case 0: 
       sparkle(0xff0000, 50, 20, 10);
     case 1:
-      flashBlinders(0xff0000, 20, 30);
+      flashBlinders(0xffffff, 20, 30);
     case 2:
-      chase(0x00FF00, true, 0x00000D);
+      chase(0x00dddd, true, 0x000000);
     case 3:
       flashBlinders(0xffffff, 20, 30);
     case 4:
@@ -47,30 +48,18 @@ void loop() {
       flashBlinders(0xffffff, 20, 30);
     default:
       chase(0x0000ff, false, 0x000000);
+
+
     //bothdir(0x0000FF); // Blue
     //chase(0x00FF00, false); // Green
   }
 }
 
-static void increaseMode() {
-  if (mode<=NUMBEROFMODES) {
-    mode++;
-  }
-  else {
-    mode = 0;
-  }
-}
 
-static void eraseAll() {
-    for(uint16_t i=0; i<strip.numPixels(); i++) {
-      strip.setPixelColor(i, 0);
-    }
-    strip.show(); 
-}
 
-static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
-  return p+inc;
-}
+// #############
+// F/X Functions
+// #############
 
 static void flashBlinders(uint32_t c, uint16_t flashCount, uint16_t flashDelay) {
   for (uint16_t f=0; f<flashCount; f++) {
@@ -89,29 +78,24 @@ static void flashBlinders(uint32_t c, uint16_t flashCount, uint16_t flashDelay) 
     delay(flashDelay);
   }
 
-  increaseMode();  
+  switchMode();  
 }
 
 static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16_t delaydel) {
   uint32_t sub = 0x000000;
 
   // draw
-  uint16_t p = -1 * sparklength; // start at pixel number with negative sparklength so that sparke "enters" the strip
-  uint16_t startpixel = 0;
-  for(uint16_t j=0; j<SNIPLEDS+sparklength; j++) {
+  uint16_t startpixel = -1 * sparklength; // start at pixel number with negative sparklength so that sparke "enters" the strip
+  uint16_t p = startpixel;
+  for(uint16_t j=0; j<getAmountOfSnipPixels()+sparklength; j++) {
       // draw "frames" from front
       for (uint16_t d=0; d<=sparklength/2; d++) {
-        if (p>=SNIPLEDS) {
-          strip.setPixelColor(p, 0);
-        }
-        else {
-          strip.setPixelColor(p, c);
-        }
+        setPixelColorWithinSnipleds(p, c);
         c-=sub;
         p=incrementPixel(p,2);
       }
-      p = incrementPixel(p, -1*sparklength+1);
       startpixel++;
+      p = startpixel;
       
       strip.show();
       delay(delaydraw);
@@ -120,28 +104,34 @@ static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16
       delay(delaydel);
   }
 
-  increaseMode();
+  switchMode();
 }
 
 static void chase(uint32_t c, bool forward, int32_t sub) {
-  uint8_t n = 0;
   int8_t inc = 1;
-  uint16_t p = 0;
+  uint16_t pixel = 0;
   if (!forward) {
     inc = -1;
-    p = SNIPLEDS+n;
+    pixel = SNIPLEDS;
   }
-  for(uint16_t i=0; i<SNIPLEDS+n; i++) {
-      strip.setPixelColor(p, c); // Draw new pixel
+  for(uint16_t i=0; i<getAmountOfSnipPixels(); i++) {
+      strip.setPixelColor(pixel, c); // Draw new pixel
       c = subColor(c, sub);
-      p = incrementPixel(p, inc);
+      pixel = incrementPixel(pixel, inc);
       strip.show();
       delay(10);
   }
   
+  delay(100);
   eraseAll();
-  increaseMode();
+  switchMode();
 }
+
+
+
+// ################
+// Helper Functions
+// ################
 
 static int32_t subColor(uint32_t c, int32_t sub) {
   int32_t result = c-sub;
@@ -156,3 +146,44 @@ static int32_t subColor(uint32_t c, int32_t sub) {
   }
 }
 
+static void setPixelColorWithinSnipleds(uint32_t p, uint32_t c) {
+  // blackout everything beyond SNIPLEDS
+  if (p>=SNIPLEDS) {
+    strip.setPixelColor(p, 0);
+  }
+  else {
+    strip.setPixelColor(p, c);
+  }
+}
+
+
+static void switchMode() {
+  mode = 2;
+  // if (mode<=NUMBEROFMODES) {
+  //   mode++;
+  // }
+  // else {
+  //   mode = 0;
+  // }
+}
+
+static void eraseAll() {
+    for(uint16_t i=0; i<strip.numPixels(); i++) {
+      strip.setPixelColor(i, 0);
+    }
+    strip.show(); 
+}
+
+static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
+  uint16_t result = p+inc;
+  while ((result>=BLINDERONESTART && result<BLINDERONESTART+BLINDERLENGTH) ||
+         (result>=BLINDERTWOSTART && result<BLINDERTWOSTART+BLINDERLENGTH)
+  ) {
+    result+=inc;
+  }
+  return result;
+}
+
+static uint16_t getAmountOfSnipPixels() {
+  return SNIPLEDS - 2*BLINDERLENGTH;
+}
