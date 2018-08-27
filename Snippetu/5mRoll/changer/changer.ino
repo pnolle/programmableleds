@@ -25,7 +25,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 // Mode Changer
 #define MODEMAX 10
 #define NUMBEROFMODES 5
-uint32_t mode = 5;
+uint32_t mode = 1;
 
 void setup() {
   strip.begin();
@@ -36,7 +36,7 @@ void loop() {
     case 0: 
       sparkle(0xff0000, 50, 20, 10);
     case 1:
-      flashBlinders(0xffffff, 20, 30);
+      flashBlinders(0xff0000, 20, 30);
     case 2:
       chase(0x00FF00, true, 0x00000D);
     case 3:
@@ -68,15 +68,19 @@ static void eraseAll() {
     strip.show(); 
 }
 
+static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
+  return p+inc;
+}
+
 static void flashBlinders(uint32_t c, uint16_t flashCount, uint16_t flashDelay) {
   for (uint16_t f=0; f<flashCount; f++) {
     // Blinder 1
-    for(uint16_t i=BLINDERONESTART; i<BLINDERONESTART+BLINDERLENGTH; i++) {
-      strip.setPixelColor(i, c);
+    for(uint16_t p=BLINDERONESTART; p<BLINDERONESTART+BLINDERLENGTH; p++) {
+      strip.setPixelColor(p, c);
     }
     // Blinder 2
-    for(uint16_t i=BLINDERTWOSTART; i<BLINDERTWOSTART+BLINDERLENGTH; i++) {
-      strip.setPixelColor(i, c);
+    for(uint16_t p=BLINDERTWOSTART; p<BLINDERTWOSTART+BLINDERLENGTH; p++) {
+      strip.setPixelColor(p, c);
     }
     strip.show();
     delay(flashDelay);
@@ -104,9 +108,9 @@ static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16
           strip.setPixelColor(p, c);
         }
         c-=sub;
-        p+=2;
+        p=incrementPixel(p,2);
       }
-      p -= sparklength+1;
+      p = incrementPixel(p, -1*sparklength+1);
       startpixel++;
       
       strip.show();
@@ -121,16 +125,16 @@ static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16
 
 static void chase(uint32_t c, bool forward, int32_t sub) {
   uint8_t n = 0;
-  int8_t increment = 1;
+  int8_t inc = 1;
   uint16_t p = 0;
   if (!forward) {
-    increment = -1;
+    inc = -1;
     p = SNIPLEDS+n;
   }
   for(uint16_t i=0; i<SNIPLEDS+n; i++) {
       strip.setPixelColor(p, c); // Draw new pixel
       c = subColor(c, sub);
-      p += increment;
+      p = incrementPixel(p, inc);
       strip.show();
       delay(10);
   }
