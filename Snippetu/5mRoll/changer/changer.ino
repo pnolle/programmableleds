@@ -17,25 +17,37 @@
 
 // SnipSign
 #define SNIPLEDS 150
-#define BLINDERONESTART 44
-#define BLINDERTWOSTART 96
-#define BLINDERLENGTH 8
-#define SNIPPET1START 53
-#define SNIPPET1LENGTH 30
-#define SNIPPET2START 124
-#define SNIPPET2LENGTH 15
-#define UPPER1START 29
-#define UPPER1LENGTH 15
-#define UPPER2START 138
-#define UPPER2LENGTH 12
-#define LASER1START 1
-#define LASER1LENGTH 28
+
+// Glossary:
+// 0: [array length (n)]
+// 1-n: [startPx][lengthPx][color]
+uint32_t blinders[][3] = {
+  {2},
+  {44, 8, 0xffffff},
+  {96, 8, 0xffffff}
+};
+uint32_t snippet[][3] = {
+  {2},
+  {53, 30, 0xe71709},
+  {124, 15, 0xf6a46a}
+};
+uint32_t upper[][3] = {
+  {4},
+  {29, 15, 0xacdfe5},
+  {138, 12, 0x171f8a},
+  {83, 15, 0x171f8a},
+  {104, 18, 0xacdfe5}
+};
+uint32_t laser[][3] = {
+  {1},
+  {1, 28, 0xe71709}
+};
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
 // Mode Changer
 #define MODEMAX 10
-#define NUMBEROFMODES 8
+#define NUMBEROFMODES 9
 uint32_t mode = 6;
 
 void setup() {
@@ -48,28 +60,28 @@ void loop() {
       sparkle(0xff0000, 50, 20, 10);
       break;
     case 1:
-      flashBlinders(0xffffff, 20, 30);
+      flashRegions(blinders, 20, 30);
       break;
     case 2:
       chase(0x00dddd, true, 0x000000);
       break;
     case 3:
-      flashBlinders(0xffffff, 20, 30);
+      flashRegions(blinders, 20, 30);
       break;
     case 4:
       sparkle(0x00ff00, 100, 10, 30);
       break;
     case 5:
-      flashBlinders(0xffffff, 20, 30);
+      flashRegions(blinders, 20, 30);
       break;
     case 6:
-      flashSnippet(0xed1637, 0xf6a46a, 20, 80);
+      flashRegions(snippet, 20, 80);
       break;
     case 7:
-      {
-        uint32_t colors[] = {0x171f8a, 0xacdfe5};
-        flashRegions(colors, 20, 80);
-      }
+      flashRegions(upper, 20, 80);
+      break;
+    case 8:
+      flashRegions(laser, 20, 80);
       break;
     default:
       chase(0x0000ff, false, 0x000000);
@@ -87,57 +99,12 @@ void loop() {
 // F/X Functions
 // #############
 
-static void flashRegions(uint32_t colors[], uint16_t flashCount, uint16_t flashDelay) {
+static void flashRegions(uint32_t regions[][3], uint16_t flashCount, uint16_t flashDelay) {
   for (uint16_t f=0; f<flashCount; f++) {
-    // Blinder 1
-    for(uint16_t p=UPPER1START; p<UPPER1START+UPPER1LENGTH; p++) {
-      strip.setPixelColor(p, colors[0]);
-    }
-    // Blinder 2
-    for(uint16_t p=UPPER2START; p<UPPER2START+UPPER2LENGTH; p++) {
-      strip.setPixelColor(p, colors[1]);
-    }
-    strip.show();
-    delay(flashDelay);
-      
-    eraseAll();
-    delay(flashDelay);
-  }
-
-  switchMode();  
-}
-
-
-static void flashSnippet(uint32_t color1, uint32_t color2, uint16_t flashCount, uint16_t flashDelay) {
-  for (uint16_t f=0; f<flashCount; f++) {
-    // Blinder 1
-    for(uint16_t p=SNIPPET1START; p<SNIPPET1START+SNIPPET1LENGTH; p++) {
-      strip.setPixelColor(p, color1);
-    }
-    // Blinder 2
-    for(uint16_t p=SNIPPET2START; p<SNIPPET2START+SNIPPET2LENGTH; p++) {
-      strip.setPixelColor(p, color2);
-    }
-    strip.show();
-    delay(flashDelay);
-      
-    eraseAll();
-    delay(flashDelay);
-  }
-
-  switchMode();  
-}
-
-
-static void flashBlinders(uint32_t c, uint16_t flashCount, uint16_t flashDelay) {
-  for (uint16_t f=0; f<flashCount; f++) {
-    // Blinder 1
-    for(uint16_t p=BLINDERONESTART; p<BLINDERONESTART+BLINDERLENGTH; p++) {
-      strip.setPixelColor(p, c);
-    }
-    // Blinder 2
-    for(uint16_t p=BLINDERTWOSTART; p<BLINDERTWOSTART+BLINDERLENGTH; p++) {
-      strip.setPixelColor(p, c);
+    for (uint16_t r=1; r<=regions[0][0]; r++) {
+      for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
+        strip.setPixelColor(p, regions[r][2]);
+      }
     }
     strip.show();
     delay(flashDelay);
@@ -243,8 +210,8 @@ static void eraseAll() {
 
 static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
   uint16_t result = p+inc;
-  while ((result>=BLINDERONESTART && result<BLINDERONESTART+BLINDERLENGTH) ||
-         (result>=BLINDERTWOSTART && result<BLINDERTWOSTART+BLINDERLENGTH)
+  while ((result>=blinders[1][0] && result<blinders[1][0]+blinders[1][1]) ||
+         (result>=blinders[2][0] && result<blinders[2][0]+blinders[2][1])
   ) {
     result+=inc;
   }
@@ -252,5 +219,5 @@ static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
 }
 
 static uint16_t getAmountOfSnipPixels() {
-  return SNIPLEDS - 2*BLINDERLENGTH;
+  return SNIPLEDS - 2*blinders[1][1];
 }
