@@ -9,15 +9,16 @@
 // direction arrows printed on the strip.
 
 #include <Adafruit_NeoPixel.h>
+#include <NeoPixelStripAnimator.h>
 
 // General
 #define PIN    6
 #define N_LEDS 150 // 5 meter reel @ 30 LEDs/m
 
 // SnipSign
-#define SNIPLEDS 108
-#define BLINDERONESTART 40
-#define BLINDERTWOSTART 91
+#define SNIPLEDS 150
+#define BLINDERONESTART 44
+#define BLINDERTWOSTART 96
 #define BLINDERLENGTH 8
 
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
@@ -25,14 +26,13 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(N_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 // Mode Changer
 #define MODEMAX 10
 #define NUMBEROFMODES 5
-uint32_t mode = 1;
+uint32_t mode = 0;
 
 void setup() {
   strip.begin();
 }
 
 void loop() {
-  mode=0;
   switch(mode) {
     case 0: 
       sparkle(0xff0000, 50, 20, 10);
