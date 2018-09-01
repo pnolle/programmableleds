@@ -75,13 +75,16 @@ void loop() {
       flashRegions(blinders, 20, 30);
       break;
     case 6:
-      flashRegions(snippet, 20, 80);
+      flashRegions(snippet, 20, 20);
       break;
     case 7:
-      flashRegions(upper, 20, 80);
+      flashRegions(upper, 20, 20);
       break;
     case 8:
-      flashRegions(laser, 20, 80);
+      flashRegions(laser, 20, 20);
+      break;
+    case 9:
+      flashRegions(blinders, 20, 30);
       break;
     default:
       chase(0x0000ff, false, 0x000000);
