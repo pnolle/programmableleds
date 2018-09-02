@@ -15,6 +15,11 @@
 #define PIN    6
 #define N_LEDS 150 // 5 meter reel @ 30 LEDs/m
 
+// Blinder Button
+#define BUTTONPIN 2
+#define LEDPIN 13
+int buttonState = 0;
+
 // SnipSign
 #define SNIPLEDS 150
 
@@ -24,7 +29,7 @@
 uint32_t blinders[][3] = {
   {2},
   {44, 8, 0xffffff},
-  {96, 8, 0xffffff}
+  {99, 8, 0xffffff}
 };
 uint32_t snippet[][3] = {
   {2},
@@ -52,6 +57,25 @@ uint32_t mode = 6;
 
 void setup() {
   strip.begin();
+
+  // initialize the LED pin as an output:
+  pinMode(LEDPIN, OUTPUT);
+  // initialize the pushbutton pin as an input:
+  pinMode(BUTTONPIN, INPUT);
+
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), blinderButtonPressed, CHANGE);
+}
+
+void blinderButtonPressed() {
+  buttonState = digitalRead(BUTTONPIN);
+  digitalWrite(LEDPIN, buttonState);
+  if (buttonState==HIGH) {
+    unltdLightRegions(blinders);
+    //unltdFlashRegions(blinders, 30);
+  }
+  else {
+    eraseAll();
+  }
 }
 
 void loop() {
@@ -102,8 +126,36 @@ void loop() {
 // F/X Functions
 // #############
 
+static void unltdLightRegions(uint32_t regions[][3]) {
+  eraseAll();
+  delay(100);
+  for (uint16_t r=1; r<=regions[0][0]; r++) {
+    for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
+      strip.setPixelColor(p, regions[r][2]);
+    }
+  }
+  strip.show();
+}
+
+// static void unltdFlashRegions(uint32_t regions[][3], uint16_t flashDelay) {
+//   while (1==1) {
+//     checkInterrupts();
+//     for (uint16_t r=1; r<=regions[0][0]; r++) {
+//       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
+//         strip.setPixelColor(p, regions[r][2]);
+//       }
+//     }
+//     strip.show();
+//     delay(flashDelay);
+      
+//     eraseAll();
+//     delay(flashDelay);
+//   }
+// }
+
 static void flashRegions(uint32_t regions[][3], uint16_t flashCount, uint16_t flashDelay) {
   for (uint16_t f=0; f<flashCount; f++) {
+    checkInterrupts();
     for (uint16_t r=1; r<=regions[0][0]; r++) {
       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
         strip.setPixelColor(p, regions[r][2]);
@@ -126,20 +178,21 @@ static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16
   uint16_t startpixel = -1 * sparklength; // start at pixel number with negative sparklength so that sparke "enters" the strip
   uint16_t p = startpixel;
   for(uint16_t j=0; j<getAmountOfSnipPixels()+sparklength; j++) {
-      // draw "frames" from front
-      for (uint16_t d=0; d<=sparklength/2; d++) {
-        setPixelColorWithinSnipleds(p, c);
-        c-=sub;
-        p=incrementPixel(p,2);
-      }
-      startpixel++;
-      p = startpixel;
-      
-      strip.show();
-      delay(delaydraw);
+    checkInterrupts();
+    // draw "frames" from front
+    for (uint16_t d=0; d<=sparklength/2; d++) {
+      setPixelColorWithinSnipleds(p, c);
+      c-=sub;
+      p=incrementPixel(p,2);
+    }
+    startpixel++;
+    p = startpixel;
     
-      eraseAll();
-      delay(delaydel);
+    strip.show();
+    delay(delaydraw);
+  
+    eraseAll();
+    delay(delaydel);
   }
 
   switchMode();
@@ -153,11 +206,12 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
     pixel = SNIPLEDS;
   }
   for(uint16_t i=0; i<getAmountOfSnipPixels(); i++) {
-      strip.setPixelColor(pixel, c); // Draw new pixel
-      c = subColor(c, sub);
-      pixel = incrementPixel(pixel, inc);
-      strip.show();
-      delay(10);
+    checkInterrupts();
+    strip.setPixelColor(pixel, c); // Draw new pixel
+    c = subColor(c, sub);
+    pixel = incrementPixel(pixel, inc);
+    strip.show();
+    delay(10);
   }
   
   delay(100);
@@ -223,4 +277,14 @@ static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
 
 static uint16_t getAmountOfSnipPixels() {
   return SNIPLEDS - 2*blinders[1][1];
+}
+
+static void checkInterrupts() {
+  while (buttonState==HIGH) {
+    digitalWrite(LEDPIN, buttonState);
+    if (buttonState==LOW) {
+      digitalWrite(LEDPIN, buttonState);
+      break;
+    }
+  }
 }
