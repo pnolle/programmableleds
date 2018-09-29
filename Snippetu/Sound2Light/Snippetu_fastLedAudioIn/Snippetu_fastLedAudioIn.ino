@@ -41,7 +41,7 @@ uint32_t laser[][3] = {
 
 // Mode Changer
 #define NUMBEROFMODES 9
-uint32_t mode = 1;
+uint32_t mode = 0;
 
 void setup() {
 	Serial.begin(57600);
@@ -62,7 +62,6 @@ void setup() {
   digitalWrite(LEDPIN, buttonState);
   if (buttonState!=HIGH) {
     eraseAll();
-    switchMode();
   }
   else {
     unltdLightRegions(blinders);
@@ -79,15 +78,19 @@ void loop() {
   switch(mode) {
     case 0: 
       sparkle(0xff0000, 50, 20, 10);
+      switchMode();
       break;
     case 1:
       flashRegions(blinders, 20, 30);
+      switchMode();
       break;
      case 2:
       chase(0x00dddd, true, 0x000000);
+      switchMode();
       break;
     case 3:
       flashRegions(blinders, 20, 30);
+      switchMode();
       break;
     case 4:
       //sparkle(0x00ff00, 100, 10, 30);
@@ -95,24 +98,31 @@ void loop() {
       break;
     case 5:
       flashRegions(blinders, 20, 30);
+      switchMode();
       break;
     case 6:
       flashRegions(snippet, 20, 20);
+      switchMode();
       break;
     case 7:
       flashRegions(upper, 20, 20);
+      switchMode();
       break;
     case 8:
       flashRegions(laser, 20, 20);
+      switchMode();
       break;
     case 9:
       flashRegions(blinders, 20, 30);
+      switchMode();
       break; 
     case 10:
       cylon();
+      switchMode();
       break;
     default:
       chase(0x0000ff, false, 0x000000);
+      switchMode();
       break;
 
     //bothdir(0x0000FF); // Blue
@@ -156,7 +166,6 @@ static void cylon() {
 		delay(10);
 	}
 
-  switchMode();
 }
 
 
@@ -205,24 +214,22 @@ static void flashRegions(uint32_t regions[][3], uint16_t flashCount, uint16_t fl
     delay(flashDelay);
   }
 
-  switchMode();
 }
 
 static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16_t delaydel) {
   uint32_t sub = 0x000000;
 
   // draw
-  uint16_t startpixel = -1 * sparklength; // start at pixel number with negative sparklength so that sparke "enters" the strip
-  uint16_t p = startpixel;
-  for(uint16_t j=0; j<getAmountOfSnipPixels()+sparklength; j++) {
-      Serial.println(j);
+  int startpixel = -1 * sparklength; // start at pixel number with negative sparklength so that sparke "enters" the strip
+  int p = startpixel;
+  for(uint16_t j=0; j<NUM_LEDS+sparklength; j++) {
+     Serial.println(startpixel);
     checkInterrupts();
     // draw "frames" from front
     for (uint16_t d=0; d<=sparklength/2; d++) {
-    leds[p] = CRGB(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
-      //setPixelColorWithinSnipleds(p, c);
-      c-=sub;
-      p=incrementPixel(p,2);
+        setPixelColorWithinSnipleds(p, c);
+        c-=sub;
+        p=incrementPixel(p,2);
     }
     startpixel++;
     p = startpixel;
@@ -234,7 +241,6 @@ static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16
     delay(delaydel);
   }
 
-  switchMode();
 }
 
 static void chase(uint32_t c, bool forward, int32_t sub) {
@@ -255,7 +261,6 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
   
   delay(100);
   eraseAll();
-  switchMode();
 }
 
 
@@ -294,13 +299,10 @@ static int32_t subColor(uint32_t c, int32_t sub) {
 }
 
 static void setPixelColorWithinSnipleds(uint32_t p, uint32_t c) {
-  // blackout everything beyond NUM_LEDS
-  if (p>=NUM_LEDS) {
-    leds[p] = CRGB(0,0,0);
-  }
-  else {
-    leds[p] = CRGB(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
-  }
+    // if outside bounds, don't try to set this pixel
+    if (p>0 && p<=NUM_LEDS) {
+        leds[p] = CRGB(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
+    }
 }
 
 static void switchMode() {
