@@ -71,20 +71,6 @@ void setup() {
 } */
 
 
-void fadeall() { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(250); } }
-
-uint32_t blueFromHexColor(uint32_t hexColor) {
-    uint32_t rgbBlue = hexColor & 0b11111111;
-    return rgbBlue;
-}
-uint32_t greenFromHexColor(uint32_t hexColor) {
-    uint32_t rgbGreen = (hexColor>>8) & 0b11111111;
-    return rgbGreen;
-}
-uint32_t redFromHexColor(uint32_t hexColor) {
-    uint32_t rgbRed = (hexColor>>16) & 0b11111111;
-    return rgbRed;
-}
 
 void loop() {
     cylon();
@@ -136,26 +122,6 @@ void loop() {
 // #############
 
 static void cylon() {
-    int blue;
-    int green;
-    int red;
-    blue = blueFromHexColor(0x0055ff);
-    green = greenFromHexColor(0x0055ff);
-    red = redFromHexColor(0x0055ff);
-  Serial.println((String)"1 r: " + red+' '+" ... g: " + green+' '+" ... b: " + blue+' '+" ...");
-    blue = blueFromHexColor(0x55aaaa);
-    green = greenFromHexColor(0x55aaaa);
-    red = redFromHexColor(0x55aaaa);
-  Serial.println((String)"2 r: " + red+' '+" ... g: " + green+' '+" ... b: " + blue+' '+" ...");
-    blue = blueFromHexColor(0xaaff55);
-    green = greenFromHexColor(0xaaff55);
-    red = redFromHexColor(0xaaff55);
-  Serial.println((String)"3 r: " + red+' '+" ... g: " + green+' '+" ... b: " + blue+' '+" ...");
-    blue = blueFromHexColor(0xff5500);
-    green = greenFromHexColor(0xff5500);
-    red = redFromHexColor(0xff5500);
-  Serial.println((String)"4 r: " + red+' '+" ... g: " + green+' '+" ... b: " + blue+' '+" ...");
-
 	static uint8_t hue = 0;
 	Serial.print("x");
 	// First slide the led in one direction
@@ -187,23 +153,13 @@ static void cylon() {
 }
 
 
-/* 
 
 static void unltdLightRegions(uint32_t regions[][3]) {
   eraseAll();
   delay(100);
   for (uint16_t r=1; r<=regions[0][0]; r++) {
     for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-      strip.setPixelColor(p, regions[r][2]);
-
-        leds[p] = CHSV(hue++, 255, 255);
-
-
-
-
-
-
-
+      leds[p] = CHSV(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
     }
   }
   FastLED.show();
@@ -213,16 +169,7 @@ static void unltdFlashRegions(uint32_t regions[][3], uint16_t flashDelay) {
   while (1==1) {
     for (uint16_t r=1; r<=regions[0][0]; r++) {
       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-        strip.setPixelColor(p, regions[r][2]);
-
-        leds[i] = CHSV(hue++, 255, 255);
-
-
-
-
-
-
-
+        leds[p] = CHSV(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
       }
     }
     FastLED.show();
@@ -240,16 +187,7 @@ static void flashRegions(uint32_t regions[][3], uint16_t flashCount, uint16_t fl
     checkInterrupts();
     for (uint16_t r=1; r<=regions[0][0]; r++) {
       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-        strip.setPixelColor(p, regions[r][2]);
-
-        leds[i] = CHSV(hue++, 255, 255);
-
-
-
-
-
-
-
+        leds[p] = CHSV(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
       }
     }
     FastLED.show();
@@ -294,20 +232,11 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
   uint16_t pixel = 0;
   if (!forward) {
     inc = -1;
-    pixel = SNIPLEDS;
+    pixel = NUM_LEDS;
   }
   for(uint16_t i=0; i<getAmountOfSnipPixels(); i++) {
     checkInterrupts();
-    strip.setPixelColor(pixel, c); // Draw new pixel
-
-        leds[i] = CHSV(hue++, 255, 255);
-
-
-
-
-
-
-
+    leds[pixel] = CHSV(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
     c = subColor(c, sub);
     pixel = incrementPixel(pixel, inc);
     FastLED.show();
@@ -325,6 +254,22 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
 // Helper Functions
 // ################
 
+
+void fadeall() { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(250); } }
+
+uint32_t blueFromHexColor(uint32_t hexColor) {
+    uint32_t rgbBlue = hexColor & 0b11111111;
+    return rgbBlue;
+}
+uint32_t greenFromHexColor(uint32_t hexColor) {
+    uint32_t rgbGreen = (hexColor>>8) & 0b11111111;
+    return rgbGreen;
+}
+uint32_t redFromHexColor(uint32_t hexColor) {
+    uint32_t rgbRed = (hexColor>>16) & 0b11111111;
+    return rgbRed;
+}
+
 static int32_t subColor(uint32_t c, int32_t sub) {
   int32_t result = c-sub;
   if (result>0x000000) {
@@ -339,33 +284,14 @@ static int32_t subColor(uint32_t c, int32_t sub) {
 }
 
 static void setPixelColorWithinSnipleds(uint32_t p, uint32_t c) {
-  // blackout everything beyond SNIPLEDS
-  if (p>=SNIPLEDS) {
-    strip.setPixelColor(p, 0);
-
-        leds[i] = CHSV(hue++, 255, 255);
-
-
-
-
-
-
-
+  // blackout everything beyond NUM_LEDS
+  if (p>=NUM_LEDS) {
+    leds[p] = CHSV(0,0,0);
   }
   else {
-    strip.setPixelColor(p, c);
-
-        leds[i] = CHSV(hue++, 255, 255);
-
-
-
-
-
-
-
+    leds[p] = CHSV(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
   }
 }
-
 
 static void switchMode() {
   if (mode<=NUMBEROFMODES) {
@@ -377,17 +303,8 @@ static void switchMode() {
 }
 
 static void eraseAll() {
-    for(uint16_t i=0; i<strip.numPixels(); i++) {
-      strip.setPixelColor(i, 0);
-
-        leds[i] = CHSV(hue++, 255, 255);
-
-
-
-
-
-
-
+    for(uint16_t i=0; i<NUM_LEDS; i++) {
+        leds[i] = CHSV(0,0,0);
     }
     FastLED.show(); 
 }
@@ -403,7 +320,7 @@ static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
 }
 
 static uint16_t getAmountOfSnipPixels() {
-  return SNIPLEDS - 2*blinders[1][1];
+  return NUM_LEDS - 2*blinders[1][1];
 }
 
 static void checkInterrupts() {
@@ -414,4 +331,4 @@ static void checkInterrupts() {
       break;
     }
   }
-}  */
+} 
