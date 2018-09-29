@@ -40,9 +40,8 @@ uint32_t laser[][3] = {
 };
 
 // Mode Changer
-#define MODEMAX 10
 #define NUMBEROFMODES 9
-uint32_t mode = 6;
+uint32_t mode = 1;
 
 void setup() {
 	Serial.begin(57600);
@@ -73,9 +72,9 @@ void setup() {
 
 
 void loop() {
-
+/* 
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
-
+ */
 
   switch(mode) {
     case 0: 
@@ -91,7 +90,8 @@ void loop() {
       flashRegions(blinders, 20, 30);
       break;
     case 4:
-      sparkle(0x00ff00, 100, 10, 30);
+      //sparkle(0x00ff00, 100, 10, 30);
+      switchMode();
       break;
     case 5:
       flashRegions(blinders, 20, 30);
@@ -215,10 +215,12 @@ static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16
   uint16_t startpixel = -1 * sparklength; // start at pixel number with negative sparklength so that sparke "enters" the strip
   uint16_t p = startpixel;
   for(uint16_t j=0; j<getAmountOfSnipPixels()+sparklength; j++) {
+      Serial.println(j);
     checkInterrupts();
     // draw "frames" from front
     for (uint16_t d=0; d<=sparklength/2; d++) {
-      setPixelColorWithinSnipleds(p, c);
+    leds[p] = CRGB(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
+      //setPixelColorWithinSnipleds(p, c);
       c-=sub;
       p=incrementPixel(p,2);
     }
@@ -332,11 +334,11 @@ static uint16_t getAmountOfSnipPixels() {
 }
 
 static void checkInterrupts() {
-  while (buttonState==HIGH) {
+/*   while (buttonState==HIGH) {
     digitalWrite(LEDPIN, buttonState);
     if (buttonState==LOW) {
       digitalWrite(LEDPIN, buttonState);
       break;
     }
-  }
+  } */
 } 
