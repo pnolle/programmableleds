@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "/Users/nik/Library/Arduino15/packages/arduino/tools/**",
+                "/Users/nik/Library/Arduino15/packages/arduino/hardware/avr/1.6.21/**",
+                "/Users/nik/Documents/Arduino/libraries/git_FastLED/**",
+                "/Users/nik/Documents/Arduino/libraries/**"
+            ],
+            "forcedInclude": [
+                "/Users/nik/Library/Arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino/Arduino.h"
+            ],
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
+            "intelliSenseMode": "clang-x64",
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
