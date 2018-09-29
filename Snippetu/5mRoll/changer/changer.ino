@@ -29,7 +29,7 @@ int buttonState = 0;
 uint32_t blinders[][3] = {
   {2},
   {44, 8, 0xffffff},
-  {99, 8, 0xffffff}
+  {97, 8, 0xffffff}
 };
 uint32_t snippet[][3] = {
   {2},
@@ -63,18 +63,18 @@ void setup() {
   // initialize the pushbutton pin as an input:
   pinMode(BUTTONPIN, INPUT);
 
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), blinderButtonPressed, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), blinderButton, CHANGE);
 }
 
-void blinderButtonPressed() {
+void blinderButton() {
   buttonState = digitalRead(BUTTONPIN);
   digitalWrite(LEDPIN, buttonState);
-  if (buttonState==HIGH) {
-    unltdLightRegions(blinders);
-    //unltdFlashRegions(blinders, 30);
+  if (buttonState!=HIGH) {
+    eraseAll();
+    switchMode();
   }
   else {
-    eraseAll();
+    unltdLightRegions(blinders);
   }
 }
 
@@ -137,21 +137,22 @@ static void unltdLightRegions(uint32_t regions[][3]) {
   strip.show();
 }
 
-// static void unltdFlashRegions(uint32_t regions[][3], uint16_t flashDelay) {
-//   while (1==1) {
-//     checkInterrupts();
-//     for (uint16_t r=1; r<=regions[0][0]; r++) {
-//       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-//         strip.setPixelColor(p, regions[r][2]);
-//       }
-//     }
-//     strip.show();
-//     delay(flashDelay);
+static void unltdFlashRegions(uint32_t regions[][3], uint16_t flashDelay) {
+  while (1==1) {
+    for (uint16_t r=1; r<=regions[0][0]; r++) {
+      for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
+        strip.setPixelColor(p, regions[r][2]);
+      }
+    }
+    strip.show();
+    delay(flashDelay);
       
-//     eraseAll();
-//     delay(flashDelay);
-//   }
-// }
+    eraseAll();
+    delay(flashDelay);
+
+    checkInterrupts();
+  }
+}
 
 static void flashRegions(uint32_t regions[][3], uint16_t flashCount, uint16_t flashDelay) {
   for (uint16_t f=0; f<flashCount; f++) {
