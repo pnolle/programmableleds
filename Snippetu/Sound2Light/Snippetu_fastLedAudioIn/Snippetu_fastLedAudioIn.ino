@@ -73,8 +73,10 @@ void setup() {
 
 
 void loop() {
-    cylon();
-/*
+
+      Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
+
+
   switch(mode) {
     case 0: 
       sparkle(0xff0000, 50, 20, 10);
@@ -106,13 +108,16 @@ void loop() {
     case 9:
       flashRegions(blinders, 20, 30);
       break; 
+    case 10:
+      cylon();
+      break;
     default:
       chase(0x0000ff, false, 0x000000);
       break;
 
     //bothdir(0x0000FF); // Blue
     //chase(0x00FF00, false); // Green
-  }*/
+  }
 }
 
 
@@ -150,6 +155,8 @@ static void cylon() {
 		// Wait a little bit before we loop around and do it again
 		delay(10);
 	}
+
+  switchMode();
 }
 
 
@@ -159,7 +166,7 @@ static void unltdLightRegions(uint32_t regions[][3]) {
   delay(100);
   for (uint16_t r=1; r<=regions[0][0]; r++) {
     for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-      leds[p] = CHSV(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
+      leds[p] = CRGB(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
     }
   }
   FastLED.show();
@@ -169,7 +176,7 @@ static void unltdFlashRegions(uint32_t regions[][3], uint16_t flashDelay) {
   while (1==1) {
     for (uint16_t r=1; r<=regions[0][0]; r++) {
       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-        leds[p] = CHSV(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
+        leds[p] = CRGB(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
       }
     }
     FastLED.show();
@@ -187,7 +194,8 @@ static void flashRegions(uint32_t regions[][3], uint16_t flashCount, uint16_t fl
     checkInterrupts();
     for (uint16_t r=1; r<=regions[0][0]; r++) {
       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-        leds[p] = CHSV(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
+        leds[p] = CRGB(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
+        //Serial.println((String)"regionColor: " + regions[r][2] +' '+" ... red: " + redFromHexColor(regions[r][2]) +' '+" ... green: " + greenFromHexColor(regions[r][2])+' '+" ... blue: " + blueFromHexColor(regions[r][2])+' '+" ...");
       }
     }
     FastLED.show();
@@ -197,7 +205,7 @@ static void flashRegions(uint32_t regions[][3], uint16_t flashCount, uint16_t fl
     delay(flashDelay);
   }
 
-  switchMode();  
+  switchMode();
 }
 
 static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16_t delaydel) {
@@ -236,7 +244,7 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
   }
   for(uint16_t i=0; i<getAmountOfSnipPixels(); i++) {
     checkInterrupts();
-    leds[pixel] = CHSV(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
+    leds[pixel] = CRGB(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
     c = subColor(c, sub);
     pixel = incrementPixel(pixel, inc);
     FastLED.show();
@@ -286,10 +294,10 @@ static int32_t subColor(uint32_t c, int32_t sub) {
 static void setPixelColorWithinSnipleds(uint32_t p, uint32_t c) {
   // blackout everything beyond NUM_LEDS
   if (p>=NUM_LEDS) {
-    leds[p] = CHSV(0,0,0);
+    leds[p] = CRGB(0,0,0);
   }
   else {
-    leds[p] = CHSV(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
+    leds[p] = CRGB(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
   }
 }
 
@@ -304,7 +312,7 @@ static void switchMode() {
 
 static void eraseAll() {
     for(uint16_t i=0; i<NUM_LEDS; i++) {
-        leds[i] = CHSV(0,0,0);
+        leds[i] = CRGB(0,0,0);
     }
     FastLED.show(); 
 }
