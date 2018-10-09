@@ -39,6 +39,48 @@ uint32_t laser[][3] = {
   {1, 28, 0xe71709}
 };
 
+// assigns single LEDs by number to columns of an imaginary LED matrix
+uint32_t matrixColumnsLr[][20] = {
+    {37},
+    {2,55,56},
+    {2,54,57},
+    {4,53,58,59,60},
+    {4,52,61,45,46},
+    {4,51,62,44,47},
+    {7,50,63,48,49,43,42,41},
+    {5,40,39,64,138,137},
+    {4,38,65,139,136},
+    {4,37,66,140,135},
+    {4,36,67,141,134},
+    {4,35,68,142,133},
+    {4,34,69,143,132},
+    {4,33,70,144,131},
+    {4,32,71,145,130},
+    {4,31,72,146,129},
+    {4,30,73,147,128},
+    {4,29,74,148,127},
+    {4,28,75,149,126},
+    {7,27,26,25,24,76,150,125},
+    {13,23,77,78,79,80,81,82,124,123,122,121,120,119},
+    {3,22,83,118},
+    {3,21,84,117},
+    {3,20,85,116},
+    {3,19,86,115},
+    {3,18,87,114},
+    {3,17,88,113},
+    {3,16,89,112},
+    {3,15,90,111},
+    {3,14,91,110},
+    {3,13,92,109},
+    {6,12,93,100,108,107,101},
+    {6,11,94,95,99,106,102},
+    {8,10,96,97,98,105,104,103,1},
+    {2,9,2},
+    {2,8,3},
+    {2,7,4},
+    {3,6,5}
+};
+
 // Mode Changer
 #define NUMBEROFMODES 9
 uint32_t mode = 0;
@@ -75,6 +117,17 @@ void loop() {
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
+matrixLtr(1,0,50,235,0,1,255,255);  // slow color
+matrixLtr(1,0,20,240,0,0,0,0);  // slow black out
+matrixRtl(1,0,10,130,0,0,0,255);    // fast white
+matrixLtr(1,0,10,130,0,0,0,255);    // fast white
+matrixRtl(1,0,20,230,0,1,255,255);  // fast color
+matrixRtl(1,0,10,240,0,0,0,0);  // fast black out
+matrixLtr(1,0,10,130,125,0.2,150,255);    // fast turquoise
+matrixRtl(1,0,10,130,220,0.2,150,255);    // fast purple
+
+
+/* 
   switch(mode) {
     case 0: 
       sparkle(0xff0000, 50, 20, 10);
@@ -124,10 +177,11 @@ void loop() {
       chase(0x0000ff, false, 0x000000);
       switchMode();
       break;
+  }
+ */
 
     //bothdir(0x0000FF); // Blue
     //chase(0x00FF00, false); // Green
-  }
 }
 
 
@@ -135,6 +189,41 @@ void loop() {
 // #############
 // F/X Functions
 // #############
+
+
+static void matrixLtr(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+    int colCount = matrixColumnsLr[0][0];
+    if (length!=0) {
+        colCount = length;
+    }
+    for (int i=start; i<=colCount; i++) {
+        int ledCount = matrixColumnsLr[i][0];
+        for (int j=1; j<=ledCount; j++) {
+            int ledNum = matrixColumnsLr[i][j];
+            leds[matrixColumnsLr[i][j]] = CHSV(hue+=hueIterator, sat, bri);
+        }
+        FastLED.show(); 
+        delay(wait);
+        fadeAllDynamic(fade);
+    }
+}
+static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+    int colCount = matrixColumnsLr[0][0];
+    if (length!=0) {
+        colCount = length;
+    }
+    for (int i=colCount; i>=start; i--) {
+        int ledCount = matrixColumnsLr[i][0];
+        for (int j=1; j<=ledCount; j++) {
+            int ledNum = matrixColumnsLr[i][j];
+            leds[matrixColumnsLr[i][j]] = CHSV(hue+=hueIterator, sat, bri);
+        }
+        FastLED.show(); 
+        delay(wait);
+        fadeAllDynamic(fade);
+    }
+}
+
 
 static void cylon() {
 	static uint8_t hue = 0;
@@ -147,7 +236,7 @@ static void cylon() {
 		FastLED.show(); 
 		// now that we've shown the leds, reset the i'th led to black
 		// leds[i] = CRGB::Black;
-		fadeall();
+		fadeAll();
 		// Wait a little bit before we loop around and do it again
 		delay(10);
 	}
@@ -161,7 +250,7 @@ static void cylon() {
 		FastLED.show();
 		// now that we've shown the leds, reset the i'th led to black
 		// leds[i] = CRGB::Black;
-		fadeall();
+		fadeAll();
 		// Wait a little bit before we loop around and do it again
 		delay(10);
 	}
@@ -270,7 +359,9 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
 // ################
 
 
-void fadeall() { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(250); } }
+void fadeAll() { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(250); } }
+void fadeAllFast() { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(200); } }
+void fadeAllDynamic(int fade) { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(fade); } }
 
 uint32_t blueFromHexColor(uint32_t hexColor) {
     uint32_t rgbBlue = hexColor & 0b11111111;
