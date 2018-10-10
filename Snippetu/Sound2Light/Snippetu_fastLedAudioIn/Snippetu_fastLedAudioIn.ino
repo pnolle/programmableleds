@@ -130,6 +130,12 @@ void loop() {
 
 colsLtr(0,0,50,235,0,1,255,255);  // slow color
 colsLtr(0,0,20,240,0,0,0,0);  // slow black out
+
+colsRtl(0,cols.size()/4,10,130,0,0,150,255);    // fast part
+colsRtl(0,cols.size()/4*2,10,130,0,0,150,255);    // fast part
+colsRtl(0,cols.size()/4*3,10,130,0,0,150,255);    // fast part
+colsRtl(0,cols.size(),10,130,0,0,150,255);    // fast part
+
 colsRtl(0,0,10,130,0,0,0,255);    // fast white
 colsLtr(0,0,10,130,0,0,0,255);    // fast white
 colsRtl(0,0,20,230,0,1,255,255);  // fast color
@@ -226,6 +232,9 @@ static void colsRtl(int start, int length, int wait, int fade, int hue, int hueI
         colCount = length;
     }
     for (int i=colCount; i>=start; i--) {
+/*         if (i<start) {
+          break;
+        } */
         vector<int> col = cols[i];
         int ledCount = col.size();
         for (int j=0; j<ledCount; j++) {
