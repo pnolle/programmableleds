@@ -2,5 +2,6 @@
     "port": "/dev/cu.usbmodem1421",
     "board": "arduino:avr:mega",
     "configuration": "cpu=atmega2560",
-    "sketch": "Snippetu/Sound2Light/Snippetu_fastLedAudioIn/Snippetu_fastLedAudioIn.ino"
+    "sketch": "Snippetu/Sound2Light/Snippetu_fastLedAudioIn/Snippetu_fastLedAudioIn.ino",
+    "output": "../ArduinoOutput"
 }

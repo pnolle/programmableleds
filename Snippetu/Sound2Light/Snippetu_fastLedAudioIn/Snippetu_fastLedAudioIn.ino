@@ -1,5 +1,8 @@
+#include <StandardCplusplus.h>
 #include <FastLED.h>
 #include <Adafruit_NeoPixel.h>
+#include <vector>
+using namespace std;
 
 // General
 #define DATA_PIN 6
@@ -40,6 +43,56 @@ uint32_t laser[][3] = {
 };
 
 // assigns single LEDs by number to columns of an imaginary LED matrix
+/* vector<int> col1 {37};
+vector<int> col2 {55,56};
+vector<int> col3 {54,57};
+vector<int> col4 {53,58,59,60};
+vector<int> col5 {52,61,45,46};
+vector<int> col6 {51,62,44,47};
+vector<int> col7 {50,63,48,49,43,42,41};
+vector<int> col8 {40,39,64,138,137}; */
+
+vector< vector<int> > cols {
+    {55,56},
+    {54,57},
+    {53,58,59,60},
+    {52,61,45,46},
+    {51,62,44,47},
+    {50,63,48,49,43,42,41},
+    {40,39,64,138,137},
+    {38,65,139,136},
+    {37,66,140,135},
+    {36,67,141,134},
+    {35,68,142,133},
+    {34,69,143,132},
+    {33,70,144,131},
+    {32,71,145,130},
+    {31,72,146,129},
+    {30,73,147,128},
+    {29,74,148,127},
+    {28,75,149,126},
+    {27,26,25,24,76,150,125},
+    {23,77,78,79,80,81,82,124,123,122,121,120,119},
+    {22,83,118},
+    {21,84,117},
+    {20,85,116},
+    {19,86,115},
+    {18,87,114},
+    {17,88,113},
+    {16,89,112},
+    {15,90,111},
+    {14,91,110},
+    {13,92,109},
+    {12,93,100,108,107,101},
+    {11,94,95,99,106,102},
+    {10,96,97,98,105,104,103,1},
+    {9,2},
+    {8,3},
+    {7,4},
+    {6,5}
+};
+
+
 uint32_t matrixColumnsLr[][20] = {
     {37},
     {2,55,56},
@@ -78,7 +131,7 @@ uint32_t matrixColumnsLr[][20] = {
     {2,9,2},
     {2,8,3},
     {2,7,4},
-    {3,6,5}
+    {2,6,5}
 };
 
 // Mode Changer
@@ -117,14 +170,14 @@ void loop() {
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
-matrixLtr(1,0,50,235,0,1,255,255);  // slow color
-matrixLtr(1,0,20,240,0,0,0,0);  // slow black out
-matrixRtl(1,0,10,130,0,0,0,255);    // fast white
-matrixLtr(1,0,10,130,0,0,0,255);    // fast white
-matrixRtl(1,0,20,230,0,1,255,255);  // fast color
-matrixRtl(1,0,10,240,0,0,0,0);  // fast black out
-matrixLtr(1,0,10,130,125,0.2,150,255);    // fast turquoise
-matrixRtl(1,0,10,130,220,0.2,150,255);    // fast purple
+colsLtr(0,0,50,235,0,1,255,255);  // slow color
+colsLtr(0,0,20,240,0,0,0,0);  // slow black out
+colsRtl(0,0,10,130,0,0,0,255);    // fast white
+colsLtr(0,0,10,130,0,0,0,255);    // fast white
+colsRtl(0,0,20,230,0,1,255,255);  // fast color
+colsRtl(0,0,10,240,0,0,0,0);  // fast black out
+colsLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
+colsRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 
 
 /* 
@@ -189,6 +242,43 @@ matrixRtl(1,0,10,130,220,0.2,150,255);    // fast purple
 // #############
 // F/X Functions
 // #############
+
+
+
+static void colsLtr(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+    int colCount = cols.size();
+    if (length!=0) {
+        colCount = length;
+    }
+    for (int i=start; i<=colCount; i++) {
+        vector<int> col = cols[i];
+        int ledCount = col.size();
+        for (int j=0; j<ledCount; j++) {
+            int ledNum = col[j];
+            leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+        }
+        FastLED.show(); 
+        delay(wait);
+        fadeAllDynamic(fade);
+    }
+}
+static void colsRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+    int colCount = cols.size();
+    if (length!=0) {
+        colCount = length;
+    }
+    for (int i=colCount; i>=start; i--) {
+        vector<int> col = cols[i];
+        int ledCount = col.size();
+        for (int j=0; j<ledCount; j++) {
+            int ledNum = col[j];
+            leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+        }
+        FastLED.show(); 
+        delay(wait);
+        fadeAllDynamic(fade);
+    }
+}
 
 
 static void matrixLtr(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
