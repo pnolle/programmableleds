@@ -128,14 +128,14 @@ void loop() {
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
-colsLtr(0,0,50,235,0,1,255,255);  // slow color
+colsLtr(10,10,50,235,0,1,255,255);  // slow color
 colsLtr(0,0,20,240,0,0,0,0);  // slow black out
 
-colsRtl(0,cols.size()/4,10,130,0,0,150,255);    // fast part
+/* colsRtl(0,cols.size()/4,10,130,0,0,150,255);    // fast part
 colsRtl(0,cols.size()/4*2,10,130,0,0,150,255);    // fast part
 colsRtl(0,cols.size()/4*3,10,130,0,0,150,255);    // fast part
 colsRtl(0,cols.size(),10,130,0,0,150,255);    // fast part
-
+ */
 colsRtl(0,0,10,130,0,0,0,255);    // fast white
 colsLtr(0,0,10,130,0,0,0,255);    // fast white
 colsRtl(0,0,20,230,0,1,255,255);  // fast color
@@ -212,31 +212,36 @@ colsRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 static void colsLtr(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
     int colCount = cols.size();
     if (length!=0) {
-        colCount = length;
+        colCount = start+length;
     }
-    for (int i=start; i<=colCount; i++) {
-        vector<int> col = cols[i];
-        int ledCount = col.size();
-        for (int j=0; j<ledCount; j++) {
-            int ledNum = col[j];
-            if (ledNum != -1) {
-              leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
-            }
+    Serial.println(colCount);
+    for (int i=start; i<colCount; i++) {
+      vector<int> col = cols[i];
+      int ledCount = col.size();
+      Serial.print(" | ");
+      Serial.print(ledCount);
+      for (int j=0; j<ledCount; j++) {
+        int ledNum = col[j];
+        if (ledNum != -1) {
+          Serial.print(" . ");
+          Serial.print(ledNum);
+          leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
         }
-        FastLED.show(); 
-        delay(wait);
-        fadeAllDynamic(fade);
+      }
+      Serial.println(" | eoc");
+      FastLED.show(); 
+      delay(wait);
+      fadeAllDynamic(fade);
     }
+    Serial.println(" | end of matrix ");
 }
+
 static void colsRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
     int colCount = cols.size();
     if (length!=0) {
-        colCount = length;
+        colCount = start+length;
     }
-    for (int i=colCount; i>=start; i--) {
-/*         if (i<start) {
-          break;
-        } */
+    for (int i=colCount-1; i>=start; i--) {
         vector<int> col = cols[i];
         int ledCount = col.size();
         for (int j=0; j<ledCount; j++) {
