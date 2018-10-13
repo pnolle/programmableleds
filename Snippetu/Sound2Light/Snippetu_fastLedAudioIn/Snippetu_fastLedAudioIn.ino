@@ -5,6 +5,7 @@
 using namespace std;
 
 // General
+#define DEBUG false
 #define DATA_PIN 6
 #define NUM_LEDS 150 // 5 meter reel @ 30 LEDs/m
 
@@ -97,7 +98,7 @@ vector< vector<int> > cols {
 uint32_t mode = 0;
 
 void setup() {
-	Serial.begin(57600);
+	if (DEBUG) Serial.begin(57600);
 	Serial.println("resetting");
   	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 	LEDS.setBrightness(84);
@@ -128,10 +129,16 @@ void loop() {
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
-colsLtr(10,10,50,235,0,1,255,255);  // slow color
+if (DEBUG) Serial.println("slow color 0 0");
+colsLtr(0,0,50,235,0,1,255,255);  // slow color
+/* if (DEBUG) Serial.println("slow color 10 0");
+colsLtr(10,0,50,235,0,1,255,255);  // slow color
+if (DEBUG) Serial.println("slow color 10 10");
+colsLtr(10,10,50,235,0,1,255,255);  // slow color */
+if (DEBUG) Serial.println("slow black out");
 colsLtr(0,0,20,240,0,0,0,0);  // slow black out
 
-/* colsRtl(0,cols.size()/4,10,130,0,0,150,255);    // fast part
+/* colsRtl(0,cols.size()/4,10,130,0,0,150,255);    //  fast part
 colsRtl(0,cols.size()/4*2,10,130,0,0,150,255);    // fast part
 colsRtl(0,cols.size()/4*3,10,130,0,0,150,255);    // fast part
 colsRtl(0,cols.size(),10,130,0,0,150,255);    // fast part
@@ -210,25 +217,37 @@ colsRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 
 
 static void colsLtr(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+    if (DEBUG) Serial.println("colsLtr | start ");
+    if (DEBUG) Serial.print(start);
+    if (DEBUG) Serial.print(" | length ");
+    if (DEBUG) Serial.print(length);
     int colCount = cols.size();
     if (length!=0) {
         colCount = start+length;
     }
-    Serial.println(colCount);
+    if (DEBUG) Serial.print(" | colCount ");
+    if (DEBUG) Serial.print(colCount);
     for (int i=start; i<colCount; i++) {
       vector<int> col = cols[i];
       int ledCount = col.size();
-      Serial.print(" | ");
-      Serial.print(ledCount);
+      if (DEBUG) Serial.print(" | ledCount ");
+      Serial.println(ledCount);
       for (int j=0; j<ledCount; j++) {
         int ledNum = col[j];
         if (ledNum != -1) {
-          Serial.print(" . ");
-          Serial.print(ledNum);
+          if (DEBUG) Serial.print(" . cols[");
+          if (DEBUG) Serial.print(i);
+          if (DEBUG) Serial.print("][");
+          if (DEBUG) Serial.print(j);
+          if (DEBUG) Serial.print("] . #");
+          if (DEBUG) Serial.print(ledNum);
           leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
         }
       }
-      Serial.println(" | eoc");
+      if (DEBUG) Serial.print(" | EOC | start ");
+      if (DEBUG) Serial.print(start);
+      if (DEBUG) Serial.print(" | colCount ");
+      Serial.println(colCount);
       FastLED.show(); 
       delay(wait);
       fadeAllDynamic(fade);
@@ -237,10 +256,15 @@ static void colsLtr(int start, int length, int wait, int fade, int hue, int hueI
 }
 
 static void colsRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+    Serial.println("colsRtl | ");
+    if (DEBUG) Serial.print(start);
+    if (DEBUG) Serial.print(" | ");
+    if (DEBUG) Serial.print(length);
     int colCount = cols.size();
     if (length!=0) {
         colCount = start+length;
     }
+    if (DEBUG) Serial.print(colCount);
     for (int i=colCount-1; i>=start; i--) {
         vector<int> col = cols[i];
         int ledCount = col.size();
@@ -259,7 +283,7 @@ static void colsRtl(int start, int length, int wait, int fade, int hue, int hueI
 
 static void cylon() {
 	static uint8_t hue = 0;
-	Serial.print("x");
+	if (DEBUG) Serial.print("x");
 	// First slide the led in one direction
 	for(int i = 0; i < NUM_LEDS; i++) {
 		// Set the i'th led to red 
@@ -273,7 +297,7 @@ static void cylon() {
 		delay(10);
 	}
 
-	Serial.print("y");
+	if (DEBUG) Serial.print("y");
 	// Now go in the other direction.  
 	for(int i = (NUM_LEDS)-1; i >= 0; i--) {
 		// Set the i'th led to red 
