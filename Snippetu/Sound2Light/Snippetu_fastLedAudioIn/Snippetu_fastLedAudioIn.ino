@@ -5,7 +5,7 @@
 using namespace std;
 
 // General
-#define DEBUG false
+#define DEBUG true
 #define DATA_PIN 6
 #define NUM_LEDS 150 // 5 meter reel @ 30 LEDs/m
 
@@ -53,44 +53,51 @@ vector<int> col6 {51,62,44,47};
 vector<int> col7 {50,63,48,49,43,42,41};
 vector<int> col8 {40,39,64,138,137}; */
 
-vector< vector<int> > cols {
-  {55, 56, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
-  {54, 57, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
-  {53, 58, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 59 , 60 },
-  {52, 61, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 45 , 46 },
-  {51, 62, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 44 , 47 },
-  {50, 63, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 48 , 49 , 43 , 42 , 41 },
-  {40, 39, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 64 , 138, 137},
-  {38, 65, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 139, 136},
-  {37, 66, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 140, 135},
-  {36, 67, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 141, 134},
-  {35, 68, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 142, 133},
-  {34, 69, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 143, 132},
-  {33, 70, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 144, 131},
-  {32, 71, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 145, 130},
-  {31, 72, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 146, 129},
-  {30, 73, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 147, 128},
-  {29, 74, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 148, 127},
-  {28, 75, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 149, 126},
-  {27, 26, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 25 , 24 , 76 , 150, 125},
-  {23, 77, 78 , 79 , 80 , 81 , 82 , -1 , -1 , 124, 123, 122, 121, 120, 119},
-  {22, 83, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 118},
-  {21, 84, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 117},
-  {20, 85, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 116},
-  {19, 86, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 115},
-  {18, 87, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 114},
-  {17, 88, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 113},
-  {16, 89, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 112},
-  {15, 90, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 111},
-  {14, 91, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 110},
-  {13, 92, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 109},
-  {12, 93, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 100, 108, 107, 101},
-  {11, 94, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 95 , 99 , 106, 102},
-  {10, 96, -1 , -1 , -1 , -1 , -1 , -1 , -1 , 97 , 98 , 105, 104, 103, 1  },
-  {9 , 2 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 0  },
-  {8 , 3 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
-  {7 , 4 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
-  {6 , 5 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 }
+
+// columns vector split into 2 vectors because it has a maximum capacity
+vector< vector< vector<int> > > colsList 
+{
+  {
+    {55, 56, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
+    {54, 57, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
+    {53, 58, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 59 , 60 },
+    {52, 61, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 45 , 46 },
+    {51, 62, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 44 , 47 },
+    {50, 63, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 48 , 49 , 43 , 42 , 41 },
+    {40, 39, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 64 , 138, 137},
+    {38, 65, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 139, 136},
+    {37, 66, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 140, 135},
+    {36, 67, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 141, 134},
+    {35, 68, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 142, 133},
+    {34, 69, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 143, 132},
+    {33, 70, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 144, 131},
+    {32, 71, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 145, 130},
+    {31, 72, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 146, 129},
+    {30, 73, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 147, 128},
+    {29, 74, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 148, 127},
+    {28, 75, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 149, 126}
+  },
+  {
+    {27, 26, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 25 , 24 , 76 , 150, 125},
+    {23, 77, 78 , 79 , 80 , 81 , 82 , -1 , -1 , 124, 123, 122, 121, 120, 119},
+    {22, 83, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 118},
+    {21, 84, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 117},
+    {20, 85, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 116},
+    {19, 86, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 115},
+    {18, 87, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 114},
+    {17, 88, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 113},
+    {16, 89, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 112},
+    {15, 90, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 111},
+    {14, 91, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 110},
+    {13, 92, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 109},
+    {12, 93, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 100, 108, 107, 101},
+    {11, 94, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 95 , 99 , 106, 102},
+    {10, 96, -1 , -1 , -1 , -1 , -1 , -1 , -1 , 97 , 98 , 105, 104, 103, 1  },
+    {9 , 2 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 0  },
+    {8 , 3 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
+    {7 , 4 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
+    {6 , 5 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 }
+  }
 };
 
 // Mode Changer
@@ -131,24 +138,27 @@ void loop() {
 
 if (DEBUG) Serial.println("slow color 0 0");
 colsLtr(0,0,50,235,0,1,255,255);  // slow color
+//rowsTtd(0,0,50,235,0,1,255,255);  // slow color
 /* if (DEBUG) Serial.println("slow color 10 0");
 colsLtr(10,0,50,235,0,1,255,255);  // slow color
 if (DEBUG) Serial.println("slow color 10 10");
 colsLtr(10,10,50,235,0,1,255,255);  // slow color */
-if (DEBUG) Serial.println("slow black out");
-colsLtr(0,0,20,240,0,0,0,0);  // slow black out
+
+/* if (DEBUG) Serial.println("slow black out");
+colsLtr(0,0,20,240,0,0,0,0);  // slow black out */
 
 /* colsRtl(0,cols.size()/4,10,130,0,0,150,255);    //  fast part
 colsRtl(0,cols.size()/4*2,10,130,0,0,150,255);    // fast part
 colsRtl(0,cols.size()/4*3,10,130,0,0,150,255);    // fast part
 colsRtl(0,cols.size(),10,130,0,0,150,255);    // fast part
  */
-colsRtl(0,0,10,130,0,0,0,255);    // fast white
+
+/* colsRtl(0,0,10,130,0,0,0,255);    // fast white
 colsLtr(0,0,10,130,0,0,0,255);    // fast white
 colsRtl(0,0,20,230,0,1,255,255);  // fast color
 colsRtl(0,0,10,240,0,0,0,0);  // fast black out
 colsLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
-colsRtl(0,0,10,130,220,0.2,150,255);    // fast purple
+colsRtl(0,0,10,130,220,0.2,150,255);    // fast purple */
 
 
 /* 
@@ -217,10 +227,16 @@ colsRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 
 
 static void colsLtr(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
-    if (DEBUG) Serial.println("colsLtr | start ");
-    if (DEBUG) Serial.print(start);
-    if (DEBUG) Serial.print(" | length ");
-    if (DEBUG) Serial.print(length);
+  if (DEBUG) Serial.println("colsLtr | start ");
+  if (DEBUG) Serial.print(start);
+  if (DEBUG) Serial.print(" | length ");
+  if (DEBUG) Serial.print(length);
+  if (DEBUG) Serial.print(" | colsListCount ");
+  if (DEBUG) Serial.print(colsList.size());
+
+  for (int l=0; l<colsList.size(); l++) {
+    vector< vector<int> > cols = colsList[l];
+
     int colCount = cols.size();
     if (length!=0) {
         colCount = start+length;
@@ -228,11 +244,13 @@ static void colsLtr(int start, int length, int wait, int fade, int hue, int hueI
     if (DEBUG) Serial.print(" | colCount ");
     if (DEBUG) Serial.print(colCount);
     for (int i=start; i<colCount; i++) {
+      if (DEBUG) Serial.print(" | col #");
+      Serial.print(i);
       vector<int> col = cols[i];
-      int ledCount = col.size();
-      if (DEBUG) Serial.print(" | ledCount ");
-      Serial.println(ledCount);
-      for (int j=0; j<ledCount; j++) {
+      int rowCount = col.size();
+      if (DEBUG) Serial.print(" | rowCount ");
+      Serial.println(rowCount);
+      for (int j=0; j<rowCount; j++) {
         int ledNum = col[j];
         if (ledNum != -1) {
           if (DEBUG) Serial.print(" . cols[");
@@ -253,8 +271,86 @@ static void colsLtr(int start, int length, int wait, int fade, int hue, int hueI
       fadeAllDynamic(fade);
     }
     Serial.println(" | end of matrix ");
+
+  }
 }
 
+static void colsRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+  Serial.println("colsRtl | ");
+  if (DEBUG) Serial.print(start);
+  if (DEBUG) Serial.print(" | ");
+  if (DEBUG) Serial.print(length);
+
+  for (int l=0; l<colsList.size(); l++) {
+    vector< vector<int> > cols = colsList[l];
+    
+    int colCount = cols.size();
+    if (length!=0) {
+        colCount = start+length;
+    }
+    if (DEBUG) Serial.print(colCount);
+    for (int i=colCount-1; i>=start; i--) {
+        vector<int> col = cols[i];
+        int ledCount = col.size();
+        for (int j=0; j<ledCount; j++) {
+            int ledNum = col[j];
+            if (ledNum != -1) {
+              leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+            }
+        }
+        FastLED.show(); 
+        delay(wait);
+        fadeAllDynamic(fade);
+    }
+  }
+}
+
+static void rowsTtd(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+  if (DEBUG) Serial.println("rowsTtd | start ");
+  if (DEBUG) Serial.print(start);
+  if (DEBUG) Serial.print(" | length ");
+  if (DEBUG) Serial.print(length);
+
+  for (int l=0; l<colsList.size(); l++) {
+    vector< vector<int> > cols = colsList[l];
+
+    int rowCount = cols[0].size();
+    if (length!=0) {
+        rowCount = start+length;
+    }
+    int colCount = cols.size();
+    if (DEBUG) Serial.print(" | rowCount ");
+    if (DEBUG) Serial.print(rowCount);;
+      if (DEBUG) Serial.print(" | colCount ");
+      Serial.println(colCount);
+    for (int i=start; i<rowCount; i++) {
+      if (DEBUG) Serial.print(" | row #");
+      Serial.print(i);
+      for (int j=0; j<colCount; j++) {
+        int ledNum = cols[j][i];
+        if (ledNum != -1) {
+          if (DEBUG) Serial.print(" . cols[");
+          if (DEBUG) Serial.print(j);
+          if (DEBUG) Serial.print("][");
+          if (DEBUG) Serial.print(i);
+          if (DEBUG) Serial.print("] . #");
+          if (DEBUG) Serial.print(ledNum);
+          leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+        }
+      }
+      if (DEBUG) Serial.print(" | EOC | start ");
+      if (DEBUG) Serial.print(start);
+      if (DEBUG) Serial.print(" | colCount ");
+      Serial.println(colCount);
+      FastLED.show(); 
+      delay(wait);
+      fadeAllDynamic(fade);
+    }
+    Serial.println(" | end of matrix ");
+  }
+}
+
+/* 
 static void colsRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
     Serial.println("colsRtl | ");
     if (DEBUG) Serial.print(start);
@@ -279,7 +375,7 @@ static void colsRtl(int start, int length, int wait, int fade, int hue, int hueI
         fadeAllDynamic(fade);
     }
 }
-
+ */
 
 static void cylon() {
 	static uint8_t hue = 0;
