@@ -4,6 +4,7 @@
 // General
 #define DATA_PIN 6
 #define NUM_LEDS 150 // 5 meter reel @ 30 LEDs/m
+#define DEBUG false
 
 // Blinder Button
 #define BUTTONPIN 2
@@ -43,43 +44,43 @@ uint32_t laser[][3] = {
 const int colCount = 37;
 const int rowCount = 15;
 uint32_t matrixColumnsLr[colCount][rowCount] = {
-  {55, 56, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
-  {54, 57, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
-  {53, 58, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 59 , 60 },
-  {52, 61, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 45 , 46 },
-  {51, 62, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 44 , 47 },
-  {50, 63, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 48 , 49 , 43 , 42 , 41 },
-  {40, 39, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 64 , 138, 137},
-  {38, 65, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 139, 136},
-  {37, 66, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 140, 135},
-  {36, 67, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 141, 134},
-  {35, 68, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 142, 133},
-  {34, 69, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 143, 132},
-  {33, 70, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 144, 131},
-  {32, 71, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 145, 130},
-  {31, 72, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 146, 129},
-  {30, 73, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 147, 128},
-  {29, 74, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 148, 127},
-  {28, 75, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 149, 126},
-  {27, 26, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 25 , 24 , 76 , 150, 125},
-  {23, 77, 78 , 79 , 80 , 81 , 82 , -1 , -1 , 124, 123, 122, 121, 120, 119},
-  {22, 83, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 118},
-  {21, 84, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 117},
-  {20, 85, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 116},
-  {19, 86, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 115},
-  {18, 87, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 114},
-  {17, 88, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 113},
-  {16, 89, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 112},
-  {15, 90, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 111},
-  {14, 91, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 110},
-  {13, 92, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 109},
-  {12, 93, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 100, 108, 107, 101},
-  {11, 94, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 95 , 99 , 106, 102},
-  {10, 96, -1 , -1 , -1 , -1 , -1 , -1 , -1 , 97 , 98 , 105, 104, 103, 1  },
-  {9 , 2 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 0  },
-  {8 , 3 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
-  {7 , 4 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
-  {6 , 5 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 }
+  { -1, -1, 55 , 56, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
+  { -1, -1, 54 , 57, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 },
+  { -1, -1, 53 , 58, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 59 , 60 },
+  { -1, -1, 52 , 61, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 45 , 46 },
+  { -1, -1, 51 , 62, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 44 , 47 },
+  { -1, -1, 50 , 63, -1 , -1 , -1 , -1 , -1 , -1 , 48 , 49 , 43 , 42 , 41 },
+  { -1, -1, 40 , 39, -1 , -1 , 138, 137, -1 , -1 , -1 , -1 , -1 , -1 , 64 },
+  { -1, -1, 38 , -1, -1 , -1 , 139, 136, -1 , -1 , -1 , -1 , -1 , -1 , 65 },
+  { -1, -1, 37 , -1, -1 , -1 , 140, 135, -1 , -1 , -1 , -1 , -1 , -1 , 66 },
+  { -1, -1, 36 , -1, -1 , -1 , 141, 134, -1 , -1 , -1 , -1 , -1 , -1 , 67 },
+  { -1, -1, 35 , -1, -1 , -1 , 142, 133, -1 , -1 , -1 , -1 , -1 , -1 , 68 },
+  { -1, -1, 34 , -1, -1 , -1 , 143, 132, -1 , -1 , -1 , -1 , -1 , -1 , 69 },
+  { -1, -1, 33 , -1, -1 , -1 , 144, 131, -1 , -1 , -1 , -1 , -1 , -1 , 70 },
+  { -1, -1, 32 , -1, -1 , -1 , 145, 130, -1 , -1 , -1 , -1 , -1 , -1 , 71 },
+  { -1, -1, 31 , -1, -1 , -1 , 146, 129, -1 , -1 , -1 , -1 , -1 , -1 , 72 },
+  { -1, -1, 30 , -1, -1 , -1 , 147, 128, -1 , -1 , -1 , -1 , -1 , -1 , 73 },
+  { -1, -1, 29 , -1, -1 , -1 , 148, 127, -1 , -1 , -1 , -1 , -1 , -1 , 74 },
+  { 26, 27, 28 , -1, -1 , -1 , 149, 126, -1 , -1 , -1 , -1 , -1 , -1 , 75 },
+  {24, 25, -1 , -1 , -1 , -1 , 150, 125, -1 , -1 , -1 , -1 , -1 , -1 , 76 },
+  {23, -1, 124, 123, 122, 121, 120, 119, -1 , 77 , 78 , 79 , 80 , 81 , 82 },
+  {22, 118, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 83},
+  {21, 117, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 84},
+  {20, 116, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 85},
+  {19, 115, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 86},
+  {18, 114, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 87},
+  {17, 113, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 88},
+  {16, 112, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 89},
+  {15, 111, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 90},
+  {14, 110, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 91},
+  {13, 109, -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , 92},
+  {12, -1 , -1 , -1 , -1 , -1 , 108, 107, -1 , -1 , -1 , -1 , -1 , -1 , 93},
+  {11, 94 , -1 , -1 , -1 , -1 , 100, 101, -1 , -1 , -1 , 95 , 99 , 106,102},
+  {10, -1 , -1 , -1 , -1 , 105, 104, 103,  0 , -1 , -1 , 96 , 97 , 98 , 1 },
+  {9 ,  2 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1},
+  {8 ,  3 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1},
+  {7 ,  4 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1},
+  {6 ,  5 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1}
 };
 
 // Mode Changer
@@ -118,17 +119,19 @@ void loop() {
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
-matrixTtd(1,0,200,235,0,0,255,255);  // slow color
-matrixTtd(1,0,20,240,0,0,0,0);  // slow black out
+matrixTtd(0,0,800,235,0,0,255,255);  // slow color
+matrixTtd(0,0,20,240,0,0,0,0);  // slow black out
+
+matrixLtr(0,0,500,235,0,1,255,255);  // slow color
+matrixLtr(0,0,20,240,0,0,0,0);  // slow black out
+
 /* 
-matrixLtr(1,0,50,235,0,1,255,255);  // slow color
-matrixLtr(1,0,20,240,0,0,0,0);  // slow black out
-matrixRtl(1,0,10,130,0,0,0,255);    // fast white
-matrixLtr(1,0,10,130,0,0,0,255);    // fast white
-matrixRtl(1,0,20,230,0,1,255,255);  // fast color
-matrixRtl(1,0,10,240,0,0,0,0);  // fast black out
-matrixLtr(1,0,10,130,125,0.2,150,255);    // fast turquoise
-matrixRtl(1,0,10,130,220,0.2,150,255);    // fast purple
+matrixRtl(0,0,10,130,0,0,0,255);    // fast white
+matrixLtr(0,0,10,130,0,0,0,255);    // fast white
+matrixRtl(0,0,20,230,0,1,255,255);  // fast color
+matrixRtl(0,0,10,240,0,0,0,0);  // fast black out
+matrixLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
+matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
  */
 
 /* 
@@ -196,13 +199,13 @@ matrixRtl(1,0,10,130,220,0.2,150,255);    // fast purple
 
 
 static void matrixLtr(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
-    int colCountLtr = colCount;
+    int colCountLocal = colCount;
     if (length!=0) {
-        colCountLtr = length;
+        colCountLocal = length;
     }
     int ledCount = rowCount;
-    for (int i=start; i<=colCountLtr; i++) {
-      for (int j=1; j<=ledCount; j++) {
+    for (int i=start; i<colCountLocal; i++) {
+      for (int j=0; j<ledCount; j++) {
         int ledNum = matrixColumnsLr[i][j];
         leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
       }
@@ -212,13 +215,13 @@ static void matrixLtr(int start, int length, int wait, int fade, int hue, int hu
     }
 }
 static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
-    int colCountRtl = colCount;
+    int colCountLocal = colCount;
     if (length!=0) {
-        colCountRtl = length;
+        colCountLocal = length;
     }
     int ledCount = rowCount;
-    for (int i=colCountRtl; i>=start; i--) {
-      for (int j=1; j<=ledCount; j++) {
+    for (int i=colCountLocal-1; i>=start; i--) {
+      for (int j=0; j<ledCount; j++) {
         int ledNum = matrixColumnsLr[i][j];
         leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
       }
@@ -229,20 +232,32 @@ static void matrixRtl(int start, int length, int wait, int fade, int hue, int hu
 }
 
 static void matrixTtd(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
-    int colCountLtr = colCount;
+    int colCountLocal = colCount;
     if (length!=0) {
-        colCountLtr = length;
+        colCountLocal = length;
     }
+    if (DEBUG) Serial.print("matrixTtd | colCount");
+    if (DEBUG) Serial.print(colCountLocal);
     int ledCount = rowCount;
-    for (int i=start; i<=ledCount; i++) {
-      for (int j=1; j<=colCountLtr; j++) {
+    if (DEBUG) Serial.print(" | rowCount");
+    if (DEBUG) Serial.println(ledCount);
+    for (int i=start; i<ledCount; i++) {
+        if (DEBUG) Serial.print("row ");
+        if (DEBUG) Serial.print(i);
+      for (int j=0; j<colCountLocal; j++) {
+        if (DEBUG) Serial.print(" | col");
+        if (DEBUG) Serial.print(j);
         int ledNum = matrixColumnsLr[j][i];
         leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+        if (DEBUG) Serial.print(" #");
+        if (DEBUG) Serial.print(ledNum);
       }
+      if (DEBUG) Serial.println(" | EOR");
       FastLED.show(); 
       delay(wait);
       fadeAllDynamic(fade);
     }
+    if (DEBUG) Serial.println(" | EOM");
 }
 /* static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
     int colCountRtl = colCount;
@@ -251,7 +266,7 @@ static void matrixTtd(int start, int length, int wait, int fade, int hue, int hu
     }
     for (int i=colCountRtl; i>=start; i--) {
         int ledCount = rowCount;
-        for (int j=1; j<=ledCount; j++) {
+        for (int j=0; j<ledCount; j++) {
           int ledNum = matrixColumnsLr[i][j];
           leds[matrixColumnsLr[i][j]] = CHSV(hue+=hueIterator, sat, bri);
         }
