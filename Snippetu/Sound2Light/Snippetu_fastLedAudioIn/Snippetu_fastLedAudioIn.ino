@@ -129,7 +129,7 @@ uint32_t mode = 0;
 void setup() {
 	Serial.begin(57600);
 	Serial.println("resetting");
-  	FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 	LEDS.setBrightness(84);
 /* 
   // initialize the LED pin as an output:
@@ -158,22 +158,23 @@ void loop() {
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
-//lightEvery10();
+lightEvery10();
 
-matrixTtd(0,0,800,235,0,0,255,255);  // slow color
+matrixTtd(0,0,50,235,0,1,255,255);  // slow color
 matrixTtd(0,0,20,240,0,0,0,0);  // slow black out
+matrixLtr(0,0,50,235,0,1,255,255);  // slow color
+matrixLtr(0,0,20,240,0,0,0,0);  // slow black out
 
-/* matrixLtr(0,0,500,235,0,1,255,255);  // slow color
-matrixLtr(0,0,20,240,0,0,0,0);  // slow black out */
+matrixDtt(0,0,20,130,125,0.2,150,255);    // fast turquoise
+matrixTtd(0,0,20,130,220,0.2,150,255);    // fast purple
 
-/* 
 matrixRtl(0,0,10,130,0,0,0,255);    // fast white
 matrixLtr(0,0,10,130,0,0,0,255);    // fast white
 matrixRtl(0,0,20,230,0,1,255,255);  // fast color
 matrixRtl(0,0,10,240,0,0,0,0);  // fast black out
 matrixLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
 matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
- */
+
 
 /* 
   switch(mode) {
@@ -244,11 +245,11 @@ static void lightEvery10() {
         if (j%10==0) leds[j] = CHSV(20, 255, 255);
       }
       FastLED.show(); 
-      delay(10000);
+      delay(3000);
 }
 
 
-static void matrixLtr(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+static void matrixLtr(int start, int length, int wait, int fade, int hue, int hueIncrement, int sat, int bri) {
     int colCountLocal = colCount;
     if (length!=0) {
         colCountLocal = length;
@@ -257,14 +258,15 @@ static void matrixLtr(int start, int length, int wait, int fade, int hue, int hu
     for (int i=start; i<colCountLocal; i++) {
       for (int j=0; j<ledCount; j++) {
         int ledNum = matrixColumnsLeftRight[i][j];
-        leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+        hue = incrementHue(hue, hueIncrement);
+        leds[ledNum] = CHSV(hue, sat, bri);
       }
       FastLED.show(); 
       delay(wait);
       fadeAllDynamic(fade);
     }
 }
-static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIncrement, int sat, int bri) {
     int colCountLocal = colCount;
     if (length!=0) {
         colCountLocal = length;
@@ -273,7 +275,7 @@ static void matrixRtl(int start, int length, int wait, int fade, int hue, int hu
     for (int i=colCountLocal-1; i>=start; i--) {
       for (int j=0; j<ledCount; j++) {
         int ledNum = matrixColumnsLeftRight[i][j];
-        leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+        leds[ledNum] = CHSV(hue+=hueIncrement, sat, bri);
       }
       FastLED.show(); 
       delay(wait);
@@ -281,7 +283,7 @@ static void matrixRtl(int start, int length, int wait, int fade, int hue, int hu
     }
 }
 
-static void matrixTtd(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+static void matrixTtd(int start, int length, int wait, int fade, int hue, int hueIncrement, int sat, int bri) {
     int colCountLocal = colCount;
     if (length!=0) {
         colCountLocal = length;
@@ -298,7 +300,7 @@ static void matrixTtd(int start, int length, int wait, int fade, int hue, int hu
         if (DEBUG) Serial.print(" | col");
         if (DEBUG) Serial.print(j);
         int ledNum = matrixColumnsDownTop[j][i];
-        leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+        leds[ledNum] = CHSV(hue+=hueIncrement, sat, bri);
         if (DEBUG) Serial.print(" #");
         if (DEBUG) Serial.print(ledNum);
       }
@@ -309,22 +311,35 @@ static void matrixTtd(int start, int length, int wait, int fade, int hue, int hu
     }
     if (DEBUG) Serial.println(" | EOM");
 }
-/* static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
-    int colCountRtl = colCount;
+
+static void matrixDtt(int start, int length, int wait, int fade, int hue, int hueIncrement, int sat, int bri) {
+    int colCountLocal = colCount;
     if (length!=0) {
-        colCountRtl = length;
+        colCountLocal = length;
     }
-    for (int i=colCountRtl; i>=start; i--) {
-        int ledCount = rowCount;
-        for (int j=0; j<ledCount; j++) {
-          int ledNum = matrixColumnsDownTop[i][j];
-          leds[matrixColumnsLeftRight[i][j]] = CHSV(hue+=hueIterator, sat, bri);
-        }
-        FastLED.show(); 
-        delay(wait);
-        fadeAllDynamic(fade);
+    if (DEBUG) Serial.print("matrixDtt | colCount");
+    if (DEBUG) Serial.print(colCountLocal);
+    int ledCount = rowCount;
+    if (DEBUG) Serial.print(" | rowCount");
+    if (DEBUG) Serial.println(ledCount);
+    for (int i=ledCount-1; i>=start; i--) {
+        if (DEBUG) Serial.print("row ");
+        if (DEBUG) Serial.print(i);
+      for (int j=colCountLocal-1; j>=0; j--) {
+        if (DEBUG) Serial.print(" | col");
+        if (DEBUG) Serial.print(j);
+        int ledNum = matrixColumnsDownTop[j][i];
+        leds[ledNum] = CHSV(hue+=hueIncrement, sat, bri);
+        if (DEBUG) Serial.print(" #");
+        if (DEBUG) Serial.print(ledNum);
+      }
+      if (DEBUG) Serial.println(" | EOR");
+      FastLED.show(); 
+      delay(wait);
+      fadeAllDynamic(fade);
     }
-} */
+    if (DEBUG) Serial.println(" | EOM");
+}
 
 
 static void cylon() {
@@ -514,6 +529,14 @@ static void eraseAll() {
     FastLED.show(); 
 }
 
+static int incrementHue(int h, int hIncrementor) {
+  h = h+hIncrementor;
+  if (h>=255) {
+    h = h-255;
+  }
+  return h;
+}
+
 static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
   uint16_t result = p+inc;
   while ((result>=blinders[1][0] && result<blinders[1][0]+blinders[1][1]) ||
@@ -527,6 +550,7 @@ static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
 static uint16_t getAmountOfSnipPixels() {
   return NUM_LEDS - 2*blinders[1][1];
 }
+
 
 static void checkInterrupts() {
 /*   while (buttonState==HIGH) {
