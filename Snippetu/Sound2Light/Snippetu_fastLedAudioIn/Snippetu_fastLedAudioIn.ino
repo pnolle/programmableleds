@@ -118,6 +118,9 @@ void loop() {
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
+matrixTtd(1,0,200,235,0,0,255,255);  // slow color
+matrixTtd(1,0,20,240,0,0,0,0);  // slow black out
+/* 
 matrixLtr(1,0,50,235,0,1,255,255);  // slow color
 matrixLtr(1,0,20,240,0,0,0,0);  // slow black out
 matrixRtl(1,0,10,130,0,0,0,255);    // fast white
@@ -126,7 +129,7 @@ matrixRtl(1,0,20,230,0,1,255,255);  // fast color
 matrixRtl(1,0,10,240,0,0,0,0);  // fast black out
 matrixLtr(1,0,10,130,125,0.2,150,255);    // fast turquoise
 matrixRtl(1,0,10,130,220,0.2,150,255);    // fast purple
-
+ */
 
 /* 
   switch(mode) {
@@ -197,15 +200,15 @@ static void matrixLtr(int start, int length, int wait, int fade, int hue, int hu
     if (length!=0) {
         colCountLtr = length;
     }
+    int ledCount = rowCount;
     for (int i=start; i<=colCountLtr; i++) {
-        int ledCount = rowCount;
-        for (int j=1; j<=ledCount; j++) {
-            int ledNum = matrixColumnsLr[i][j];
-            leds[matrixColumnsLr[i][j]] = CHSV(hue+=hueIterator, sat, bri);
-        }
-        FastLED.show(); 
-        delay(wait);
-        fadeAllDynamic(fade);
+      for (int j=1; j<=ledCount; j++) {
+        int ledNum = matrixColumnsLr[i][j];
+        leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+      }
+      FastLED.show(); 
+      delay(wait);
+      fadeAllDynamic(fade);
     }
 }
 static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
@@ -213,17 +216,50 @@ static void matrixRtl(int start, int length, int wait, int fade, int hue, int hu
     if (length!=0) {
         colCountRtl = length;
     }
+    int ledCount = rowCount;
+    for (int i=colCountRtl; i>=start; i--) {
+      for (int j=1; j<=ledCount; j++) {
+        int ledNum = matrixColumnsLr[i][j];
+        leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+      }
+      FastLED.show(); 
+      delay(wait);
+      fadeAllDynamic(fade);
+    }
+}
+
+static void matrixTtd(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+    int colCountLtr = colCount;
+    if (length!=0) {
+        colCountLtr = length;
+    }
+    int ledCount = rowCount;
+    for (int i=start; i<=ledCount; i++) {
+      for (int j=1; j<=colCountLtr; j++) {
+        int ledNum = matrixColumnsLr[j][i];
+        leds[ledNum] = CHSV(hue+=hueIterator, sat, bri);
+      }
+      FastLED.show(); 
+      delay(wait);
+      fadeAllDynamic(fade);
+    }
+}
+/* static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIterator, int sat, int bri) {
+    int colCountRtl = colCount;
+    if (length!=0) {
+        colCountRtl = length;
+    }
     for (int i=colCountRtl; i>=start; i--) {
         int ledCount = rowCount;
         for (int j=1; j<=ledCount; j++) {
-            int ledNum = matrixColumnsLr[i][j];
-            leds[matrixColumnsLr[i][j]] = CHSV(hue+=hueIterator, sat, bri);
+          int ledNum = matrixColumnsLr[i][j];
+          leds[matrixColumnsLr[i][j]] = CHSV(hue+=hueIterator, sat, bri);
         }
         FastLED.show(); 
         delay(wait);
         fadeAllDynamic(fade);
     }
-}
+} */
 
 
 static void cylon() {
