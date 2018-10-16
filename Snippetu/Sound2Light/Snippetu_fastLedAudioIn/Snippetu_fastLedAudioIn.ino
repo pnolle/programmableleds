@@ -160,9 +160,9 @@ void loop() {
 
 lightEvery10();
 
-matrixTtd(0,0,50,235,0,1,255,255);  // slow color
+matrixTtd(0,0,50,235,120,0.1,255,255);  // slow color
 matrixTtd(0,0,20,240,0,0,0,0);  // slow black out
-matrixLtr(0,0,50,235,0,1,255,255);  // slow color
+matrixLtr(0,0,50,235,0,0.3,255,255);  // slow color
 matrixLtr(0,0,20,240,0,0,0,0);  // slow black out
 
 matrixDtt(0,0,20,130,125,0.2,150,255);    // fast turquoise
@@ -249,7 +249,7 @@ static void lightEvery10() {
 }
 
 
-static void matrixLtr(int start, int length, int wait, int fade, int hue, int hueIncrement, int sat, int bri) {
+static void matrixLtr(int start, int length, int wait, int fade, double hue, double hueIncrement, int sat, int bri) {
     int colCountLocal = colCount;
     if (length!=0) {
         colCountLocal = length;
@@ -258,7 +258,7 @@ static void matrixLtr(int start, int length, int wait, int fade, int hue, int hu
     for (int i=start; i<colCountLocal; i++) {
       for (int j=0; j<ledCount; j++) {
         int ledNum = matrixColumnsLeftRight[i][j];
-        hue = incrementHue(hue, hueIncrement);
+        if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
         leds[ledNum] = CHSV(hue, sat, bri);
       }
       FastLED.show(); 
@@ -266,7 +266,7 @@ static void matrixLtr(int start, int length, int wait, int fade, int hue, int hu
       fadeAllDynamic(fade);
     }
 }
-static void matrixRtl(int start, int length, int wait, int fade, int hue, int hueIncrement, int sat, int bri) {
+static void matrixRtl(int start, int length, int wait, int fade, double hue, double hueIncrement, int sat, int bri) {
     int colCountLocal = colCount;
     if (length!=0) {
         colCountLocal = length;
@@ -275,7 +275,8 @@ static void matrixRtl(int start, int length, int wait, int fade, int hue, int hu
     for (int i=colCountLocal-1; i>=start; i--) {
       for (int j=0; j<ledCount; j++) {
         int ledNum = matrixColumnsLeftRight[i][j];
-        leds[ledNum] = CHSV(hue+=hueIncrement, sat, bri);
+        if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
+        leds[ledNum] = CHSV(hue, sat, bri);
       }
       FastLED.show(); 
       delay(wait);
@@ -283,7 +284,7 @@ static void matrixRtl(int start, int length, int wait, int fade, int hue, int hu
     }
 }
 
-static void matrixTtd(int start, int length, int wait, int fade, int hue, int hueIncrement, int sat, int bri) {
+static void matrixTtd(int start, int length, int wait, int fade, double hue, double hueIncrement, int sat, int bri) {
     int colCountLocal = colCount;
     if (length!=0) {
         colCountLocal = length;
@@ -300,7 +301,8 @@ static void matrixTtd(int start, int length, int wait, int fade, int hue, int hu
         if (DEBUG) Serial.print(" | col");
         if (DEBUG) Serial.print(j);
         int ledNum = matrixColumnsDownTop[j][i];
-        leds[ledNum] = CHSV(hue+=hueIncrement, sat, bri);
+        if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
+        leds[ledNum] = CHSV(hue, sat, bri);
         if (DEBUG) Serial.print(" #");
         if (DEBUG) Serial.print(ledNum);
       }
@@ -312,7 +314,7 @@ static void matrixTtd(int start, int length, int wait, int fade, int hue, int hu
     if (DEBUG) Serial.println(" | EOM");
 }
 
-static void matrixDtt(int start, int length, int wait, int fade, int hue, int hueIncrement, int sat, int bri) {
+static void matrixDtt(int start, int length, int wait, int fade, double hue, double hueIncrement, int sat, int bri) {
     int colCountLocal = colCount;
     if (length!=0) {
         colCountLocal = length;
@@ -329,7 +331,8 @@ static void matrixDtt(int start, int length, int wait, int fade, int hue, int hu
         if (DEBUG) Serial.print(" | col");
         if (DEBUG) Serial.print(j);
         int ledNum = matrixColumnsDownTop[j][i];
-        leds[ledNum] = CHSV(hue+=hueIncrement, sat, bri);
+        if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
+        leds[ledNum] = CHSV(hue, sat, bri);
         if (DEBUG) Serial.print(" #");
         if (DEBUG) Serial.print(ledNum);
       }
@@ -529,10 +532,10 @@ static void eraseAll() {
     FastLED.show(); 
 }
 
-static int incrementHue(int h, int hIncrementor) {
-  h = h+hIncrementor;
+static double incrementHue(double h, double hIncrementor) {
+  h+=hIncrementor;
   if (h>=255) {
-    h = h-255;
+    h-=255;
   }
   return h;
 }
