@@ -241,11 +241,12 @@ matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 
 
 static void lightEvery10() {
-      for (int j=0; j<150; j++) {
-        if (j%10==0) leds[j] = CHSV(20, 255, 255);
-      }
-      FastLED.show(); 
-      delay(3000);
+  eraseAll(); 
+  for (int j=0; j<150; j++) {
+    if (j%10==0) leds[j] = CHSV(20, 255, 255);
+  }
+  FastLED.show(); 
+  delay(3000);
 }
 
 
