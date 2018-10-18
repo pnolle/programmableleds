@@ -1,6 +1,22 @@
 #include <FastLED.h>
 #include <Adafruit_NeoPixel.h>
 
+
+// #######
+// AudioIn
+// #######
+
+//variable to store incoming audio sample
+byte incomingAudio;
+
+//clipping indicator variables
+boolean clipping = 0;
+
+
+// ####
+// LEDs
+// ####
+
 // General
 #define DATA_PIN 6
 #define NUM_LEDS 150 // 5 meter reel @ 30 LEDs/m
@@ -128,7 +144,12 @@ uint32_t mode = 0;
 
 void setup() {
 	Serial.begin(57600);
-	Serial.println("resetting");
+	Serial.println("### setup ###");
+
+
+// ####
+// LEDs
+// ####
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 	LEDS.setBrightness(84);
 /* 
@@ -138,7 +159,49 @@ void setup() {
   pinMode(BUTTONPIN, INPUT);
 
   attachInterrupt(digitalPinToInterrupt(BUTTONPIN), blinderButton, CHANGE); */
+
+
+// #######
+// AudioIn
+// #######
+  
+  pinMode(13,OUTPUT);//led indicator pin
+  
+  cli();//disable interrupts
+  
+  //set up continuous sampling of analog pin 0
+  
+  //clear ADCSRA and ADCSRB registers
+  ADCSRA = 0;
+  ADCSRB = 0;
+  
+  ADMUX |= (1 << REFS0); //set reference voltage
+  ADMUX |= (1 << ADLAR); //left align the ADC value- so we can read highest 8 bits from ADCH register only
+  
+  ADCSRA |= (1 << ADPS2) | (1 << ADPS0); //set ADC clock with 32 prescaler- 16mHz/32=500kHz
+  ADCSRA |= (1 << ADATE); //enabble auto trigger
+  ADCSRA |= (1 << ADIE); //enable interrupts when measurement complete
+  ADCSRA |= (1 << ADEN); //enable ADC
+  ADCSRA |= (1 << ADSC); //start ADC measurements
+  
+  sei();//enable interrupts
+
 }
+
+
+// #######
+// AudioIn
+// #######
+
+ISR(ADC_vect) {//when new ADC value ready
+  incomingAudio = ADCH;//store 8 bit value from analog pin 0
+  incomingAudio = incomingAudio*9;
+  if (incomingAudio == 0 || incomingAudio == 255){//if clipping
+    digitalWrite(13,HIGH);//set pin 13 high
+    clipping = 1;//currently clipping
+  }
+}
+
 
 /* void blinderButton() {
   buttonState = digitalRead(BUTTONPIN);
@@ -153,10 +216,27 @@ void setup() {
 
 
 
+
 void loop() {
 /* 
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
+
+
+  if (clipping){//if currently clipping
+    clipping = 0;//
+    digitalWrite(13,LOW);//turn off clipping led indicator (pin 13)
+  }
+
+  double faktor = incomingAudio/255.0;
+  int numLeds = (int)(150*faktor-25)*1.2;
+  Serial.println((String)"incoming: " + incomingAudio+' '+" ... faktor: " + faktor+' '+" ... numLeds: " + numLeds+' '+" ...");
+  lightHowMany(numLeds, 240, 120, 0.1, 255, 255);
+
+
+
+/* 
+
 
 lightEvery10();
 
@@ -174,6 +254,9 @@ matrixRtl(0,0,20,230,0,1,255,255);  // fast color
 matrixRtl(0,0,10,240,0,0,0,0);  // fast black out
 matrixLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
 matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
+ */
+
+
 
 
 /* 
@@ -247,6 +330,14 @@ static void lightEvery10() {
   }
   FastLED.show(); 
   delay(3000);
+}
+
+static void lightHowMany(int numLeds, int fade, double hue, double hueIncrement, int sat, int bri) {
+    fadeAllDynamic(fade);
+    for(int i=0; i<=numLeds; i++) {
+      leds[i] = CHSV(hue+=hueIncrement, sat, bri);
+    }
+    FastLED.show(); 
 }
 
 
