@@ -223,20 +223,18 @@ void loop() {
  */
 
 
-  if (clipping){//if currently clipping
-    clipping = 0;//
-    digitalWrite(13,LOW);//turn off clipping led indicator (pin 13)
-  }
 
-  double faktor = incomingAudio/255.0;
-  int numLeds = (int)(150*faktor-25)*1.2;
-  Serial.println((String)"incoming: " + incomingAudio+' '+" ... faktor: " + faktor+' '+" ... numLeds: " + numLeds+' '+" ...");
-  lightHowMany(numLeds, 240, 120, 0.1, 255, 255);
+  
+
+  lightHowManyRows(getNumLeds(incomingAudio, rowCount+3, -3), 220, 60, 0.2, 255, 255);
+/* 
+  lightHowMany(getNumLeds(incomingAudio, 150, -25), 240, 120, 0.1, 255, 255);
+ */
+
 
 
 
 /* 
-
 
 lightEvery10();
 
@@ -323,6 +321,19 @@ matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 // #############
 
 
+static double getNumLeds(byte incomingAudio, int totalNumLeds, int offset) {
+  if (clipping){//if currently clipping
+    clipping = 0;//
+    digitalWrite(13,LOW);//turn off clipping led indicator (pin 13)
+  }
+
+  double faktor = incomingAudio/255.0;
+  int numLeds = (int)(totalNumLeds*faktor+offset)*1.2;
+  if (DEBUG) Serial.println((String)"incoming: " + incomingAudio+' '+" ... faktor: " + faktor+' '+" ... numLeds: " + numLeds+' '+" ...");
+
+  return numLeds;
+}
+
 static void lightEvery10() {
   eraseAll(); 
   for (int j=0; j<150; j++) {
@@ -338,6 +349,32 @@ static void lightHowMany(int numLeds, int fade, double hue, double hueIncrement,
       leds[i] = CHSV(hue+=hueIncrement, sat, bri);
     }
     FastLED.show(); 
+}
+
+static void lightHowManyRows(int numRows, int fade, double hue, double hueIncrement, int sat, int bri) {
+  fadeAllDynamic(fade);
+  int colCountLocal = colCount;
+/*   if (length!=0) {
+      colCountLocal = length;
+  } */
+  int ledCount = numRows;
+  for (int i=0; i<ledCount; i++) {
+      if (DEBUG) Serial.print("row ");
+      if (DEBUG) Serial.print(i);
+    for (int j=0; j<colCountLocal; j++) {
+      if (DEBUG) Serial.print(" | col");
+      if (DEBUG) Serial.print(j);
+      int ledNum = matrixColumnsDownTop[j][i];
+      if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
+      leds[ledNum] = CHSV(hue, sat, bri);
+      if (DEBUG) Serial.print(" #");
+      if (DEBUG) Serial.print(ledNum);
+    }
+    if (DEBUG) Serial.println(" | EOR");
+    FastLED.show(); 
+  }
+  if (DEBUG) Serial.println(" | EOM");
+  FastLED.show(); 
 }
 
 
