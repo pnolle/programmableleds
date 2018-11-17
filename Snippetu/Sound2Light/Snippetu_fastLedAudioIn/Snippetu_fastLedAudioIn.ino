@@ -21,6 +21,7 @@ boolean clipping = 0;
 #define DATA_PIN 6
 #define NUM_LEDS 150 // 5 meter reel @ 30 LEDs/m
 #define DEBUG false
+#define SOUND2LIGHT false
 
 // Blinder Button
 #define BUTTONPIN 2
@@ -222,39 +223,30 @@ void loop() {
       Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
-
-
-  
-
+if (SOUND2LIGHT) {
   lightHowManyRows(getNumLeds(incomingAudio, rowCount+3, -3), 220, 60, 0.2, 255, 255);
 /* 
   lightHowMany(getNumLeds(incomingAudio, 150, -25), 240, 120, 0.1, 255, 255);
  */
+}
+else {
 
+  lightEvery10();
 
+  matrixTtd(0,0,50,235,120,0.1,255,255);  // slow color
+  matrixTtd(0,0,20,240,0,0,0,0);  // slow black out
+  matrixLtr(0,0,50,235,0,0.3,255,255);  // slow color
+  matrixLtr(0,0,20,240,0,0,0,0);  // slow black out
 
+  matrixDtt(0,0,20,130,125,0.2,150,255);    // fast turquoise
+  matrixTtd(0,0,20,130,220,0.2,150,255);    // fast purple
 
-/* 
-
-lightEvery10();
-
-matrixTtd(0,0,50,235,120,0.1,255,255);  // slow color
-matrixTtd(0,0,20,240,0,0,0,0);  // slow black out
-matrixLtr(0,0,50,235,0,0.3,255,255);  // slow color
-matrixLtr(0,0,20,240,0,0,0,0);  // slow black out
-
-matrixDtt(0,0,20,130,125,0.2,150,255);    // fast turquoise
-matrixTtd(0,0,20,130,220,0.2,150,255);    // fast purple
-
-matrixRtl(0,0,10,130,0,0,0,255);    // fast white
-matrixLtr(0,0,10,130,0,0,0,255);    // fast white
-matrixRtl(0,0,20,230,0,1,255,255);  // fast color
-matrixRtl(0,0,10,240,0,0,0,0);  // fast black out
-matrixLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
-matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
- */
-
-
+  matrixRtl(0,0,10,130,0,0,0,255);    // fast white
+  matrixLtr(0,0,10,130,0,0,0,255);    // fast white
+  matrixRtl(0,0,20,230,0,1,255,255);  // fast color
+  matrixRtl(0,0,10,240,0,0,0,0);  // fast black out
+  matrixLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
+  matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 
 
 /* 
@@ -312,6 +304,7 @@ matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 
     //bothdir(0x0000FF); // Blue
     //chase(0x00FF00, false); // Green
+}
 }
 
 
