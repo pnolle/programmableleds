@@ -6,7 +6,7 @@
 #include "vector"
 
 LedUtils ledUtils;
-ColumnMovingRight turquoiseCMR(0, 0, ledUtils);
+ColumnMovingRight turquoiseCMR(ledUtils);
 
 // ####
 // LEDs
@@ -90,7 +90,8 @@ void setup() {
 
 
 
-  turquoiseCMR.setColorProperties(125, 0.2, 255, 0.0);
+  //turquoiseCMR.setColorProperties(125, 0.2, 255, 0.0);
+  eraseAll();
 }
 
 
@@ -142,12 +143,18 @@ if (SOUND2LIGHT) {
 else if (FRAGMENTS) {
 
   std::vector<PixelUpdate> matrixUpdate = turquoiseCMR.nextFrame();
-  for (std::vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
-    int ledNum = matrixColumnsLeftRight[it->col][it->row];
-    if (DEBUG) Serial.println((String) "matrixUpdate col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... ledNum" + ledNum);
-    crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
+  if (matrixUpdate.size() >0) {
+    for (std::vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
+      int ledNum = matrixColumnsLeftRight[it->col][it->row];
+      if (DEBUG) Serial.println((String) "matrixUpdate col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... ledNum" + ledNum);
+      crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
+    }
+    FastLED.show();
   }
-  FastLED.show();
+  else {
+    eraseAll();
+    turquoiseCMR.setAnimationProperties();
+  }
 
 }
 else {

@@ -18,8 +18,8 @@ class Fragment
         int sat, bri;
     public:
         Fragment() {};
-        virtual void setAnimationProperties(int wait, int fade);
-        virtual void setColorProperties(double hue, int sat, int bri, double hueIncrement=0);
+        virtual void setAnimationProperties(int length=0, int start=0, int wait=10, int fade=240);
+        virtual void setColorProperties(double hue=0, int sat=0, int bri=255, double hueIncrement=0);
         virtual std::vector<PixelUpdate> nextFrame();
         virtual ~Fragment() {};
 };
