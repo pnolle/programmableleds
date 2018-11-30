@@ -1,18 +1,10 @@
+#include "const.h"
 #include <FastLED.h>
-// #include <Adafruit_NeoPixel.h>
+//#include <Adafruit_NeoPixel.h>
 #include "fragment.h"
+#include "fragmentColumnMovingRight.h"
 
-
-// #######
-// AudioIn
-// #######
-
-//variable to store incoming audio sample
-byte incomingAudio;
-
-//clipping indicator variables
-boolean clipping = 0;
-
+LedUtils ledUtils;
 
 // ####
 // LEDs
@@ -27,122 +19,25 @@ boolean clipping = 0;
 // Blinder Button
 #define BUTTONPIN 2
 #define LEDPIN 13
-int buttonState = 0;
-
-// Define the array of leds
-CRGB leds[NUM_LEDS];
-
-// SnipSign
-// Glossary:
-// 0: [array length (n)]
-// 1-n: [startPx][lengthPx][color]
-uint32_t blinders[][3] = {
-  {2},
-  {44, 8, 0xffffff},
-  {97, 8, 0xffffff}
-};
-uint32_t snippet[][3] = {
-  {2},
-  {53, 30, 0xe71709},
-  {124, 15, 0xf6a46a}
-};
-uint32_t upper[][3] = {
-  {4},
-  {29, 15, 0xacdfe5},
-  {138, 12, 0x171f8a},
-  {83, 15, 0x171f8a},
-  {104, 18, 0xacdfe5}
-};
-uint32_t laser[][3] = {
-  {1},
-  {1, 28, 0xe71709}
-};
-
-// assigns single LEDs by number to columns of an imaginary LED matrix
-const int colCount = 37;
-const int rowCount = 15;
-uint32_t matrixColumnsLeftRight[colCount][rowCount] = {
-  { -1, -1, -1,  -1 , -1 , -1 , -1 , -1, 55 , 56 , -1 , -1 , -1 , -1 , -1 },
-  { -1, -1, -1,  -1 , -1 , -1 , -1 , -1, 54 , -1 , 57 , -1 , -1 , -1 , -1 },
-  { -1, -1, -1,  -1 , -1 , -1 , -1 , -1, 53 , -1 , -1 , 58 , -1 , 59 , 60 },
-  { -1, -1, -1,  -1 , -1 , -1 , -1 , -1, 52 , -1 , -1 , 61 , -1 , 45 , 46 },
-  { -1, -1, -1,  -1 , -1 , -1 , -1 , -1, 51 , -1 , -1 , -1 , 62 , 44 , 47 },
-  { -1, -1, -1,  -1 , -1 , -1 , -1 , -1, 50 , 63 , 48 , 49 , 43 , 42 , 41 },
-  { -1, -1, -1, 40 , 39 , -1 , 138, 137, -1 , -1 , -1 , -1 , -1 , -1 , 64 },
-  { -1, -1, -1, 38 , -1 , -1 , 139, 136, -1 , -1 , -1 , -1 , -1 , -1 , 65 },
-  { -1, -1, -1, 37 , -1 , -1 , 140, 135, -1 , -1 , -1 , -1 , -1 , -1 , 66 },
-  { -1, -1, -1, 36 , -1 , -1 , 141, 134, -1 , -1 , -1 , -1 , -1 , -1 , 67 },
-  { -1, -1, -1, 35 , -1 , -1 , 142, 133, -1 , -1 , -1 , -1 , -1 , -1 , 68 },
-  { -1, -1, -1, 34 , -1 , -1 , 143, 132, -1 , -1 , -1 , -1 , -1 , -1 , 69 },
-  { -1, -1, -1, 33 , -1 , -1 , 144, 131, -1 , -1 , -1 , -1 , -1 , -1 , 70 },
-  { -1, -1, -1, 32 , -1 , -1 , 145, 130, -1 , -1 , -1 , -1 , -1 , -1 , 71 },
-  { -1, -1, -1, 31 , -1 , -1 , 146, 129, -1 , -1 , -1 , -1 , -1 , -1 , 72 },
-  { -1, -1, -1, 30 , -1 , -1 , 147, 128, -1 , -1 , -1 , -1 , -1 , -1 , 73 },
-  { -1, -1, -1, 29 , -1 , -1 , 148, 127, -1 , -1 , -1 , -1 , -1 , -1 , 74 },
-  { 25, 27, 28 , -1, -1 , -1 , 149, 126, -1 , -1 , -1 , -1 , -1 , -1 , 75 },
-  { 24, 26, -1 , -1, -1 , -1 , 150, 125, -1 , -1 , -1 , -1 , -1 , -1 , 76 },
-  { 23, -1, -1 , -1, 122, 121, 123, 124, -1 , 77 , 78 , 79 , 80 , 81  , 82},
-  { 22, -1, -1 , -1, 118, -1 , 120 , 119, 83, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 21, -1 , -1, -1 , 117, -1 , -1 , -1 , 84, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 20, -1 , -1, -1 , 116, -1 , -1 , -1 , 85, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 19, -1 , -1, -1 , 115, -1 , -1 , -1 , 86, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 18, -1 , -1, -1 , 114, -1 , -1 , -1 , 87, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 17, -1 , -1, -1 , 113, -1 , -1 , -1 , 88, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 16, -1 , -1, -1 , 112, -1 , -1 , -1 , 89, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 15, -1 , -1, -1 , 111, -1 , -1 , -1 , 90, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 14, -1 , -1, -1 , 110, -1 , -1 , -1 , 91, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 13, -1 , -1, -1 , 109, -1 , -1 , -1 , 92, -1 , -1 , -1 , -1 , -1 , -1 },
-  { 12, -1 , -1, -1 , -1 , -1 , 108, 107, -1 , -1 , -1 , -1 , -1 , -1 , 93},
-  { 11, -1 , -1, -1 , -1 , -1 , 100, 101, -1 , -1 , 94 , 95 , 99 , 106,102},
-  { 10, -1 , -1, -1 ,  1 , 105, 104, 103,  0 , -1 , -1 , 96 , 97 , 98 , -1},
-  { -1,  9 , -1, -1 ,  2 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1},
-  { -1,  8 , -1, -1 ,  3 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1},
-  { -1, -1 ,  7,  4 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1},
-  { -1, -1 ,  6,  5 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1}
-};
-uint32_t matrixColumnsDownTop[colCount][rowCount] = {
-  { -1, -1, -1,  -1 , -1 ,-1 , -1 , -1, -1 , -1, 55 , 56  , -1  , -1  , -1 },
-  { -1, -1, -1,  -1 , -1 ,-1 , -1 , -1, 52 , -1, 54 , -1  , 58  , 60  , -1 },
-  { -1, -1, -1,  -1 , -1 ,-1 , -1 , -1, 51 , 53, -1 , -1  , 57 , 59  , -1 },
-  { -1, -1, -1,  -1 , -1 ,-1 , 43 , 50, 45 , 47, -1 , -1  , -1 , -1  , 61 },
-  { -1, -1, -1,  -1 , -1 ,-1 , 42 , 44, -1 , 48, -1 , -1  , -1 , -1  , 62 },
-  { -1, -1, -1,  -1 , 41 ,-1 , -1 , -1, 49 , 46, -1 , -1  , -1 , -1  , 63 },
-  { -1, -1, -1, 40 ,  -1 ,39 , -1  , -1, -1 , -1 , 138, 137, -1 , -1  , 64 },
-  { -1, -1, -1, 38 ,  -1 ,-1 , -1  , -1, -1 , -1 , 139, 136, -1 , -1  , 65 },
-  { -1, -1, -1, 37 ,  -1 ,-1 , -1  , -1, -1 , -1 , 140, 135, -1 , -1  , 66 },
-  { -1, -1, -1, 36 ,  -1 ,-1 , -1  , -1, -1 , -1 , 141, 134, -1 , -1  , 67 },
-  { -1, -1, -1, 35 ,  -1 ,-1 , -1  , -1, -1 , -1 , 142, 133, -1 , -1  , 68 },
-  { -1, -1, -1, 34 ,  -1 ,-1 , -1  , -1, -1 , -1 , 143, 132, -1 , -1  , 69 },
-  { -1, -1, -1, 33 ,  -1 ,-1 , -1  , -1, -1 , -1 , 144, 131, -1 , -1  , 70 },
-  { -1, -1, -1, 32 ,  -1 ,-1 , -1  , -1, -1 , -1 , 145, 130, -1 , -1  , 71 },
-  { -1, -1, -1, 31 ,  -1 ,-1 , -1  , -1, -1 , -1 , 146, 129, -1 , -1  , 72 },
-  { -1, -1, -1, 30 ,  -1 ,-1 , -1  , -1, -1 , -1 , 147, 128, -1 , -1  , 73 },
-  { -1, -1, -1, 29 ,  -1 ,-1 , -1  , -1, -1 , -1 , 148, 127, -1 , -1  , 74 },
-  { 25, 27, 28 , -1,  -1 ,-1 , -1  , -1, -1 , -1 , 149, 126, -1 , -1  , 75 },
-  { 24, 26, -1 , -1,  -1 ,-1 , -1  , -1, -1 , -1 , 150, 125, -1 , -1  , 76 },
-  { 23, -1, -1 , -1,  -1 ,-1 , -1  , -1, -1 , -1 , 123, 124, 81 , 80   , -1},
-  { 22, -1, -1 , -1,  -1 ,118, 119 , 120, -1, -1 , -1 ,  83, 82 , 79  , 77 },
-  { 21, -1 , -1, -1 , -1 ,117, -1 , -1, -1 , 122, -1 ,  84, -1 , -1  , 78 },
-  { 20, -1 , -1, -1 , -1 ,116, -1 , -1, 121, -1, -1 ,  85, -1 , -1  , -1 },
-  { 19, -1 , -1, -1 , -1 ,115, -1 , -1, -1 , -1 , -1 ,  86, -1 , -1  , -1 },
-  { 18, -1 , -1, -1 , -1 ,114, -1 , -1, -1 , -1 , -1 ,  87, -1 , -1  , -1 },
-  { 17, -1 , -1, -1 , -1 ,113, -1 , -1, -1 , -1 , -1 ,  88, -1 , -1  , -1 },
-  { 16, -1 , -1, -1 , -1 ,112, -1 , -1, -1 , -1 , -1 ,  89, -1 , -1  , -1 },
-  { 15, -1 , -1, -1 , -1 ,111, -1 , -1, -1 , 99 , -1 ,  90, -1 , -1  , -1 },
-  { 14, -1 , -1, -1 , -1 ,110,  0 , -1, -1 , 98 , -1 ,  91, -1 , -1  , -1 },
-  { 13, -1 , -1, -1 , -1 ,109, 107, -1, -1 , 97 , -1 ,  92, -1 , -1  , -1 },
-  { 12, -1 , -1, -1 , -1 ,-1 , 108, -1, -1 , 96 , 95 ,  93, -1 , -1 , -1},
-  { 11, -1 , -1, -1 , -1 ,-1 , -1 , -1, 100, 101, 102,  94, -1 ,106 , -1},
-  { 10, -1 , -1, -1 , -1 ,-1 , 105, -1, 104, 103, -1 ,  -1,  -1,  -1, -1},
-  { 9,  -1, -1, -1 ,  -1 ,-1 ,  1 , -1, -1 , -1 , -1 ,  -1, -1 , -1 , -1},
-  { -1,  8 , -1, -1 , -1 , 3 ,  2 , -1, -1 , -1 , -1 ,  -1, -1 , -1 , -1},
-  { -1,  7 , -1, -1 ,  4 ,-1 , -1 , -1, -1 , -1 , -1 ,  -1, -1 , -1 , -1},
-  { -1, -1 ,  6,  5 , -1 ,-1 , -1 , -1, -1 , -1 , -1 ,  -1, -1 , -1 , -1}
-};
 
 // Mode Changer
 #define NUMBEROFMODES 9
+
+//variable to store incoming audio sample
+byte incomingAudio;
+
+//clipping indicator variables
+boolean clipping = 0;
+
+// Blinder Button
+int buttonState = 0;
+
+// Mode
 uint32_t mode = 0;
+
+// Define the array of crgbledstrip
+CRGB crgbledstrip[NUM_LEDS];
+
 
 void setup() {
 	Serial.begin(57600);
@@ -152,7 +47,7 @@ void setup() {
 // ####
 // LEDs
 // ####
-  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(crgbledstrip, NUM_LEDS);
 	LEDS.setBrightness(84);
 /* 
   // initialize the LED pin as an output:
@@ -180,7 +75,7 @@ void setup() {
   ADMUX |= (1 << REFS0); //set reference voltage
   ADMUX |= (1 << ADLAR); //left align the ADC value- so we can read highest 8 bits from ADCH register only
   
-  ADCSRA |= (1 << ADPS2) | (1 << ADPS0); //set ADC clock with 32 prescaler- 16mHz/32=500kHz
+  ADCSRA |= (1 << ADPS2) | (1 << ADPS0); //set ADC clock with 32 prescaler- 1mHz/32=500kHz
   ADCSRA |= (1 << ADATE); //enabble auto trigger
   ADCSRA |= (1 << ADIE); //enable interrupts when measurement complete
   ADCSRA |= (1 << ADEN); //enable ADC
@@ -195,12 +90,18 @@ void setup() {
 // AudioIn
 // #######
 
-ISR(ADC_vect) {//when new ADC value ready
-  incomingAudio = ADCH;//store 8 bit value from analog pin 0
+ISR(ADC_vect) { //when new ADC value ready
+  incomingAudio = ADCH; //store 8 bit value from analog pin 0
   incomingAudio = incomingAudio*9;
-  if (incomingAudio == 0 || incomingAudio == 255){//if clipping
-    digitalWrite(13,HIGH);//set pin 13 high
-    clipping = 1;//currently clipping
+  if (incomingAudio == 0 || incomingAudio == 255){
+    digitalWrite(13,HIGH);
+    clipping = 1;
+  }
+  else {
+    if (clipping){
+      clipping = 0;
+      digitalWrite(13,LOW);
+    }
   }
 }
 
@@ -221,11 +122,11 @@ ISR(ADC_vect) {//when new ADC value ready
 
 void loop() {
 /* 
-      Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + redFromHexColor(blinders[1][2]) +' '+" ... green: " + greenFromHexColor(blinders[1][2])+' '+" ... blue: " + blueFromHexColor(blinders[1][2])+' '+" ...");
+      Serial.println((String)"blinders regionColor: " + blinders[1][2] +' '+" ... red: " + ledUtils.redFromHexColor(blinders[1][2]) +' '+" ... green: " + ledUtils.greenFromHexColor(blinders[1][2])+' '+" ... blue: " + ledUtils.blueFromHexColor(blinders[1][2])+' '+" ...");
  */
 
 if (SOUND2LIGHT) {
-  lightHowManyRows(getNumLeds(incomingAudio, rowCount+3, -3), 220, 60, 0.2, 255, 255);
+  lightHowManyRows(ledUtils.getNumLeds(incomingAudio, rowCount+3, -3), 220, 60, 0.2, 255, 255);
 /* 
   lightHowMany(getNumLeds(incomingAudio, 150, -25), 240, 120, 0.1, 255, 255);
  */
@@ -315,23 +216,16 @@ else {
 // #############
 
 
-static double getNumLeds(byte incomingAudio, int totalNumLeds, int offset) {
-  if (clipping){//if currently clipping
-    clipping = 0;//
-    digitalWrite(13,LOW);//turn off clipping led indicator (pin 13)
-  }
-
-  double faktor = incomingAudio/255.0;
-  int numLeds = (int)(totalNumLeds*faktor+offset)*1.2;
-  if (DEBUG) Serial.println((String)"incoming: " + incomingAudio+' '+" ... faktor: " + faktor+' '+" ... numLeds: " + numLeds+' '+" ...");
-
-  return numLeds;
+static void fragmentColumnMovingRight() {
+  ColumnMovingRight colMR(0, 0, ledUtils);
 }
+
+
 
 static void lightEvery10() {
   eraseAll(); 
   for (int j=0; j<150; j++) {
-    if (j%10==0) leds[j] = CHSV(20, 255, 255);
+    if (j%10==0) crgbledstrip[j] = CHSV(20, 255, 255);
   }
   FastLED.show(); 
   delay(3000);
@@ -340,7 +234,7 @@ static void lightEvery10() {
 static void lightHowMany(int numLeds, int fade, double hue, double hueIncrement, int sat, int bri) {
     fadeAllDynamic(fade);
     for(int i=0; i<=numLeds; i++) {
-      leds[i] = CHSV(hue+=hueIncrement, sat, bri);
+      crgbledstrip[i] = CHSV(hue+=hueIncrement, sat, bri);
     }
     FastLED.show(); 
 }
@@ -359,8 +253,8 @@ static void lightHowManyRows(int numRows, int fade, double hue, double hueIncrem
       if (DEBUG) Serial.print(" | col");
       if (DEBUG) Serial.print(j);
       int ledNum = matrixColumnsDownTop[j][i];
-      if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
-      leds[ledNum] = CHSV(hue, sat, bri);
+      if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
+      crgbledstrip[ledNum] = CHSV(hue, sat, bri);
       if (DEBUG) Serial.print(" #");
       if (DEBUG) Serial.print(ledNum);
     }
@@ -381,8 +275,8 @@ static void matrixLtr(int start, int length, int wait, int fade, double hue, dou
     for (int i=start; i<colCountLocal; i++) {
       for (int j=0; j<ledCount; j++) {
         int ledNum = matrixColumnsLeftRight[i][j];
-        if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
-        leds[ledNum] = CHSV(hue, sat, bri);
+        if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
+        crgbledstrip[ledNum] = CHSV(hue, sat, bri);
       }
       FastLED.show(); 
       delay(wait);
@@ -398,8 +292,8 @@ static void matrixRtl(int start, int length, int wait, int fade, double hue, dou
     for (int i=colCountLocal-1; i>=start; i--) {
       for (int j=0; j<ledCount; j++) {
         int ledNum = matrixColumnsLeftRight[i][j];
-        if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
-        leds[ledNum] = CHSV(hue, sat, bri);
+        if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
+        crgbledstrip[ledNum] = CHSV(hue, sat, bri);
       }
       FastLED.show(); 
       delay(wait);
@@ -424,8 +318,8 @@ static void matrixTtd(int start, int length, int wait, int fade, double hue, dou
         if (DEBUG) Serial.print(" | col");
         if (DEBUG) Serial.print(j);
         int ledNum = matrixColumnsDownTop[j][i];
-        if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
-        leds[ledNum] = CHSV(hue, sat, bri);
+        if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
+        crgbledstrip[ledNum] = CHSV(hue, sat, bri);
         if (DEBUG) Serial.print(" #");
         if (DEBUG) Serial.print(ledNum);
       }
@@ -454,8 +348,8 @@ static void matrixDtt(int start, int length, int wait, int fade, double hue, dou
         if (DEBUG) Serial.print(" | col");
         if (DEBUG) Serial.print(j);
         int ledNum = matrixColumnsDownTop[j][i];
-        if (hueIncrement > 0) hue = incrementHue(hue, hueIncrement);
-        leds[ledNum] = CHSV(hue, sat, bri);
+        if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
+        crgbledstrip[ledNum] = CHSV(hue, sat, bri);
         if (DEBUG) Serial.print(" #");
         if (DEBUG) Serial.print(ledNum);
       }
@@ -474,11 +368,11 @@ static void cylon() {
 	// First slide the led in one direction
 	for(int i = 0; i < NUM_LEDS; i++) {
 		// Set the i'th led to red 
-		leds[i] = CHSV(0, 255, 255);
-		// Show the leds
+		crgbledstrip[i] = CHSV(0, 255, 255);
+		// Show the crgbledstrip
 		FastLED.show(); 
-		// now that we've shown the leds, reset the i'th led to black
-		// leds[i] = CRGB::Black;
+		// now that we've shown the crgbledstrip, reset the i'th led to black
+		// crgbledstrip[i] = CRGB::Black;
 		fadeAll();
 		// Wait a little bit before we loop around and do it again
 		delay(10);
@@ -488,11 +382,11 @@ static void cylon() {
 	// Now go in the other direction.  
 	for(int i = (NUM_LEDS)-1; i >= 0; i--) {
 		// Set the i'th led to red 
-		leds[i] = CHSV(hue++, 255, 255);
-		// Show the leds
+		crgbledstrip[i] = CHSV(hue++, 255, 255);
+		// Show the crgbledstrip
 		FastLED.show();
-		// now that we've shown the leds, reset the i'th led to black
-		// leds[i] = CRGB::Black;
+		// now that we've shown the crgbledstrip, reset the i'th led to black
+		// crgbledstrip[i] = CRGB::Black;
 		fadeAll();
 		// Wait a little bit before we loop around and do it again
 		delay(10);
@@ -507,7 +401,7 @@ static void unltdLightRegions(uint32_t regions[][3]) {
   delay(100);
   for (uint16_t r=1; r<=regions[0][0]; r++) {
     for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-      leds[p] = CRGB(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
+      crgbledstrip[p] = CRGB(ledUtils.redFromHexColor(regions[r][2]), ledUtils.greenFromHexColor(regions[r][2]), ledUtils.blueFromHexColor(regions[r][2]));
     }
   }
   FastLED.show();
@@ -517,7 +411,7 @@ static void unltdFlashRegions(uint32_t regions[][3], uint16_t flashDelay) {
   while (1==1) {
     for (uint16_t r=1; r<=regions[0][0]; r++) {
       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-        leds[p] = CRGB(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
+        crgbledstrip[p] = CRGB(ledUtils.redFromHexColor(regions[r][2]), ledUtils.greenFromHexColor(regions[r][2]), ledUtils.blueFromHexColor(regions[r][2]));
       }
     }
     FastLED.show();
@@ -526,17 +420,17 @@ static void unltdFlashRegions(uint32_t regions[][3], uint16_t flashDelay) {
     eraseAll();
     delay(flashDelay);
 
-    checkInterrupts();
+    ledUtils.checkInterrupts();
   }
 }
 
 static void flashRegions(uint32_t regions[][3], uint16_t flashCount, uint16_t flashDelay) {
   for (uint16_t f=0; f<flashCount; f++) {
-    checkInterrupts();
+    ledUtils.checkInterrupts();
     for (uint16_t r=1; r<=regions[0][0]; r++) {
       for(uint16_t p=regions[r][0]; p<regions[r][0]+regions[r][1]; p++) {
-        leds[p] = CRGB(redFromHexColor(regions[r][2]), greenFromHexColor(regions[r][2]), blueFromHexColor(regions[r][2]));
-        //Serial.println((String)"regionColor: " + regions[r][2] +' '+" ... red: " + redFromHexColor(regions[r][2]) +' '+" ... green: " + greenFromHexColor(regions[r][2])+' '+" ... blue: " + blueFromHexColor(regions[r][2])+' '+" ...");
+        crgbledstrip[p] = CRGB(ledUtils.redFromHexColor(regions[r][2]), ledUtils.greenFromHexColor(regions[r][2]), ledUtils.blueFromHexColor(regions[r][2]));
+        //Serial.println((String)"regionColor: " + regions[r][2] +' '+" ... red: " + ledUtils.redFromHexColor(regions[r][2]) +' '+" ... green: " + ledUtils.greenFromHexColor(regions[r][2])+' '+" ... blue: " + ledUtils.blueFromHexColor(regions[r][2])+' '+" ...");
       }
     }
     FastLED.show();
@@ -556,7 +450,7 @@ static void sparkle(uint32_t c, uint16_t sparklength, uint16_t delaydraw, uint16
   int p = startpixel;
   for(uint16_t j=0; j<NUM_LEDS+sparklength; j++) {
      Serial.println(startpixel);
-    checkInterrupts();
+    ledUtils.checkInterrupts();
     // draw "frames" from front
     for (uint16_t d=0; d<=sparklength/2; d++) {
         setPixelColorWithinSnipleds(p, c);
@@ -583,9 +477,9 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
     pixel = NUM_LEDS;
   }
   for(uint16_t i=0; i<getAmountOfSnipPixels(); i++) {
-    checkInterrupts();
-    leds[pixel] = CRGB(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
-    c = subColor(c, sub);
+    ledUtils.checkInterrupts();
+    crgbledstrip[pixel] = CRGB(ledUtils.redFromHexColor(c), ledUtils.greenFromHexColor(c), ledUtils.blueFromHexColor(c));
+    c = ledUtils.subColor(c, sub);
     pixel = incrementPixel(pixel, inc);
     FastLED.show();
     delay(10);
@@ -597,49 +491,25 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
 
 
 
+
 // ################
-// Helper Functions
+// General F/X
 // ################
 
 
-void fadeAll() { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(250); } }
-void fadeAllFast() { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(200); } }
-void fadeAllDynamic(int fade) { for(int i = 0; i < NUM_LEDS; i++) { leds[i].nscale8(fade); } }
+void fadeAll() { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(250); } }
+void fadeAllFast() { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(200); } }
+void fadeAllDynamic(int fade) { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(fade); } }
 
-uint32_t blueFromHexColor(uint32_t hexColor) {
-    uint32_t rgbBlue = hexColor & 0b11111111;
-    return rgbBlue;
-}
-uint32_t greenFromHexColor(uint32_t hexColor) {
-    uint32_t rgbGreen = (hexColor>>8) & 0b11111111;
-    return rgbGreen;
-}
-uint32_t redFromHexColor(uint32_t hexColor) {
-    uint32_t rgbRed = (hexColor>>16) & 0b11111111;
-    return rgbRed;
-}
 
-static int32_t subColor(uint32_t c, int32_t sub) {
-  int32_t result = c-sub;
-  if (result>0x000000) {
-    return result;
-  }
-  else if (result<=0x000000) {
-    return 0xffffff;
-  }
-  else {
-    return 0x000000;
-  }
-}
-
-static void setPixelColorWithinSnipleds(uint32_t p, uint32_t c) {
+void setPixelColorWithinSnipleds(uint32_t p, uint32_t c) {
     // if outside bounds, don't try to set this pixel
     if (p>0 && p<=NUM_LEDS) {
-        leds[p] = CRGB(redFromHexColor(c), greenFromHexColor(c), blueFromHexColor(c));
+        crgbledstrip[p] = CRGB(ledUtils.redFromHexColor(c), ledUtils.greenFromHexColor(c), ledUtils.blueFromHexColor(c));
     }
 }
 
-static void switchMode() {
+void switchMode() {
   if (mode<=NUMBEROFMODES) {
     mode++;
   }
@@ -648,19 +518,11 @@ static void switchMode() {
   }
 }
 
-static void eraseAll() {
+void eraseAll() {
     for(uint16_t i=0; i<NUM_LEDS; i++) {
-        leds[i] = CRGB(0,0,0);
+        crgbledstrip[i] = CRGB(0,0,0);
     }
     FastLED.show(); 
-}
-
-static double incrementHue(double h, double hIncrementor) {
-  h+=hIncrementor;
-  if (h>=255) {
-    h-=255;
-  }
-  return h;
 }
 
 static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
@@ -676,14 +538,3 @@ static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
 static uint16_t getAmountOfSnipPixels() {
   return NUM_LEDS - 2*blinders[1][1];
 }
-
-
-static void checkInterrupts() {
-/*   while (buttonState==HIGH) {
-    digitalWrite(LEDPIN, buttonState);
-    if (buttonState==LOW) {
-      digitalWrite(LEDPIN, buttonState);
-      break;
-    }
-  } */
-} 

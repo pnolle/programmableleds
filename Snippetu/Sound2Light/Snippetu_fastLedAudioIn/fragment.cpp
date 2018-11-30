@@ -2,6 +2,3 @@
 
 Fragment::Fragment() {
 }
-
-void Fragment::nextFrame() {
-}
