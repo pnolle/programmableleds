@@ -7,6 +7,7 @@ struct PixelUpdate {
     double hue;
     int sat;
     int bri;
+    int fade;
 };
 
 #endif 

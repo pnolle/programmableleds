@@ -14,7 +14,7 @@ void ColumnMovingRight::setColorProperties(double hue=0, int sat=0, int bri=255,
     this->hueIncrement = hueIncrement;
 }
 
-void ColumnMovingRight::setAnimationProperties(int length=0, int start=0, int wait=10, int fade=240) {
+void ColumnMovingRight::setAnimationProperties(int length=0, int start=0, int wait=10, int fade=250) {
     this->wait = wait;
     this->fade = fade;
 
@@ -40,8 +40,8 @@ std::vector<PixelUpdate> ColumnMovingRight::nextFrame() {
             onePixelUpdate.hue = hue;
             onePixelUpdate.sat = sat;
             onePixelUpdate.bri = bri;
+            onePixelUpdate.fade = fade;
             matrixUpdate.push_back(onePixelUpdate);
-            // ToDo: Add fade value to pixelUpdate, so a global fade method knows how to fade the pixel
         }
     //     delay(wait);    // ToDo: calculate time since last time
         currentCol++;

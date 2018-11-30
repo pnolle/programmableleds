@@ -11,7 +11,7 @@ class ColumnMovingRight : public Fragment
         LedUtils ledUtils;
     public:
         ColumnMovingRight(LedUtils ledUtils);
-        void setAnimationProperties(int length=0, int start=0, int wait=10, int fade=240);
+        void setAnimationProperties(int length=0, int start=0, int wait=10, int fade=250);
         void setColorProperties(double hue=0, int sat=0, int bri=255, double hueIncrement=0);
         std::vector<PixelUpdate> nextFrame();
         String getValues();

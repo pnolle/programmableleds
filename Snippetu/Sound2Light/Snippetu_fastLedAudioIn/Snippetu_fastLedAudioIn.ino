@@ -40,7 +40,7 @@ uint32_t mode = 0;
 
 // Define the array of crgbledstrip
 CRGB crgbledstrip[NUM_LEDS];
-CHSV chsvledstrip[NUM_LEDS];
+int fadestrip[NUM_LEDS];
 
 
 void setup() {
@@ -150,6 +150,7 @@ else if (FRAGMENTS) {
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
     }
     FastLED.show();
+    fadeIndividual();
   }
   else {
     eraseAll();
@@ -521,6 +522,11 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
 void fadeAll() { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(250); } }
 void fadeAllFast() { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(200); } }
 void fadeAllDynamic(int fade) { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(fade); } }
+void fadeIndividual() { 
+  for(int i = 0; i < NUM_LEDS; i++) {
+    crgbledstrip[i].nscale8(fadestrip[i]);
+  }
+}
 
 
 void setPixelColorWithinSnipleds(uint32_t p, uint32_t c) {
