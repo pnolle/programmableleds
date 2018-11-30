@@ -1,10 +1,12 @@
 #include "const.h"
 #include <FastLED.h>
 //#include <Adafruit_NeoPixel.h>
-#include "fragment.h"
 #include "fragmentColumnMovingRight.h"
+#include <StandardCplusplus.h>
+#include "vector"
 
 LedUtils ledUtils;
+ColumnMovingRight turquoiseCMR(0, 0, ledUtils);
 
 // ####
 // LEDs
@@ -15,6 +17,7 @@ LedUtils ledUtils;
 #define NUM_LEDS 150 // 5 meter reel @ 30 LEDs/m
 #define DEBUG false
 #define SOUND2LIGHT false
+#define FRAGMENTS true
 
 // Blinder Button
 #define BUTTONPIN 2
@@ -37,6 +40,7 @@ uint32_t mode = 0;
 
 // Define the array of crgbledstrip
 CRGB crgbledstrip[NUM_LEDS];
+CHSV chsvledstrip[NUM_LEDS];
 
 
 void setup() {
@@ -83,6 +87,10 @@ void setup() {
   
   sei();//enable interrupts
 
+
+
+
+  turquoiseCMR.setColorProperties(125, 0.2, 255, 0.0);
 }
 
 
@@ -130,6 +138,17 @@ if (SOUND2LIGHT) {
 /* 
   lightHowMany(getNumLeds(incomingAudio, 150, -25), 240, 120, 0.1, 255, 255);
  */
+}
+else if (FRAGMENTS) {
+
+  std::vector<PixelUpdate> matrixUpdate = turquoiseCMR.nextFrame();
+  for (std::vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
+    int ledNum = matrixColumnsLeftRight[it->col][it->row];
+    if (DEBUG) Serial.println((String) "matrixUpdate col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... ledNum" + ledNum);
+    crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
+  }
+  FastLED.show();
+
 }
 else {
 
@@ -214,11 +233,6 @@ else {
 // #############
 // F/X Functions
 // #############
-
-
-static void fragmentColumnMovingRight() {
-  ColumnMovingRight colMR(0, 0, ledUtils);
-}
 
 
 

@@ -6,6 +6,7 @@
                 "/Users/nik/Library/Arduino15/packages/arduino/tools/**",
                 "/Users/nik/Library/Arduino15/packages/arduino/hardware/avr/1.6.21/**",
                 "/Users/nik/Documents/Arduino/libraries/git_FastLED/**",
+                "/Users/nik/Documents/Arduino/libraries/StandardCplusplus/**",
                 "/Users/nik/Documents/Arduino/libraries/**"
             ],
             "forcedInclude": [
