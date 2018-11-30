@@ -31,6 +31,7 @@ std::vector<PixelUpdate> ColumnMovingRight::nextFrame() {
 
     if (currentCol<colCountLocal) {
         for (int currentRow=0; currentRow<rowCount; currentRow++) {
+            // Todo hueIncrement not working??
             if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
 
             PixelUpdate onePixelUpdate;

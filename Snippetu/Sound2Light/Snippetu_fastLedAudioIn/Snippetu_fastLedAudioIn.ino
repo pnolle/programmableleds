@@ -90,7 +90,7 @@ void setup() {
 
 
 
-  //turquoiseCMR.setColorProperties(125, 0.2, 255, 0.0);
+  turquoiseCMR.setColorProperties(125, 1.0, 150, 10.0);
   eraseAll();
 }
 
