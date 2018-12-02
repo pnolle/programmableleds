@@ -1,8 +1,9 @@
 #include "fragmentColumnMovingRight.h"
 
-ColumnMovingRight::ColumnMovingRight(LedUtils ledUtils) : 
+ColumnMovingRight::ColumnMovingRight(LedUtils ledUtils, unsigned long time) : 
 	ledUtils(ledUtils) {
 
+    this->time = time;
     setColorProperties();
     setAnimationProperties();
 }
@@ -25,26 +26,34 @@ void ColumnMovingRight::setAnimationProperties(int length=0, int start=0, int wa
     this->currentCol = start;
 }
 
-std::vector<PixelUpdate> ColumnMovingRight::nextFrame() {
+void ColumnMovingRight::resetTimer(unsigned long time) {
+    this->time = time;
+}
+
+std::vector<PixelUpdate> ColumnMovingRight::nextFrame(unsigned long currentTime) {
     
     std::vector<PixelUpdate> matrixUpdate;
 
-    if (currentCol<colCountLocal) {
-        for (int currentRow=0; currentRow<rowCount; currentRow++) {
-            // Todo hueIncrement not working??
-            if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
+    if (currentTime >= time+wait) {
+        if (currentCol<colCountLocal) {
+            for (int currentRow=0; currentRow<rowCount; currentRow++) {
+                // Todo hueIncrement not working??
+                if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
 
-            PixelUpdate onePixelUpdate;
-            onePixelUpdate.col = currentCol;
-            onePixelUpdate.row = currentRow;
-            onePixelUpdate.hue = hue;
-            onePixelUpdate.sat = sat;
-            onePixelUpdate.bri = bri;
-            onePixelUpdate.fade = fade;
-            matrixUpdate.push_back(onePixelUpdate);
+                PixelUpdate onePixelUpdate;
+                onePixelUpdate.col = currentCol;
+                onePixelUpdate.row = currentRow;
+                onePixelUpdate.hue = hue;
+                onePixelUpdate.sat = sat;
+                onePixelUpdate.bri = bri;
+                onePixelUpdate.fade = fade;
+                onePixelUpdate.time = currentTime;
+                matrixUpdate.push_back(onePixelUpdate);
+
+                this->time = currentTime;
+            }
+            currentCol++;
         }
-    //     delay(wait);    // ToDo: calculate time since last time
-        currentCol++;
     }
 
     return matrixUpdate;

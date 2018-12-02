@@ -6,7 +6,7 @@
 #include "vector"
 
 LedUtils ledUtils;
-ColumnMovingRight turquoiseCMR(ledUtils);
+ColumnMovingRight turquoiseCMR(ledUtils, millis());
 
 // ####
 // LEDs
@@ -88,8 +88,6 @@ void setup() {
   sei();//enable interrupts
 
 
-
-
   turquoiseCMR.setColorProperties(125, 1.0, 150, 10.0);
   eraseAll();
 }
@@ -142,11 +140,12 @@ if (SOUND2LIGHT) {
 }
 else if (FRAGMENTS) {
 
-  std::vector<PixelUpdate> matrixUpdate = turquoiseCMR.nextFrame();
+// ToDo: Refactor this into a generic function. Goal is that animations can be started like "impulses" and the rest will run automatically.
+  std::vector<PixelUpdate> matrixUpdate = turquoiseCMR.nextFrame(millis());
   if (matrixUpdate.size() >0) {
     for (std::vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
       int ledNum = matrixColumnsLeftRight[it->col][it->row];
-      if (DEBUG) Serial.println((String) "matrixUpdate col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... ledNum" + ledNum);
+      Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... time" + it->time + " ... ledNum" + ledNum);
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
     }
     FastLED.show();
@@ -154,7 +153,7 @@ else if (FRAGMENTS) {
   }
   else {
     eraseAll();
-    turquoiseCMR.setAnimationProperties();
+    turquoiseCMR.setAnimationProperties(); // restart with default values
   }
 
 }

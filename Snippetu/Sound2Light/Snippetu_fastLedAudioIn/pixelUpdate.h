@@ -8,6 +8,7 @@ struct PixelUpdate {
     int sat;
     int bri;
     int fade;
+    long time;
 };
 
 #endif 
