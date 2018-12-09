@@ -89,6 +89,7 @@ void setup() {
 
 
   turquoiseCMR.setColorProperties(125, 1.0, 150, 10.0);
+  turquoiseCMR.setAnimationProperties(0, 0, 50, 240);
   eraseAll();
 }
 
@@ -141,19 +142,23 @@ if (SOUND2LIGHT) {
 else if (FRAGMENTS) {
 
 // ToDo: Refactor this into a generic function. Goal is that animations can be started like "impulses" and the rest will run automatically.
-  std::vector<PixelUpdate> matrixUpdate = turquoiseCMR.nextFrame(millis());
-  if (matrixUpdate.size() >0) {
+// ToDo: matrixUpdate needs to be combined from the output of all current animation objects. They should sit in a vector and remove themselves when they're finished.
+  bool animationFinished = false;
+  std::vector<PixelUpdate> matrixUpdate = turquoiseCMR.nextFrame(millis(), animationFinished);
+  if (animationFinished == false && matrixUpdate.size() > 0) {
     for (std::vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
       int ledNum = matrixColumnsLeftRight[it->col][it->row];
-      Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... time" + it->time + " ... ledNum" + ledNum);
+      if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... time" + it->time + " ... ledNum" + ledNum);
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
     }
     FastLED.show();
-    fadeIndividual();
+    // fadeIndividual();
+    fadeAllDynamic(230);
   }
-  else {
+  else if (animationFinished == true) {
     eraseAll();
-    turquoiseCMR.setAnimationProperties(); // restart with default values
+    // turquoiseCMR.setAnimationProperties(); // restart with default values
+    turquoiseCMR.setAnimationProperties(0, 0, 50, 240);
   }
 
 }

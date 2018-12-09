@@ -30,29 +30,34 @@ void ColumnMovingRight::resetTimer(unsigned long time) {
     this->time = time;
 }
 
-std::vector<PixelUpdate> ColumnMovingRight::nextFrame(unsigned long currentTime) {
+std::vector<PixelUpdate> ColumnMovingRight::nextFrame(unsigned long currentTime, bool &animationFinished) {
     
     std::vector<PixelUpdate> matrixUpdate;
 
-    if (currentTime >= time+wait) {
-        if (currentCol<colCountLocal) {
+    // Serial.println((String) "nextFrame: currentTime " + currentTime + " > " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
+    if (DEBUG) Serial.println((String) "nextFrame: currentTime " + currentTime + " > time " + this->time + " + wait " + this->wait + " = " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
+
+    if (currentTime >= this->time+this->wait) {
+        this->time = currentTime;
+        if (this->currentCol<this->colCountLocal) {
             for (int currentRow=0; currentRow<rowCount; currentRow++) {
                 // Todo hueIncrement not working??
-                if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
+                if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
                 PixelUpdate onePixelUpdate;
-                onePixelUpdate.col = currentCol;
+                onePixelUpdate.col = this->currentCol;
                 onePixelUpdate.row = currentRow;
                 onePixelUpdate.hue = hue;
-                onePixelUpdate.sat = sat;
-                onePixelUpdate.bri = bri;
-                onePixelUpdate.fade = fade;
+                onePixelUpdate.sat = this->sat;
+                onePixelUpdate.bri = this->bri;
+                onePixelUpdate.fade = this->fade;
                 onePixelUpdate.time = currentTime;
                 matrixUpdate.push_back(onePixelUpdate);
-
-                this->time = currentTime;
             }
             currentCol++;
+        }
+        else {
+            animationFinished = true;
         }
     }
 
