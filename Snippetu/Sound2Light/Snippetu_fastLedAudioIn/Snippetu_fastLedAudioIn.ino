@@ -92,8 +92,8 @@ void setup() {
   turquoiseCMR.setColorProperties(39, 1.0, 150, 10.0);
   turquoiseCMR.setAnimationProperties(0, 0, 50, 240);
 
-  orangeCMR.setColorProperties(125, 96, 94, 0.0);
-  orangeCMR.setAnimationProperties(0, 0, 40, 250);
+  orangeCMR.setColorProperties(30, 200, 250, 0.0);
+  orangeCMR.setAnimationProperties(0, 0, 20, 250);
 
   eraseAll();
 }
@@ -161,7 +161,7 @@ else if (FRAGMENTS) {
     }
   }
   else if (orangeAnimationFinished == true) {
-    orangeCMR.setAnimationProperties(0, 0, 40, 250);
+    orangeCMR.setAnimationProperties(0, 0, 20, 250);
     orangeAnimationFinished = false;
   }
 
@@ -181,7 +181,7 @@ else if (FRAGMENTS) {
   FastLED.show();
   // ToDo: store fade values in fadelist
   // fadeIndividual();
-  fadeAllDynamic(230);
+  fadeAllDynamic(250);
 
 }
 else {
