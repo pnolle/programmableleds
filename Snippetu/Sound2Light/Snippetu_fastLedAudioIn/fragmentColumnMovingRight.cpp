@@ -30,10 +30,8 @@ void ColumnMovingRight::resetTimer(unsigned long time) {
     this->time = time;
 }
 
-std::vector<PixelUpdate> ColumnMovingRight::nextFrame(unsigned long currentTime, bool &animationFinished) {
+void ColumnMovingRight::nextFrame(unsigned long currentTime, std::vector<PixelUpdate> &matrixUpdate, bool &animationFinished) {
     
-    std::vector<PixelUpdate> matrixUpdate;
-
     // Serial.println((String) "nextFrame: currentTime " + currentTime + " > " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
     if (DEBUG) Serial.println((String) "nextFrame: currentTime " + currentTime + " > time " + this->time + " + wait " + this->wait + " = " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
 
@@ -60,6 +58,4 @@ std::vector<PixelUpdate> ColumnMovingRight::nextFrame(unsigned long currentTime,
             animationFinished = true;
         }
     }
-
-    return matrixUpdate;
 }

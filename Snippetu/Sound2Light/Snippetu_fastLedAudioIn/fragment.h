@@ -20,7 +20,7 @@ class Fragment
         Fragment() {};
         virtual void setAnimationProperties(int length=0, int start=0, int wait=10, int fade=250);
         virtual void setColorProperties(double hue=0, int sat=0, int bri=255, double hueIncrement=0);
-        virtual std::vector<PixelUpdate> nextFrame(unsigned long currentTime, bool &animationFinished);
+        virtual void nextFrame(unsigned long currentTime, std::vector<PixelUpdate> &matrixUpdate, bool &animationFinished);
         virtual void resetTimer(unsigned long time);
         virtual ~Fragment() {};
 };

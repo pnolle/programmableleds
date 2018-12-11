@@ -7,6 +7,7 @@
 
 LedUtils ledUtils;
 ColumnMovingRight turquoiseCMR(ledUtils, millis());
+ColumnMovingRight orangeCMR(ledUtils, millis());
 
 // ####
 // LEDs
@@ -88,8 +89,12 @@ void setup() {
   sei();//enable interrupts
 
 
-  turquoiseCMR.setColorProperties(125, 1.0, 150, 10.0);
+  turquoiseCMR.setColorProperties(39, 1.0, 150, 10.0);
   turquoiseCMR.setAnimationProperties(0, 0, 50, 240);
+
+  orangeCMR.setColorProperties(125, 96, 94, 0.0);
+  orangeCMR.setAnimationProperties(0, 0, 40, 250);
+
   eraseAll();
 }
 
@@ -143,23 +148,40 @@ else if (FRAGMENTS) {
 
 // ToDo: Refactor this into a generic function. Goal is that animations can be started like "impulses" and the rest will run automatically.
 // ToDo: matrixUpdate needs to be combined from the output of all current animation objects. They should sit in a vector and remove themselves when they're finished.
-  bool animationFinished = false;
-  std::vector<PixelUpdate> matrixUpdate = turquoiseCMR.nextFrame(millis(), animationFinished);
-  if (animationFinished == false && matrixUpdate.size() > 0) {
+  bool turquoiseAnimationFinished = false;
+  bool orangeAnimationFinished = false;
+
+  std::vector<PixelUpdate> matrixUpdate;
+  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
+  if (orangeAnimationFinished == false && matrixUpdate.size() > 0) {
     for (std::vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
       int ledNum = matrixColumnsLeftRight[it->col][it->row];
       if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... time" + it->time + " ... ledNum" + ledNum);
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
     }
-    FastLED.show();
-    // fadeIndividual();
-    fadeAllDynamic(230);
   }
-  else if (animationFinished == true) {
-    eraseAll();
-    // turquoiseCMR.setAnimationProperties(); // restart with default values
+  else if (orangeAnimationFinished == true) {
+    orangeCMR.setAnimationProperties(0, 0, 40, 250);
+    orangeAnimationFinished = false;
+  }
+
+  turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
+  if (turquoiseAnimationFinished == false && matrixUpdate.size() > 0) {
+    for (std::vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
+      int ledNum = matrixColumnsLeftRight[it->col][it->row];
+      if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... time" + it->time + " ... ledNum" + ledNum);
+      crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
+    }
+  }
+  else if (turquoiseAnimationFinished == true) {
     turquoiseCMR.setAnimationProperties(0, 0, 50, 240);
+    turquoiseAnimationFinished = false;
   }
+
+  FastLED.show();
+  // ToDo: store fade values in fadelist
+  // fadeIndividual();
+  fadeAllDynamic(230);
 
 }
 else {
