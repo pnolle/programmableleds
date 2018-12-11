@@ -14,12 +14,12 @@ class Fragment
         // animation
         int wait, fade;
         // color
-        double hue, hueIncrement;
-        int sat, bri;
+        double hueIncrement;
+        uint8_t hue, sat, bri;
     public:
         Fragment() {};
         virtual void setAnimationProperties(int length=0, int start=0, int wait=10, int fade=250);
-        virtual void setColorProperties(double hue=0, int sat=0, int bri=255, double hueIncrement=0);
+        virtual void setColorProperties(uint8_t hue=0, uint8_t sat=0, uint8_t bri=255, double hueIncrement=0);
         virtual void nextFrame(unsigned long currentTime, std::vector<PixelUpdate> &matrixUpdate, bool &animationFinished);
         virtual void resetTimer(unsigned long time);
         virtual ~Fragment() {};

@@ -8,7 +8,7 @@ ColumnMovingRight::ColumnMovingRight(LedUtils ledUtils, unsigned long time) :
     setAnimationProperties();
 }
 
-void ColumnMovingRight::setColorProperties(double hue=0, int sat=0, int bri=255, double hueIncrement=0) {
+void ColumnMovingRight::setColorProperties(uint8_t hue=0, uint8_t sat=0, uint8_t bri=255, double hueIncrement=0) {
     this->hue = hue;
     this->sat = sat;
     this->bri = bri;
