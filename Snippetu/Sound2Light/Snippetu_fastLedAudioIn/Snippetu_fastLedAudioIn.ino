@@ -96,12 +96,19 @@ void setup() {
 
 
   turquoiseCMR.setColorProperties(39, 1.0, 150, 10.0);
-  turquoiseCMR.setAnimationProperties(0, 0, 50, 250);
+  resetTurquoiseCMRAnimation();
 
   orangeCMR.setColorProperties(30, 200, 250, 0.0);
-  orangeCMR.setAnimationProperties(0, 0, 20, 230);
+  resetOrangeCMRAnimation();
 
   eraseAll();
+}
+
+void resetTurquoiseCMRAnimation() {
+  turquoiseCMR.setAnimationProperties(0, 0, 60, 250);
+}
+void resetOrangeCMRAnimation() {
+  orangeCMR.setAnimationProperties(0, 0, 30, 230);
 }
 
 
@@ -160,14 +167,14 @@ else if (FRAGMENTS) {
   vector<PixelUpdate> matrixUpdate;
   orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
   if (orangeAnimationFinished == true) {
-    orangeCMR.setAnimationProperties(0, 0, 20, 230);
+    resetOrangeCMRAnimation();
     if (DEBUG) Serial.println((String) "orangeAnimationFinished");
     orangeAnimationFinished = false;
   }
 
   turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
   if (turquoiseAnimationFinished == true) {
-    turquoiseCMR.setAnimationProperties(0, 0, 50, 250);
+    resetTurquoiseCMRAnimation();
     if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
     turquoiseAnimationFinished = false;
   }
@@ -182,7 +189,7 @@ else if (FRAGMENTS) {
     FastLED.show();
     // ToDo: store fade values in fadelist
     fadeIndividual();
-    //fadeAllDynamic(230);
+    //fadeAllDynamic(200);
   }
 }
 else {
@@ -577,10 +584,10 @@ void switchMode() {
 }
 
 void eraseAll() {
-    for(uint16_t i=0; i<NUM_LEDS; i++) {
-        crgbledstrip[i] = CRGB(0,0,0);
-    }
-    FastLED.show(); 
+  for(uint16_t i=0; i<NUM_LEDS; i++) {
+      crgbledstrip[i] = CRGB(0,0,0);
+  }
+  FastLED.show(); 
 }
 
 static uint16_t incrementPixel(uint16_t p, uint16_t inc) {
