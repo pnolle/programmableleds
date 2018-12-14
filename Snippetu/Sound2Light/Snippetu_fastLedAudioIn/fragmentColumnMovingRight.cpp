@@ -30,16 +30,15 @@ void ColumnMovingRight::resetTimer(unsigned long time) {
     this->time = time;
 }
 
-void ColumnMovingRight::nextFrame(unsigned long currentTime, std::vector<PixelUpdate> &matrixUpdate, bool &animationFinished) {
-    
-    // Serial.println((String) "nextFrame: currentTime " + currentTime + " > " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
+void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, vector<int> &fadestrip, bool &animationFinished) {
     if (DEBUG) Serial.println((String) "nextFrame: currentTime " + currentTime + " > time " + this->time + " + wait " + this->wait + " = " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
 
+    // check if defined wait is over
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
+        // paint next frame
         if (this->currentCol<this->colCountLocal) {
             for (int currentRow=0; currentRow<rowCount; currentRow++) {
-                // Todo hueIncrement not working??
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
                 PixelUpdate onePixelUpdate;
