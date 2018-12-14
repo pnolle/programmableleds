@@ -22,7 +22,7 @@ class Fragment
         Fragment() {};
         virtual void setAnimationProperties(int length=0, int start=0, int wait=10, int fade=250);
         virtual void setColorProperties(uint8_t hue=0, uint8_t sat=0, uint8_t bri=255, double hueIncrement=0);
-        virtual void nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, vector<int> &fadestrip, bool &animationFinished);
+        virtual void nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, bool &animationFinished);
         virtual void resetTimer(unsigned long time);
         virtual ~Fragment() {};
 };

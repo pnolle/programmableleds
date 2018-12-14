@@ -43,13 +43,17 @@ uint32_t mode = 0;
 
 // Define the array of crgbledstrip
 CRGB crgbledstrip[NUM_LEDS];
-vector<int> fadestrip;
+int fadestrip[NUM_LEDS];
 
 
 void setup() {
 	Serial.begin(57600);
 	Serial.println("### setup ###");
 
+  // init fadestrip: set all values to 0
+  for(int i = 0; i < NUM_LEDS; i++) {
+    fadestrip[i] = 0;
+  }
 
 // ####
 // LEDs
@@ -83,7 +87,7 @@ void setup() {
   ADMUX |= (1 << ADLAR); //left align the ADC value- so we can read highest 8 bits from ADCH register only
   
   ADCSRA |= (1 << ADPS2) | (1 << ADPS0); //set ADC clock with 32 prescaler- 1mHz/32=500kHz
-  ADCSRA |= (1 << ADATE); //enabble auto trigger
+  ADCSRA |= (1 << ADATE); //enable auto trigger
   ADCSRA |= (1 << ADIE); //enable interrupts when measurement complete
   ADCSRA |= (1 << ADEN); //enable ADC
   ADCSRA |= (1 << ADSC); //start ADC measurements
@@ -92,10 +96,10 @@ void setup() {
 
 
   turquoiseCMR.setColorProperties(39, 1.0, 150, 10.0);
-  turquoiseCMR.setAnimationProperties(0, 0, 50, 240);
+  turquoiseCMR.setAnimationProperties(0, 0, 50, 250);
 
   orangeCMR.setColorProperties(30, 200, 250, 0.0);
-  orangeCMR.setAnimationProperties(0, 0, 20, 250);
+  orangeCMR.setAnimationProperties(0, 0, 20, 230);
 
   eraseAll();
 }
@@ -154,16 +158,16 @@ else if (FRAGMENTS) {
   bool orangeAnimationFinished = false;
 
   vector<PixelUpdate> matrixUpdate;
-  orangeCMR.nextFrame(millis(), matrixUpdate, fadestrip, orangeAnimationFinished);
+  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
   if (orangeAnimationFinished == true) {
-    orangeCMR.setAnimationProperties(0, 0, 20, 250);
+    orangeCMR.setAnimationProperties(0, 0, 20, 230);
     if (DEBUG) Serial.println((String) "orangeAnimationFinished");
     orangeAnimationFinished = false;
   }
 
-  turquoiseCMR.nextFrame(millis(), matrixUpdate, fadestrip, turquoiseAnimationFinished);
+  turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
   if (turquoiseAnimationFinished == true) {
-    turquoiseCMR.setAnimationProperties(0, 0, 50, 240);
+    turquoiseCMR.setAnimationProperties(0, 0, 50, 250);
     if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
     turquoiseAnimationFinished = false;
   }
@@ -171,13 +175,14 @@ else if (FRAGMENTS) {
   if (matrixUpdate.size() > 0) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
       int ledNum = matrixColumnsLeftRight[it->col][it->row];
-      if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + " ... time" + it->time + " ... ledNum" + ledNum);
+      if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + ": fade" + it->fade + " ... time" + it->time + " ... ledNum" + ledNum);
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
+      fadestrip[ledNum] = it->fade;
     }
     FastLED.show();
     // ToDo: store fade values in fadelist
-    //fadeIndividual();
-    fadeAllDynamic(230);
+    fadeIndividual();
+    //fadeAllDynamic(230);
   }
 }
 else {
@@ -543,7 +548,11 @@ static void chase(uint32_t c, bool forward, int32_t sub) {
 
 void fadeAll() { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(250); } }
 void fadeAllFast() { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(200); } }
-void fadeAllDynamic(int fade) { for(int i = 0; i < NUM_LEDS; i++) { crgbledstrip[i].nscale8(fade); } }
+void fadeAllDynamic(int fade) { 
+  for(int i = 0; i < NUM_LEDS; i++) { 
+    crgbledstrip[i].nscale8(fade); 
+  } 
+}
 void fadeIndividual() { 
   for(int i = 0; i < NUM_LEDS; i++) {
     crgbledstrip[i].nscale8(fadestrip[i]);
