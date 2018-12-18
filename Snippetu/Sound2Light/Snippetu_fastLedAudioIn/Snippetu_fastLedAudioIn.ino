@@ -105,10 +105,10 @@ void setup() {
 }
 
 void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(0, 0, 60, 250);
+  turquoiseCMR.setAnimationProperties(0, 0, 60, 230);
 }
 void resetOrangeCMRAnimation() {
-  orangeCMR.setAnimationProperties(0, 0, 30, 230);
+  orangeCMR.setAnimationProperties(0, 0, 30, 180);
 }
 
 
@@ -165,12 +165,13 @@ else if (FRAGMENTS) {
   bool orangeAnimationFinished = false;
 
   vector<PixelUpdate> matrixUpdate;
-  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
-  if (orangeAnimationFinished == true) {
-    resetOrangeCMRAnimation();
-    if (DEBUG) Serial.println((String) "orangeAnimationFinished");
-    orangeAnimationFinished = false;
-  }
+
+  // orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
+  // if (orangeAnimationFinished == true) {
+  //   resetOrangeCMRAnimation();
+  //   if (DEBUG) Serial.println((String) "orangeAnimationFinished");
+  //   orangeAnimationFinished = false;
+  // }
 
   turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
   if (turquoiseAnimationFinished == true) {
@@ -180,16 +181,20 @@ else if (FRAGMENTS) {
   }
 
   if (matrixUpdate.size() > 0) {
+    // for (int i=0; i<150; i++) {
+    //   Serial.print((String) " ... fadestrip[" + i + "] " + fadestrip[i]);
+    // }
+    Serial.println(" ... "); //(String) "fadestrip[0]" + fadestrip[0] + " ... fadestrip[1]" + fadestrip[1] + " ... fadestrip[148]" + fadestrip[148] + " ... fadestrip[149]" + fadestrip[149]);
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
       int ledNum = matrixColumnsLeftRight[it->col][it->row];
-      if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + ": fade" + it->fade + " ... time" + it->time + " ... ledNum" + ledNum);
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
       fadestrip[ledNum] = it->fade;
+      if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + ": fade" + it->fade + " ... time" + it->time + " ... ledNum" + ledNum + " ... fadestrip[ledNum]" + fadestrip[ledNum]);      
     }
     FastLED.show();
-    // ToDo: store fade values in fadelist
+    // eraseAll();
     fadeIndividual();
-    //fadeAllDynamic(200);
+    // fadeAllDynamic(200);
   }
 }
 else {
@@ -560,8 +565,10 @@ void fadeAllDynamic(int fade) {
     crgbledstrip[i].nscale8(fade); 
   } 
 }
-void fadeIndividual() { 
+void fadeIndividual() {
   for(int i = 0; i < NUM_LEDS; i++) {
+    // ToDo: value of 149 is messed up. why!?
+    if (i==149) Serial.println((String) "i " + i + " ... fadestrip[ledNum]" + fadestrip[i]);
     crgbledstrip[i].nscale8(fadestrip[i]);
   }
 }

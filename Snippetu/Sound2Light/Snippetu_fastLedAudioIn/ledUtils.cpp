@@ -27,9 +27,10 @@ int LedUtils::subColor(unsigned int c, int sub) {
 }
 
 double LedUtils::incrementHue(double h, double hIncrementor) {
-  h+=hIncrementor;
-  if (h>=255) {
-    h-=255;
+  h += hIncrementor;
+  if (h >= 255.0) {
+    h-=255.0;
+    // h=0;
   }
   return h;
 }
