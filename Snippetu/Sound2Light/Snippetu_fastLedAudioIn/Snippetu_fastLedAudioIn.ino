@@ -182,22 +182,15 @@ else if (FRAGMENTS) {
   }
 
   if (matrixUpdate.size() > 0) {
-    // for (int i=0; i<150; i++) {
-    //   Serial.print((String) " ... fadestrip[" + i + "] " + fadestrip[i]);
-    // }
-    Serial.println(" ... "); //(String) "fadestrip[0]" + fadestrip[0] + " ... fadestrip[1]" + fadestrip[1] + " ... fadestrip[148]" + fadestrip[148] + " ... fadestrip[149]" + fadestrip[149]);
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
       int ledNum = matrixColumnsLeftRight[it->col][it->row];
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
 
       fadestrip[ledNum] = it->fade;
-      if (ledNum>145) Serial.println((String) "ledNum " + ledNum + " ... fadestrip[ledNum]" + fadestrip[ledNum]);
       if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + ": fade" + it->fade + " ... time" + it->time + " ... ledNum" + ledNum + " ... fadestrip[ledNum]" + fadestrip[ledNum]);      
     }
     FastLED.show();
-    // eraseAll();
     fadeIndividual();
-    // fadeAllDynamic(200);
   }
 }
 else {
@@ -570,8 +563,6 @@ void fadeAllDynamic(int fade) {
 }
 void fadeIndividual() {
   for(int i = 0; i < NUM_LEDS; i++) {
-    // ToDo: value of 149 is messed up. why!?
-    if (i>145) Serial.println((String) "i " + i + " ... fadestrip[ledNum]" + fadestrip[i]);
     crgbledstrip[i].nscale8(fadestrip[i]);
   }
 }
