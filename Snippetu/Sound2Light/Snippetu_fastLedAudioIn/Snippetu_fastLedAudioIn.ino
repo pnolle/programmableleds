@@ -2,6 +2,7 @@
 #include <FastLED.h>
 //#include <Adafruit_NeoPixel.h>
 #include "fragmentColumnMovingRight.h"
+#include "fragmentRowMovingUp.h"
 #include <StandardCplusplus.h>
 #include "vector"
 
@@ -10,6 +11,7 @@ using namespace std;
 LedUtils ledUtils;
 ColumnMovingRight turquoiseCMR(ledUtils, millis());
 ColumnMovingRight orangeCMR(ledUtils, millis());
+RowMovingUp greenRMU(ledUtils, millis());
 
 // ####
 // LEDs
@@ -102,6 +104,9 @@ void setup() {
   orangeCMR.setColorProperties(30, 200, 250, 0.0);
   resetOrangeCMRAnimation();
 
+  greenRMU.setColorProperties(116, 78, 57, 0.0);
+  resetGreenRMUAnimation();
+
   eraseAll();
 }
 
@@ -110,6 +115,9 @@ void resetTurquoiseCMRAnimation() {
 }
 void resetOrangeCMRAnimation() {
   orangeCMR.setAnimationProperties(0, 0, 30, 180);
+}
+void resetGreenRMUAnimation() {
+  greenRMU.setAnimationProperties(0, 0, 50, 230);
 }
 
 
@@ -164,21 +172,29 @@ else if (FRAGMENTS) {
 // ToDo: active animation objects should sit in a vector and remove themselves when they're finished.
   bool turquoiseAnimationFinished = false;
   bool orangeAnimationFinished = false;
+  bool greenAnimationFinished = false;
 
   vector<PixelUpdate> matrixUpdate;
 
-  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
-  if (orangeAnimationFinished == true) {
-    resetOrangeCMRAnimation();
-    if (DEBUG) Serial.println((String) "orangeAnimationFinished");
-    orangeAnimationFinished = false;
-  }
+  // orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
+  // if (orangeAnimationFinished == true) {
+  //   resetOrangeCMRAnimation();
+  //   if (DEBUG) Serial.println((String) "orangeAnimationFinished");
+  //   orangeAnimationFinished = false;
+  // }
 
-  turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
-  if (turquoiseAnimationFinished == true) {
-    resetTurquoiseCMRAnimation();
-    if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
-    turquoiseAnimationFinished = false;
+  // turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
+  // if (turquoiseAnimationFinished == true) {
+  //   resetTurquoiseCMRAnimation();
+  //   if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
+  //   turquoiseAnimationFinished = false;
+  // }
+
+  greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
+  if (greenAnimationFinished == true) {
+    resetGreenRMUAnimation();
+    if (DEBUG) Serial.println((String) "greenAnimationFinished");
+    greenAnimationFinished = false;
   }
 
   if (matrixUpdate.size() > 0) {
