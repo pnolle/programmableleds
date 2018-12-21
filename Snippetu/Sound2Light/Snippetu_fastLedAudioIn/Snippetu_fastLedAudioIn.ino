@@ -43,8 +43,9 @@ uint32_t mode = 0;
 
 // Define the array of crgbledstrip
 CRGB crgbledstrip[NUM_LEDS];
-int fadestrip[NUM_LEDS];
 
+// The fade values of the last 2 LEDs were always messed up. By increasing the array size by 2 the problem disappears... don't know why.
+int fadestrip[NUM_LEDS+2];
 
 void setup() {
 	Serial.begin(57600);
@@ -166,12 +167,12 @@ else if (FRAGMENTS) {
 
   vector<PixelUpdate> matrixUpdate;
 
-  // orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
-  // if (orangeAnimationFinished == true) {
-  //   resetOrangeCMRAnimation();
-  //   if (DEBUG) Serial.println((String) "orangeAnimationFinished");
-  //   orangeAnimationFinished = false;
-  // }
+  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
+  if (orangeAnimationFinished == true) {
+    resetOrangeCMRAnimation();
+    if (DEBUG) Serial.println((String) "orangeAnimationFinished");
+    orangeAnimationFinished = false;
+  }
 
   turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
   if (turquoiseAnimationFinished == true) {
@@ -188,7 +189,9 @@ else if (FRAGMENTS) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
       int ledNum = matrixColumnsLeftRight[it->col][it->row];
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
+
       fadestrip[ledNum] = it->fade;
+      if (ledNum>145) Serial.println((String) "ledNum " + ledNum + " ... fadestrip[ledNum]" + fadestrip[ledNum]);
       if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + ": fade" + it->fade + " ... time" + it->time + " ... ledNum" + ledNum + " ... fadestrip[ledNum]" + fadestrip[ledNum]);      
     }
     FastLED.show();
@@ -568,7 +571,7 @@ void fadeAllDynamic(int fade) {
 void fadeIndividual() {
   for(int i = 0; i < NUM_LEDS; i++) {
     // ToDo: value of 149 is messed up. why!?
-    if (i==149) Serial.println((String) "i " + i + " ... fadestrip[ledNum]" + fadestrip[i]);
+    if (i>145) Serial.println((String) "i " + i + " ... fadestrip[ledNum]" + fadestrip[i]);
     crgbledstrip[i].nscale8(fadestrip[i]);
   }
 }
