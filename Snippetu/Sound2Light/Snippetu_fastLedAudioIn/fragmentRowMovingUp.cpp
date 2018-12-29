@@ -38,7 +38,7 @@ void RowMovingUp::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matr
         this->time = currentTime;
         // paint next frame
         if (this->currentRow<this->rowCountLocal) {
-            for (int currentCol=0; currentCol<rowCount; currentCol++) {
+            for (int currentCol=0; currentCol<colCount; currentCol++) {
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
                 PixelUpdate onePixelUpdate;
