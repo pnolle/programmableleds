@@ -77,7 +77,7 @@ const int matrixColumnsLeftRight[colCount][rowCount] = {
   { -1, -1 ,  7,  4 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1},
   { -1, -1 ,  6,  5 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1 , -1}
 };
-const int matrixColumnsDownTop[colCount][rowCount] = {
+const int matrixRowsTopDown[colCount][rowCount] = {
   { -1, -1, -1,  -1 , -1 ,-1 , -1 , -1, -1 , -1, 55 , 56  , -1  , -1  , -1 },
   { -1, -1, -1,  -1 , -1 ,-1 , -1 , -1, 52 , -1, 54 , -1  , 58  , 60  , -1 },
   { -1, -1, -1,  -1 , -1 ,-1 , -1 , -1, 51 , 53, -1 , -1  , 57 , 59  , -1 },

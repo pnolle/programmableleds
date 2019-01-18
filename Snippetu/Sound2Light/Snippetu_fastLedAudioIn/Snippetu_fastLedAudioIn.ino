@@ -22,7 +22,7 @@ RowMovingUp greenRMU(ledUtils, millis());
 #define NUM_LEDS 479 // 5 meters + x @ 60 LEDs/m
 #define DEBUG false
 #define SOUND2LIGHT false
-#define FRAGMENTS false
+#define FRAGMENTS true
 
 // Blinder Button
 #define BUTTONPIN 2
@@ -175,19 +175,19 @@ else if (FRAGMENTS) {
 
   vector<PixelUpdate> matrixUpdate;
 
-  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
-  if (orangeAnimationFinished == true) {
-    resetOrangeCMRAnimation();
-    if (DEBUG) Serial.println((String) "orangeAnimationFinished");
-    orangeAnimationFinished = false;
-  }
+  // orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
+  // if (orangeAnimationFinished == true) {
+  //   resetOrangeCMRAnimation();
+  //   if (DEBUG) Serial.println((String) "orangeAnimationFinished");
+  //   orangeAnimationFinished = false;
+  // }
 
-  turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
-  if (turquoiseAnimationFinished == true) {
-    resetTurquoiseCMRAnimation();
-    if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
-    turquoiseAnimationFinished = false;
-  }
+  // turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
+  // if (turquoiseAnimationFinished == true) {
+  //   resetTurquoiseCMRAnimation();
+  //   if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
+  //   turquoiseAnimationFinished = false;
+  // }
 
   greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
   if (greenAnimationFinished == true) {
@@ -198,7 +198,7 @@ else if (FRAGMENTS) {
 
   if (matrixUpdate.size() > 0) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
-      int ledNum = matrixColumnsDownTop[it->col][it->row];
+      int ledNum = matrixRowsTopDown[it->row][it->col];
       crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
 
       fadestrip[ledNum] = it->fade;
@@ -329,7 +329,7 @@ static void lightHowManyRows(int numRows, int fade, double hue, double hueIncrem
     for (int j=0; j<colCountLocal; j++) {
       if (DEBUG) Serial.print(" | col");
       if (DEBUG) Serial.print(j);
-      int ledNum = matrixColumnsDownTop[j][i];
+      int ledNum = matrixRowsTopDown[j][i];
       if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
       crgbledstrip[ledNum] = CHSV(hue, sat, bri);
       if (DEBUG) Serial.print(" #");
@@ -394,7 +394,7 @@ static void matrixTtd(int start, int length, int wait, int fade, double hue, dou
       for (int j=0; j<colCountLocal; j++) {
         if (DEBUG) Serial.print(" | col");
         if (DEBUG) Serial.print(j);
-        int ledNum = matrixColumnsDownTop[j][i];
+        int ledNum = matrixRowsTopDown[j][i];
         if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
         crgbledstrip[ledNum] = CHSV(hue, sat, bri);
         if (DEBUG) Serial.print(" #");
@@ -424,7 +424,7 @@ static void matrixDtt(int start, int length, int wait, int fade, double hue, dou
       for (int j=colCountLocal-1; j>=0; j--) {
         if (DEBUG) Serial.print(" | col");
         if (DEBUG) Serial.print(j);
-        int ledNum = matrixColumnsDownTop[j][i];
+        int ledNum = matrixRowsTopDown[j][i];
         if (hueIncrement > 0) hue = ledUtils.incrementHue(hue, hueIncrement);
         crgbledstrip[ledNum] = CHSV(hue, sat, bri);
         if (DEBUG) Serial.print(" #");
