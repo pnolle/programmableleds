@@ -3,8 +3,8 @@
 //#include <Adafruit_NeoPixel.h>
 #include "fragmentColumnMovingRight.h"
 #include "fragmentRowMovingUp.h"
-#include <StandardCplusplus.h>
-#include "vector"
+// #include <StandardCplusplus.h>
+#include <vector>
 
 using namespace std;
 
@@ -19,10 +19,10 @@ RowMovingUp greenRMU(ledUtils, millis());
 
 // General
 #define DATA_PIN 6
-#define NUM_LEDS 150 // 5 meter reel @ 30 LEDs/m
+#define NUM_LEDS 479 // 5 meters + x @ 60 LEDs/m
 #define DEBUG false
 #define SOUND2LIGHT false
-#define FRAGMENTS true
+#define FRAGMENTS false
 
 // Blinder Button
 #define BUTTONPIN 2
@@ -167,7 +167,6 @@ if (SOUND2LIGHT) {
  */
 }
 else if (FRAGMENTS) {
-
 // ToDo: Refactor this into a generic function. Goal is that animations can be started like "impulses" and the rest will run automatically.
 // ToDo: active animation objects should sit in a vector and remove themselves when they're finished.
   bool turquoiseAnimationFinished = false;
@@ -211,22 +210,27 @@ else if (FRAGMENTS) {
 }
 else {
 
-  lightEvery10();
+  lightHowMany(479, 240, 0.1, 0.1, 255, 150);
+  delay(3000);
 
-  matrixTtd(0,0,50,235,120,0.1,255,255);  // slow color
-  matrixTtd(0,0,20,240,0,0,0,0);  // slow black out
-  matrixLtr(0,0,50,235,0,0.3,255,255);  // slow color
-  matrixLtr(0,0,20,240,0,0,0,0);  // slow black out
+  cylon();
 
-  matrixDtt(0,0,20,130,125,0.2,150,255);    // fast turquoise
-  matrixTtd(0,0,20,130,220,0.2,150,255);    // fast purple
 
-  matrixRtl(0,0,10,130,0,0,0,255);    // fast white
-  matrixLtr(0,0,10,130,0,0,0,255);    // fast white
-  matrixRtl(0,0,20,230,0,1,255,255);  // fast color
-  matrixRtl(0,0,10,240,0,0,0,0);  // fast black out
-  matrixLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
-  matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
+
+  // matrixTtd(0,0,50,235,120,0.1,255,255);  // slow color
+  // matrixTtd(0,0,20,240,0,0,0,0);  // slow black out
+  // matrixLtr(0,0,50,235,0,0.3,255,255);  // slow color
+  // matrixLtr(0,0,20,240,0,0,0,0);  // slow black out
+
+  // matrixDtt(0,0,20,130,125,0.2,150,255);    // fast turquoise
+  // matrixTtd(0,0,20,130,220,0.2,150,255);    // fast purple
+
+  // matrixRtl(0,0,10,130,0,0,0,255);    // fast white
+  // matrixLtr(0,0,10,130,0,0,0,255);    // fast white
+  // matrixRtl(0,0,20,230,0,1,255,255);  // fast color
+  // matrixRtl(0,0,10,240,0,0,0,0);  // fast black out
+  // matrixLtr(0,0,10,130,125,0.2,150,255);    // fast turquoise
+  // matrixRtl(0,0,10,130,220,0.2,150,255);    // fast purple
 
 
 /* 
@@ -297,7 +301,7 @@ else {
 
 static void lightEvery10() {
   eraseAll(); 
-  for (int j=0; j<150; j++) {
+  for (int j=0; j<NUM_LEDS; j++) {
     if (j%10==0) crgbledstrip[j] = CHSV(20, 255, 255);
   }
   FastLED.show(); 

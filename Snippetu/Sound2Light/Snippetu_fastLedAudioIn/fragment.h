@@ -1,12 +1,12 @@
 #ifndef FRAGMENT
 #define FRAGMENT
 
-#include "Arduino.h"
+// #include "Arduino.h"
 #include "const.h"
 #include "pixelUpdate.h"
 #include <FastLED.h>
 #include <StandardCplusplus.h>
-#include "vector"
+#include <vector>
 
 using namespace std;
 
