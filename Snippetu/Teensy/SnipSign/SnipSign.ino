@@ -26,7 +26,7 @@ RowMovingUp greenRMU(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
-#define DEBUG false
+#define DEBUG true
 #define SOUND2LIGHT false
 #define FRAGMENTS true
 
@@ -67,34 +67,26 @@ void setup() {
   resetGreenRMUAnimation();
 
   eraseAll();
+
+  Serial.println("Setup done");
 }
 
 
 
 void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(0, 0, 600, 230);
+  turquoiseCMR.setAnimationProperties(0, 0, 60, 230);
 }
 void resetOrangeCMRAnimation() {
   orangeCMR.setAnimationProperties(0, 0, 30, 180);
 }
 void resetGreenRMUAnimation() {
-  greenRMU.setAnimationProperties(0, 0, 800, 230);
+  greenRMU.setAnimationProperties(0, 0, 80, 230);
 }
 
 
 
 
 void loop() {
-  // usbMIDI.read() needs to be called rapidly from loop().  When
-  // each MIDI messages arrives, it return true.  The message must
-  // be fully processed before usbMIDI.read() is called again.
-  // if (usbMIDI.read()) {
-  //   processMIDI();
-  // }
-
-
-
-
 // ToDo: Refactor this into a generic function. Goal is that animations can be started like "impulses" and the rest will run automatically.
 // ToDo: active animation objects should sit in a vector and remove themselves when they're finished.
   bool turquoiseAnimationFinished = false;
