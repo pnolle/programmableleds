@@ -27,7 +27,7 @@ RowMovingUp redRMU(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
-#define DEBUG false
+#define DEBUG true
 #define SOUND2LIGHT false
 #define FRAGMENTS true
 
@@ -87,7 +87,7 @@ void resetGreenRMUAnimation() {
   greenRMU.setAnimationProperties(0, 0, 80, 230, true);
 }
 void resetRedRMUAnimation() {
-  redRMU.setAnimationProperties(0, 0, 40, 230, false);
+  redRMU.setAnimationProperties(0, 0, 40, 230);
 }
 
 
@@ -116,20 +116,20 @@ void loop() {
     if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
     turquoiseAnimationFinished = false;
   }
-
-  greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
-  if (greenAnimationFinished == true) {
-    resetGreenRMUAnimation();
-    if (DEBUG) Serial.println((String) "greenAnimationFinished");
-    greenAnimationFinished = false;
-  }
-
-  redRMU.nextFrame(millis(), matrixUpdate, redAnimationFinished);
-  if (redAnimationFinished == true) {
-    resetRedRMUAnimation();
-    if (DEBUG) Serial.println((String) "redAnimationFinished");
-    redAnimationFinished = false;
-  }
+//
+//  greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
+//  if (greenAnimationFinished == true) {
+//    resetGreenRMUAnimation();
+//    if (DEBUG) Serial.println((String) "greenAnimationFinished");
+//    greenAnimationFinished = false;
+//  }
+//
+//  redRMU.nextFrame(millis(), matrixUpdate, redAnimationFinished);
+//  if (redAnimationFinished == true) {
+//    resetRedRMUAnimation();
+//    if (DEBUG) Serial.println((String) "redAnimationFinished");
+//    redAnimationFinished = false;
+//  }
 
   if (matrixUpdate.size() > 0) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {

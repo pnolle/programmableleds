@@ -15,15 +15,21 @@ void ColumnMovingRight::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri
     this->hueIncrement = hueIncrement;
 }
 
-void ColumnMovingRight::setAnimationProperties(int length, int start, int wait, int fade, bool backwards) {
+void ColumnMovingRight::setAnimationProperties(int length, int start, int wait, int fade, bool reverse) {
     this->wait = wait;
     this->fade = fade;
+    this->reverse = reverse;
 
-    this->colCountLocal = colCount;
-    if (length!=0) {
-        this->colCountLocal = length;
+    this->colCount = colCount;
+    if (length>0) {
+        this->colCount = length;
     }
-    this->currentCol = start;
+    if (this->reverse) {
+        this->currentCol = colCount-1-start;
+    }
+    else {
+        this->currentCol = start;
+    }
 }
 
 void ColumnMovingRight::resetTimer(unsigned long time) {
@@ -37,7 +43,18 @@ void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate>
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
         // paint next frame
-        if (this->currentCol<this->colCountLocal) {
+        bool colCondition = false;
+        if (this->reverse) {
+            if (this->currentCol>=0) {
+                colCondition = true;
+            }
+        }
+        else {
+            if (this->currentCol<this->colCount) {
+                colCondition = true;
+            }
+        }
+        if (colCondition) {
             for (int currentRow=0; currentRow<rowCount; currentRow++) {
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
@@ -51,7 +68,12 @@ void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate>
                 onePixelUpdate.time = currentTime;
                 matrixUpdate.push_back(onePixelUpdate);
             }
-            currentCol++;
+            if (this->reverse) {
+                currentCol--;
+            }
+            else {
+                currentCol++;
+            }
         }
         else {
             animationFinished = true;
