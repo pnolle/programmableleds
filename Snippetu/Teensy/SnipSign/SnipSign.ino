@@ -26,7 +26,7 @@ RowMovingUp greenRMU(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
-#define DEBUG true
+#define DEBUG false
 #define SOUND2LIGHT false
 #define FRAGMENTS true
 
@@ -74,7 +74,7 @@ void setup() {
 
 
 void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(0, 0, 60, 230);
+  turquoiseCMR.setAnimationProperties(0, 0, 200, 230);
 }
 void resetOrangeCMRAnimation() {
   orangeCMR.setAnimationProperties(0, 0, 30, 180);
@@ -108,7 +108,7 @@ void loop() {
     if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
     turquoiseAnimationFinished = false;
   }
-
+//
 //  greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
 //  if (greenAnimationFinished == true) {
 //    resetGreenRMUAnimation();
@@ -118,11 +118,12 @@ void loop() {
 
   if (matrixUpdate.size() > 0) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
-      int ledNum = matrixColumnsDownTop[it->col][it->row];
-      crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
-
+      int ledNum = matrixColumnsDownTop[it->row][it->col];
+      if (ledNum > -1) {
+        crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
+        if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + ": fade" + it->fade + " ... time" + it->time + " ... ledNum" + ledNum + " ... fadestrip[ledNum]" + fadestrip[ledNum]); 
+      }
       fadestrip[ledNum] = it->fade;
-      if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + ": fade" + it->fade + " ... time" + it->time + " ... ledNum" + ledNum + " ... fadestrip[ledNum]" + fadestrip[ledNum]);      
     }
     FastLED.show();
     fadeIndividual();
