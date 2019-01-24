@@ -15,15 +15,21 @@ void RowMovingUp::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri, doub
     this->hueIncrement = hueIncrement;
 }
 
-void RowMovingUp::setAnimationProperties(int length, int start, int wait, int fade) {
+void RowMovingUp::setAnimationProperties(int length, int start, int wait, int fade, bool backwards) {
     this->wait = wait;
     this->fade = fade;
+    this->backwards = backwards;
 
     this->rowCountLocal = rowCount;
     if (length!=0) {
         this->rowCountLocal = length;
     }
-    this->currentRow = start;
+    if (this->backwards) {
+        this->currentRow = rowCount-1-start;
+    }
+    else {
+        this->currentRow = start;
+    }
 }
 
 void RowMovingUp::resetTimer(unsigned long time) {
@@ -37,7 +43,18 @@ void RowMovingUp::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matr
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
         // paint next frame
-        if (this->currentRow<this->rowCountLocal) {
+        bool rowCondition = false;
+        if (this->backwards) {
+            if (this->currentRow>=0) {
+                rowCondition = true;
+            }
+        }
+        else {
+            if (this->currentRow<this->rowCountLocal) {
+                rowCondition = true;
+            }
+        }
+        if (rowCondition) {
             for (int currentCol=0; currentCol<colCount; currentCol++) {
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
@@ -51,7 +68,12 @@ void RowMovingUp::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matr
                 onePixelUpdate.time = currentTime;
                 matrixUpdate.push_back(onePixelUpdate);
             }
-            this->currentRow++;
+            if (this->backwards) {
+                this->currentRow--;
+            }
+            else {
+                this->currentRow++;
+            }
         }
         else {
             animationFinished = true;
