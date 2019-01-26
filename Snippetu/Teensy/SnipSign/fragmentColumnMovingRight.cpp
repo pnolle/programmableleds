@@ -1,5 +1,4 @@
 #include "fragmentColumnMovingRight.h"
-
 ColumnMovingRight::ColumnMovingRight(LedUtils ledUtils, unsigned long time) : 
 	ledUtils(ledUtils) {
 
@@ -18,12 +17,12 @@ void ColumnMovingRight::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri
 void ColumnMovingRight::setAnimationProperties(int wait, int fade, bool reverse, int length, int start) {
     this->wait = wait;
     this->fade = fade;
-
+    this->lengthLocal = length;
     this->colCountLocal = colCount;
-    if (length!=0) {
-        this->colCountLocal = length;
+    this->currentCol = 0;
+    if (start>-1) {
+      this->currentCol = start; 
     }
-    this->currentCol = start;
 }
 
 void ColumnMovingRight::resetTimer(unsigned long time) {
@@ -37,6 +36,7 @@ void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate>
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
         // paint next frame
+        Serial.println((String) "currentCol" + this->currentCol + " .. length " + this->lengthLocal);
         if (this->currentCol<this->colCountLocal) {
             for (int currentRow=0; currentRow<rowCount; currentRow++) {
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);

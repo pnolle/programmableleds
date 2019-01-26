@@ -78,16 +78,16 @@ void setup() {
 
 
 void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(100, 230, false, 0, 0);
+  turquoiseCMR.setAnimationProperties(100, 230, false);
 }
 void resetOrangeCMRAnimation() {
-  orangeCMR.setAnimationProperties(30, 180, false, 0, 0);
+  orangeCMR.setAnimationProperties(30, 180, false);
 }
 void resetGreenRMUAnimation() {
-  greenRMU.setAnimationProperties(80, 230, true, 0, 0);
+  greenRMU.setAnimationProperties(80, 230, true);
 }
 void resetRedRMUAnimation() {
-  redRMU.setAnimationProperties(40, 230, false, 0, 0);
+  redRMU.setAnimationProperties(40, 230, false);
 }
 
 
