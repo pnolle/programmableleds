@@ -19,16 +19,20 @@ void RowMovingUp::setAnimationProperties(int wait, int fade, bool reverse, int l
     this->wait = wait;
     this->fade = fade;
     this->reverse = reverse;
-
+    this->lengthLocal = length;
+    this->lengthCounter = 0;
     this->rowCountLocal = rowCount;
-    if (length!=0) {
-        this->rowCountLocal = length;
+    this->currentRow = 0;
+    if (start>-1) {
+        if (this->reverse) {
+            this->currentRow = rowCount-1-start;
+        }
+        else {
+            this->currentRow = start;
+        }
     }
-    if (this->reverse) {
-        this->currentRow = rowCount-1-start;
-    }
-    else {
-        this->currentRow = start;
+    else if (this->reverse) {
+        this->currentRow = rowCount-1;
     }
 }
 
@@ -42,19 +46,17 @@ void RowMovingUp::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matr
     // check if defined wait is over
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
-        // paint next frame
-        bool rowCondition = false;
-        if (this->reverse) {
-            if (this->currentRow>=0) {
-                rowCondition = true;
-            }
+        // paint next frame 
+        bool proceed = false;
+        if  (
+            ((this->reverse && this->currentRow>=0) ||
+             (!this->reverse && this->currentRow<this->rowCountLocal)) &&
+            (this->lengthLocal == -1 ||
+             (this->lengthLocal>-1 && this->lengthCounter<this->lengthLocal))
+             ) {
+          proceed = true;
         }
-        else {
-            if (this->currentRow<this->rowCountLocal) {
-                rowCondition = true;
-            }
-        }
-        if (rowCondition) {
+        if (proceed == true) {
             for (int currentCol=0; currentCol<colCount; currentCol++) {
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
@@ -74,6 +76,7 @@ void RowMovingUp::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matr
             else {
                 this->currentRow++;
             }
+            this->lengthCounter++;
         }
         else {
             animationFinished = true;

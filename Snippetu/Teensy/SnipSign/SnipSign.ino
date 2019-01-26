@@ -27,7 +27,7 @@ RowMovingUp redRMU(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
-#define DEBUG false
+#define DEBUG true
 #define SOUND2LIGHT false
 #define FRAGMENTS true
 
@@ -58,7 +58,7 @@ void setup() {
 
   // setupAudioIn();
 
-  turquoiseCMR.setColorProperties(39, 1.0, 150, 10.0);
+  turquoiseCMR.setColorProperties(39, 1.0, 150, 0.0);
   resetTurquoiseCMRAnimation();
 
   orangeCMR.setColorProperties(30, 200, 250, 0.0);
@@ -78,13 +78,13 @@ void setup() {
 
 
 void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(100, 230, false, 10, 30);
+  turquoiseCMR.setAnimationProperties(100, 230, true, 20, 30);
 }
 void resetOrangeCMRAnimation() {
   orangeCMR.setAnimationProperties(30, 180, false);
 }
 void resetGreenRMUAnimation() {
-  greenRMU.setAnimationProperties(80, 230, true);
+  greenRMU.setAnimationProperties(40, 230, false, 10, 20);
 }
 void resetRedRMUAnimation() {
   redRMU.setAnimationProperties(40, 230, false);
@@ -102,13 +102,13 @@ void loop() {
   bool redAnimationFinished = false;
 
   vector<PixelUpdate> matrixUpdate;
-//
-//  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
-//  if (orangeAnimationFinished == true) {
-//    resetOrangeCMRAnimation();
-//    if (DEBUG) Serial.println((String) "orangeAnimationFinished");
-//    orangeAnimationFinished = false;
-//  }
+
+  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
+  if (orangeAnimationFinished == true) {
+    resetOrangeCMRAnimation();
+    if (DEBUG) Serial.println((String) "orangeAnimationFinished");
+    orangeAnimationFinished = false;
+  }
 
   turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
   if (turquoiseAnimationFinished == true) {
@@ -117,19 +117,19 @@ void loop() {
     turquoiseAnimationFinished = false;
   }
 
-  // greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
-  // if (greenAnimationFinished == true) {
-  //   resetGreenRMUAnimation();
-  //   if (DEBUG) Serial.println((String) "greenAnimationFinished");
-  //   greenAnimationFinished = false;
-  // }
+   greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
+   if (greenAnimationFinished == true) {
+     resetGreenRMUAnimation();
+     if (DEBUG) Serial.println((String) "greenAnimationFinished");
+     greenAnimationFinished = false;
+   }
 
-  // redRMU.nextFrame(millis(), matrixUpdate, redAnimationFinished);
-  // if (redAnimationFinished == true) {
-  //   resetRedRMUAnimation();
-  //   if (DEBUG) Serial.println((String) "redAnimationFinished");
-  //   redAnimationFinished = false;
-  // }
+   redRMU.nextFrame(millis(), matrixUpdate, redAnimationFinished);
+   if (redAnimationFinished == true) {
+     resetRedRMUAnimation();
+     if (DEBUG) Serial.println((String) "redAnimationFinished");
+     redAnimationFinished = false;
+   }
 
   if (matrixUpdate.size() > 0) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {

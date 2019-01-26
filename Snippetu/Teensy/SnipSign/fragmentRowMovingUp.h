@@ -7,7 +7,7 @@ class RowMovingUp : public Fragment
 {
     private:
         // shape
-        int length, start, rowCountLocal, currentRow, currentLed;
+        int lengthLocal, rowCountLocal, currentRow, currentLed, lengthCounter;
         LedUtils ledUtils;
         unsigned long time;
         bool reverse;

@@ -24,11 +24,14 @@ void ColumnMovingRight::setAnimationProperties(int wait, int fade, bool reverse,
     this->currentCol = 0;
     if (start>-1) {
       if (this->reverse) {
-        this->currentCol = colCount-start;
+        this->currentCol = colCount-1-start;
       }
       else {
         this->currentCol = start;
       }
+    }
+    else if (this->reverse) {
+        this->currentCol = colCount-1;
     }
 }
 
