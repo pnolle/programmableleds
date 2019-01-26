@@ -1,6 +1,6 @@
-#include "fragmentRowMovingUp.h"
+#include "fragmentRowMovingDown.h"
 
-RowMovingUp::RowMovingUp(LedUtils ledUtils, unsigned long time) : 
+RowMovingDown::RowMovingDown(LedUtils ledUtils, unsigned long time) : 
 	ledUtils(ledUtils) {
 
     this->time = time;
@@ -8,14 +8,14 @@ RowMovingUp::RowMovingUp(LedUtils ledUtils, unsigned long time) :
     setAnimationProperties();
 }
 
-void RowMovingUp::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri, double hueIncrement) {
+void RowMovingDown::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri, double hueIncrement) {
     this->hue = hue;
     this->sat = sat;
     this->bri = bri;
     this->hueIncrement = hueIncrement;
 }
 
-void RowMovingUp::setAnimationProperties(int wait, int fade, bool reverse, int length, int start) {
+void RowMovingDown::setAnimationProperties(int wait, int fade, bool reverse, int length, int start) {
     this->wait = wait;
     this->fade = fade;
     this->reverse = reverse;
@@ -36,11 +36,11 @@ void RowMovingUp::setAnimationProperties(int wait, int fade, bool reverse, int l
     }
 }
 
-void RowMovingUp::resetTimer(unsigned long time) {
+void RowMovingDown::resetTimer(unsigned long time) {
     this->time = time;
 }
 
-void RowMovingUp::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, bool &animationFinished) {
+void RowMovingDown::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, bool &animationFinished) {
     if (DEBUG) Serial.println((String) "nextFrame: currentTime " + currentTime + " > time " + this->time + " + wait " + this->wait + " = " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
 
     // check if defined wait is over

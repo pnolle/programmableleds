@@ -14,7 +14,7 @@ MIDI part adapted from Teensy MIDI demo.
 #include "const.h"
 #include <FastLED.h>
 #include "fragmentColumnMovingRight.h"
-#include "fragmentRowMovingUp.h"
+#include "fragmentRowMovingDown.h"
 #include "vector"
 
 using namespace std;
@@ -22,8 +22,8 @@ using namespace std;
 LedUtils ledUtils;
 ColumnMovingRight turquoiseCMR(ledUtils, millis());
 ColumnMovingRight orangeCMR(ledUtils, millis());
-RowMovingUp greenRMU(ledUtils, millis());
-RowMovingUp redRMU(ledUtils, millis());
+RowMovingDown greenRMD(ledUtils, millis());
+RowMovingDown redRMD(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
@@ -64,11 +64,11 @@ void setup() {
   orangeCMR.setColorProperties(30, 200, 250, 0.0);
   resetOrangeCMRAnimation();
 
-  greenRMU.setColorProperties(116, 78, 100, 0.0);
-  resetGreenRMUAnimation();
+  greenRMD.setColorProperties(116, 78, 100, 0.0);
+  resetGreenRMDAnimation();
 
-  redRMU.setColorProperties(0, 93, 94, 0.5);
-  resetRedRMUAnimation();
+  redRMD.setColorProperties(0, 93, 94, 0.5);
+  resetRedRMDAnimation();
 
   eraseAll();
 
@@ -83,11 +83,11 @@ void resetTurquoiseCMRAnimation() {
 void resetOrangeCMRAnimation() {
   orangeCMR.setAnimationProperties(30, 180, false);
 }
-void resetGreenRMUAnimation() {
-  greenRMU.setAnimationProperties(40, 230, false, 10, 20);
+void resetGreenRMDAnimation() {
+  greenRMD.setAnimationProperties(40, 230, false, 10, 20);
 }
-void resetRedRMUAnimation() {
-  redRMU.setAnimationProperties(40, 230, false);
+void resetRedRMDAnimation() {
+  redRMD.setAnimationProperties(40, 230, false);
 }
 
 
@@ -117,16 +117,16 @@ void loop() {
     turquoiseAnimationFinished = false;
   }
 
-   greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
+   greenRMD.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
    if (greenAnimationFinished == true) {
-     resetGreenRMUAnimation();
+     resetGreenRMDAnimation();
      if (DEBUG) Serial.println((String) "greenAnimationFinished");
      greenAnimationFinished = false;
    }
 
-   redRMU.nextFrame(millis(), matrixUpdate, redAnimationFinished);
+   redRMD.nextFrame(millis(), matrixUpdate, redAnimationFinished);
    if (redAnimationFinished == true) {
-     resetRedRMUAnimation();
+     resetRedRMDAnimation();
      if (DEBUG) Serial.println((String) "redAnimationFinished");
      redAnimationFinished = false;
    }
