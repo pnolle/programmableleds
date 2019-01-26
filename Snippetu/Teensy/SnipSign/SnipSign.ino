@@ -27,7 +27,7 @@ RowMovingUp redRMU(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
-#define DEBUG true
+#define DEBUG false
 #define SOUND2LIGHT false
 #define FRAGMENTS true
 
@@ -78,7 +78,7 @@ void setup() {
 
 
 void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(100, 230, true, -1, 30);
+  turquoiseCMR.setAnimationProperties(100, 230, false, 10, 30);
 }
 void resetOrangeCMRAnimation() {
   orangeCMR.setAnimationProperties(30, 180, false);

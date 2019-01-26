@@ -7,7 +7,7 @@ class ColumnMovingRight : public Fragment
 {
     private:
         // shape
-        int lengthLocal, start, colCountLocal, currentCol, currentLed;
+        int lengthLocal, start, colCountLocal, currentCol, currentLed, lengthCounter;
         LedUtils ledUtils;
         unsigned long time;
         bool reverse;

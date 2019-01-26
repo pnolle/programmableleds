@@ -19,6 +19,7 @@ void ColumnMovingRight::setAnimationProperties(int wait, int fade, bool reverse,
     this->fade = fade;
     this->reverse = reverse;
     this->lengthLocal = length;
+    this->lengthCounter = 0;
     this->colCountLocal = colCount;
     this->currentCol = 0;
     if (start>-1) {
@@ -42,10 +43,13 @@ void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate>
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
         // paint next frame
-        Serial.println((String) "currentCol" + this->currentCol + " .. length " + this->lengthLocal);
         bool proceed = false;
-        if ((this->reverse && this->currentCol>=0) ||
-            (!this->reverse && this->currentCol<this->colCountLocal)){
+        if  (
+            ((this->reverse && this->currentCol>=0) ||
+             (!this->reverse && this->currentCol<this->colCountLocal)) &&
+            (this->lengthLocal == -1 ||
+             (this->lengthLocal>-1 && this->lengthCounter<this->lengthLocal))
+             ) {
           proceed = true;
         }
         if (proceed == true) {
@@ -68,6 +72,7 @@ void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate>
             else {
               currentCol++;
             }
+            this->lengthCounter++;
         }
         else {
             animationFinished = true;
