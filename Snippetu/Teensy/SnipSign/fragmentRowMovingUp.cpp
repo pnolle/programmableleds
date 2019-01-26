@@ -15,16 +15,16 @@ void RowMovingUp::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri, doub
     this->hueIncrement = hueIncrement;
 }
 
-void RowMovingUp::setAnimationProperties(int wait, int fade, bool backwards, int length, int start) {
+void RowMovingUp::setAnimationProperties(int wait, int fade, bool reverse, int length, int start) {
     this->wait = wait;
     this->fade = fade;
-    this->backwards = backwards;
+    this->reverse = reverse;
 
     this->rowCountLocal = rowCount;
     if (length!=0) {
         this->rowCountLocal = length;
     }
-    if (this->backwards) {
+    if (this->reverse) {
         this->currentRow = rowCount-1-start;
     }
     else {
@@ -44,7 +44,7 @@ void RowMovingUp::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matr
         this->time = currentTime;
         // paint next frame
         bool rowCondition = false;
-        if (this->backwards) {
+        if (this->reverse) {
             if (this->currentRow>=0) {
                 rowCondition = true;
             }
@@ -68,7 +68,7 @@ void RowMovingUp::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matr
                 onePixelUpdate.time = currentTime;
                 matrixUpdate.push_back(onePixelUpdate);
             }
-            if (this->backwards) {
+            if (this->reverse) {
                 this->currentRow--;
             }
             else {

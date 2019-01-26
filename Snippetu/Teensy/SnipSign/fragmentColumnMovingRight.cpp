@@ -15,7 +15,7 @@ void ColumnMovingRight::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri
     this->hueIncrement = hueIncrement;
 }
 
-void ColumnMovingRight::setAnimationProperties(int wait, int fade, bool backwards, int length, int start) {
+void ColumnMovingRight::setAnimationProperties(int wait, int fade, bool reverse, int length, int start) {
     this->wait = wait;
     this->fade = fade;
 
