@@ -78,7 +78,7 @@ void setup() {
 
 
 void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(100, 230, false);
+  turquoiseCMR.setAnimationProperties(100, 230, true, -1, 30);
 }
 void resetOrangeCMRAnimation() {
   orangeCMR.setAnimationProperties(30, 180, false);

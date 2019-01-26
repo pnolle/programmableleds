@@ -10,6 +10,7 @@ class ColumnMovingRight : public Fragment
         int lengthLocal, start, colCountLocal, currentCol, currentLed;
         LedUtils ledUtils;
         unsigned long time;
+        bool reverse;
     public:
         ColumnMovingRight(LedUtils ledUtils, unsigned long time);
         virtual void setAnimationProperties(int wait=10, int fade=250, bool reverse=false, int length=-1, int start=-1);

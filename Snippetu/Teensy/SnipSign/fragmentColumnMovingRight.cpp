@@ -17,11 +17,17 @@ void ColumnMovingRight::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri
 void ColumnMovingRight::setAnimationProperties(int wait, int fade, bool reverse, int length, int start) {
     this->wait = wait;
     this->fade = fade;
+    this->reverse = reverse;
     this->lengthLocal = length;
     this->colCountLocal = colCount;
     this->currentCol = 0;
     if (start>-1) {
-      this->currentCol = start; 
+      if (this->reverse) {
+        this->currentCol = colCount-start;
+      }
+      else {
+        this->currentCol = start;
+      }
     }
 }
 
@@ -37,7 +43,12 @@ void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate>
         this->time = currentTime;
         // paint next frame
         Serial.println((String) "currentCol" + this->currentCol + " .. length " + this->lengthLocal);
-        if (this->currentCol<this->colCountLocal) {
+        bool proceed = false;
+        if ((this->reverse && this->currentCol>=0) ||
+            (!this->reverse && this->currentCol<this->colCountLocal)){
+          proceed = true;
+        }
+        if (proceed == true) {
             for (int currentRow=0; currentRow<rowCount; currentRow++) {
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
@@ -51,7 +62,12 @@ void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate>
                 onePixelUpdate.time = currentTime;
                 matrixUpdate.push_back(onePixelUpdate);
             }
-            currentCol++;
+            if (this->reverse) {
+              currentCol--;
+            }
+            else {
+              currentCol++;
+            }
         }
         else {
             animationFinished = true;
