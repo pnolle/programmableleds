@@ -133,7 +133,7 @@ void loop() {
 
   if (matrixUpdate.size() > 0) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
-      int ledNum = matrixColumnsDownTop[it->row][it->col];
+      int ledNum = snipSignMatrix[it->row][it->col];
       if (ledNum > -1) {
         crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
         if (DEBUG) Serial.println((String) "matrixUpdate at time " + millis() + ": col" + it->col + " / row" + it->row + " ... hue" + it->hue + " ... sat" + it->sat + " ... bri" + it->bri + ": fade" + it->fade + " ... time" + it->time + " ... ledNum" + ledNum + " ... fadestrip[ledNum]" + fadestrip[ledNum]); 
