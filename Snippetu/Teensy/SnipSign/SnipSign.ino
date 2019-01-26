@@ -27,7 +27,7 @@ RowMovingUp redRMU(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
-#define DEBUG false
+#define DEBUG true
 #define SOUND2LIGHT false
 #define FRAGMENTS true
 
@@ -78,16 +78,16 @@ void setup() {
 
 
 void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(0, 0, 100, 230);
+  turquoiseCMR.setAnimationProperties(100, 230, false, 0, 0);
 }
 void resetOrangeCMRAnimation() {
-  orangeCMR.setAnimationProperties(0, 0, 30, 180);
+  orangeCMR.setAnimationProperties(30, 180, false, 0, 0);
 }
 void resetGreenRMUAnimation() {
-  greenRMU.setAnimationProperties(0, 0, 80, 230, true);
+  greenRMU.setAnimationProperties(80, 230, true, 0, 0);
 }
 void resetRedRMUAnimation() {
-  redRMU.setAnimationProperties(0, 0, 40, 230, false);
+  redRMU.setAnimationProperties(40, 230, false, 0, 0);
 }
 
 
@@ -117,19 +117,19 @@ void loop() {
     turquoiseAnimationFinished = false;
   }
 
-  greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
-  if (greenAnimationFinished == true) {
-    resetGreenRMUAnimation();
-    if (DEBUG) Serial.println((String) "greenAnimationFinished");
-    greenAnimationFinished = false;
-  }
+  // greenRMU.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
+  // if (greenAnimationFinished == true) {
+  //   resetGreenRMUAnimation();
+  //   if (DEBUG) Serial.println((String) "greenAnimationFinished");
+  //   greenAnimationFinished = false;
+  // }
 
-  redRMU.nextFrame(millis(), matrixUpdate, redAnimationFinished);
-  if (redAnimationFinished == true) {
-    resetRedRMUAnimation();
-    if (DEBUG) Serial.println((String) "redAnimationFinished");
-    redAnimationFinished = false;
-  }
+  // redRMU.nextFrame(millis(), matrixUpdate, redAnimationFinished);
+  // if (redAnimationFinished == true) {
+  //   resetRedRMUAnimation();
+  //   if (DEBUG) Serial.println((String) "redAnimationFinished");
+  //   redAnimationFinished = false;
+  // }
 
   if (matrixUpdate.size() > 0) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {

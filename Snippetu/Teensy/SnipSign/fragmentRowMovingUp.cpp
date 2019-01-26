@@ -15,7 +15,7 @@ void RowMovingUp::setColorProperties(uint8_t hue, uint8_t sat, uint8_t bri, doub
     this->hueIncrement = hueIncrement;
 }
 
-void RowMovingUp::setAnimationProperties(int length, int start, int wait, int fade, bool backwards) {
+void RowMovingUp::setAnimationProperties(int wait, int fade, bool backwards, int length, int start) {
     this->wait = wait;
     this->fade = fade;
     this->backwards = backwards;
