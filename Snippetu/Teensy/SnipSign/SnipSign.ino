@@ -20,10 +20,10 @@ MIDI part adapted from Teensy MIDI demo.
 using namespace std;
 
 LedUtils ledUtils;
-ColumnMovingRight turquoiseCMR(ledUtils, millis());
-ColumnMovingRight orangeCMR(ledUtils, millis());
-RowMovingDown greenRMD(ledUtils, millis());
-RowMovingDown redRMD(ledUtils, millis());
+ColumnMovingRight cmr1(ledUtils, millis());
+ColumnMovingRight cmr2(ledUtils, millis());
+RowMovingDown rmd1(ledUtils, millis());
+RowMovingDown rmd2(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
@@ -58,17 +58,17 @@ void setup() {
 
   // setupAudioIn();
 
-  turquoiseCMR.setColorProperties(39, 1.0, 150, 0.0);
-  resetTurquoiseCMRAnimation();
+  cmr1.setColorProperties(39, 1.0, 150, 0.0);
+  resetcmr1Animation();
 
-  orangeCMR.setColorProperties(30, 200, 250, 0.0);
-  resetOrangeCMRAnimation();
+  cmr2.setColorProperties(30, 200, 250, 0.0);
+  resetcmr2Animation();
 
-  greenRMD.setColorProperties(116, 78, 100, 0.0);
-  resetGreenRMDAnimation();
+  rmd1.setColorProperties(116, 78, 100, 0.0);
+  resetrmd1Animation();
 
-  redRMD.setColorProperties(0, 93, 94, 0.5);
-  resetRedRMDAnimation();
+  rmd2.setColorProperties(0, 93, 94, 0.5);
+  resetrmd2Animation();
 
   eraseAll();
 
@@ -77,17 +77,17 @@ void setup() {
 
 
 
-void resetTurquoiseCMRAnimation() {
-  turquoiseCMR.setAnimationProperties(100, 230, true, 20, 30);
+void resetcmr1Animation() {
+  cmr1.setAnimationProperties(100, 230, true, 20, 30);
 }
-void resetOrangeCMRAnimation() {
-  orangeCMR.setAnimationProperties(30, 180, false);
+void resetcmr2Animation() {
+  cmr2.setAnimationProperties(30, 180, false);
 }
-void resetGreenRMDAnimation() {
-  greenRMD.setAnimationProperties(40, 230, false, 10, 20);
+void resetrmd1Animation() {
+  rmd1.setAnimationProperties(40, 230, false, 10, 20);
 }
-void resetRedRMDAnimation() {
-  redRMD.setAnimationProperties(40, 230, false);
+void resetrmd2Animation() {
+  rmd2.setAnimationProperties(40, 230, false);
 }
 
 
@@ -103,30 +103,30 @@ void loop() {
 
   vector<PixelUpdate> matrixUpdate;
 
-  orangeCMR.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
+  cmr2.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
   if (orangeAnimationFinished == true) {
-    resetOrangeCMRAnimation();
+    resetcmr2Animation();
     if (DEBUG) Serial.println((String) "orangeAnimationFinished");
     orangeAnimationFinished = false;
   }
 
-  turquoiseCMR.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
+  cmr1.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
   if (turquoiseAnimationFinished == true) {
-    resetTurquoiseCMRAnimation();
+    resetcmr1Animation();
     if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
     turquoiseAnimationFinished = false;
   }
 
-   greenRMD.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
+   rmd1.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
    if (greenAnimationFinished == true) {
-     resetGreenRMDAnimation();
+     resetrmd1Animation();
      if (DEBUG) Serial.println((String) "greenAnimationFinished");
      greenAnimationFinished = false;
    }
 
-   redRMD.nextFrame(millis(), matrixUpdate, redAnimationFinished);
+   rmd2.nextFrame(millis(), matrixUpdate, redAnimationFinished);
    if (redAnimationFinished == true) {
-     resetRedRMDAnimation();
+     resetrmd2Animation();
      if (DEBUG) Serial.println((String) "redAnimationFinished");
      redAnimationFinished = false;
    }
