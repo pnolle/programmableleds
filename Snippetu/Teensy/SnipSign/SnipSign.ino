@@ -96,6 +96,13 @@ void loop() {
   bool rmd2Finished = false;
 
   vector<PixelUpdate> matrixUpdate;
+  
+  // usbMIDI.read() needs to be called rapidly from loop().  When
+  // each MIDI messages arrives, it return true.  The message must
+  // be fully processed before usbMIDI.read() is called again.
+  if (usbMIDI.read()) {
+    processMIDI();
+  }
 
   // cmr2.nextFrame(millis(), matrixUpdate, cmr2Finished);
   // if (cmr2Finished == true) {
