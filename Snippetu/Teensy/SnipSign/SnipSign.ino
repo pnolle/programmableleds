@@ -80,7 +80,7 @@ void startRmd1() {
   rmd1.setAnimationProperties(40, 230, false, 10, 20);
 }
 void startRmd2() {
-  rmd2.setColorProperties(0, 100, 87, 0.5);
+  rmd2.setColorProperties(0, 100, 60, 0.5);
   rmd2.setAnimationProperties(40, 230, true);
 }
 
@@ -90,40 +90,40 @@ void startRmd2() {
 void loop() {
 // ToDo: Refactor this into a generic function. Goal is that animations can be started like "impulses" and the rest will run automatically.
 // ToDo: active animation objects should sit in a vector and remove themselves when they're finished.
-  bool turquoiseAnimationFinished = false;
-  bool orangeAnimationFinished = false;
-  bool greenAnimationFinished = false;
-  bool redAnimationFinished = false;
+  bool cmr1Finished = false;
+  bool cmr2Finished = false;
+  bool rmd1Finished = false;
+  bool rmd2Finished = false;
 
   vector<PixelUpdate> matrixUpdate;
 
-  // cmr2.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
-  // if (orangeAnimationFinished == true) {
+  // cmr2.nextFrame(millis(), matrixUpdate, cmr2Finished);
+  // if (cmr2Finished == true) {
   //   resetcmr2Animation();
-  //   if (DEBUG) Serial.println((String) "orangeAnimationFinished");
-  //   orangeAnimationFinished = false;
+  //   if (DEBUG) Serial.println((String) "cmr2Finished");
+  //   cmr2Finished = false;
   // }
 
-  // cmr1.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
-  // if (turquoiseAnimationFinished == true) {
+  // cmr1.nextFrame(millis(), matrixUpdate, cmr1Finished);
+  // if (cmr1Finished == true) {
   //   resetcmr1Animation();
-  //   if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
-  //   turquoiseAnimationFinished = false;
+  //   if (DEBUG) Serial.println((String) "cmr1Finished");
+  //   cmr1Finished = false;
   // }
 
-  //  rmd1.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
-  //  if (greenAnimationFinished == true) {
+  //  rmd1.nextFrame(millis(), matrixUpdate, rmd1Finished);
+  //  if (rmd1Finished == true) {
   //    startRmd1();
-  //    if (DEBUG) Serial.println((String) "greenAnimationFinished");
-  //    greenAnimationFinished = false;
+  //    if (DEBUG) Serial.println((String) "rmd1Finished");
+  //    rmd1Finished = false;
   //  }
 
-   rmd2.nextFrame(millis(), matrixUpdate, redAnimationFinished);
-   if (redAnimationFinished == true) {
-     startRmd2();
-     if (DEBUG) Serial.println((String) "redAnimationFinished");
-     redAnimationFinished = false;
-   }
+   rmd2.nextFrame(millis(), matrixUpdate, rmd2Finished);
+  //  if (rmd2Finished == true) {
+  //    if (DEBUG) Serial.println((String) "rmd2Finished");
+  //    startRmd2();
+  //    rmd2Finished = false;
+  //  }
 
   if (matrixUpdate.size() > 0) {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it) {
@@ -134,9 +134,9 @@ void loop() {
       }
       fadestrip[ledNum] = it->fade;
     }
-    FastLED.show();
-    fadeIndividual();
   }
+  FastLED.show();
+  fadeIndividual();
 
 
 	// static uint8_t hue = 0;
