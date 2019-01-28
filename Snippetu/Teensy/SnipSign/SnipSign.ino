@@ -27,7 +27,7 @@ RowMovingDown rmd2(ledUtils, millis());
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
-#define DEBUG true
+#define DEBUG false
 #define SOUND2LIGHT false
 #define FRAGMENTS true
 
@@ -53,41 +53,35 @@ void setup() {
 
 	Serial.println("LED Setup");
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(crgbledstrip, NUM_LEDS);
-	LEDS.setBrightness(84); //84);
-  FastLED.show(); // Initialize all pixels to 'off'
+	LEDS.setBrightness(84);
+  eraseAll();
+  // FastLED.show(); // Initialize all pixels to 'off'
 
   // setupAudioIn();
 
-  cmr1.setColorProperties(39, 1.0, 150, 0.0);
-  resetcmr1Animation();
-
-  cmr2.setColorProperties(30, 200, 250, 0.0);
-  resetcmr2Animation();
-
-  rmd1.setColorProperties(116, 78, 100, 0.0);
-  resetrmd1Animation();
-
-  rmd2.setColorProperties(0, 93, 94, 0.5);
-  resetrmd2Animation();
-
-  eraseAll();
+  startRmd2();
 
   Serial.println("Setup done");
 }
 
 
 
-void resetcmr1Animation() {
+
+void startCmr1() { 
+  cmr1.setColorProperties(39, 1.0, 150, 0.0);
   cmr1.setAnimationProperties(100, 230, true, 20, 30);
 }
-void resetcmr2Animation() {
+void startCmr2() {
+  cmr2.setColorProperties(30, 200, 250, 0.0);
   cmr2.setAnimationProperties(30, 180, false);
 }
-void resetrmd1Animation() {
+void startRmd1() {
+  rmd1.setColorProperties(116, 78, 100, 0.0);
   rmd1.setAnimationProperties(40, 230, false, 10, 20);
 }
-void resetrmd2Animation() {
-  rmd2.setAnimationProperties(40, 230, false);
+void startRmd2() {
+  rmd2.setColorProperties(0, 100, 87, 0.5);
+  rmd2.setAnimationProperties(40, 230, true);
 }
 
 
@@ -103,30 +97,30 @@ void loop() {
 
   vector<PixelUpdate> matrixUpdate;
 
-  cmr2.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
-  if (orangeAnimationFinished == true) {
-    resetcmr2Animation();
-    if (DEBUG) Serial.println((String) "orangeAnimationFinished");
-    orangeAnimationFinished = false;
-  }
+  // cmr2.nextFrame(millis(), matrixUpdate, orangeAnimationFinished);
+  // if (orangeAnimationFinished == true) {
+  //   resetcmr2Animation();
+  //   if (DEBUG) Serial.println((String) "orangeAnimationFinished");
+  //   orangeAnimationFinished = false;
+  // }
 
-  cmr1.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
-  if (turquoiseAnimationFinished == true) {
-    resetcmr1Animation();
-    if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
-    turquoiseAnimationFinished = false;
-  }
+  // cmr1.nextFrame(millis(), matrixUpdate, turquoiseAnimationFinished);
+  // if (turquoiseAnimationFinished == true) {
+  //   resetcmr1Animation();
+  //   if (DEBUG) Serial.println((String) "turquoiseAnimationFinished");
+  //   turquoiseAnimationFinished = false;
+  // }
 
-   rmd1.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
-   if (greenAnimationFinished == true) {
-     resetrmd1Animation();
-     if (DEBUG) Serial.println((String) "greenAnimationFinished");
-     greenAnimationFinished = false;
-   }
+  //  rmd1.nextFrame(millis(), matrixUpdate, greenAnimationFinished);
+  //  if (greenAnimationFinished == true) {
+  //    startRmd1();
+  //    if (DEBUG) Serial.println((String) "greenAnimationFinished");
+  //    greenAnimationFinished = false;
+  //  }
 
    rmd2.nextFrame(millis(), matrixUpdate, redAnimationFinished);
    if (redAnimationFinished == true) {
-     resetrmd2Animation();
+     startRmd2();
      if (DEBUG) Serial.println((String) "redAnimationFinished");
      redAnimationFinished = false;
    }
