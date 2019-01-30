@@ -14,6 +14,7 @@ MIDI part adapted from Teensy MIDI demo.
 #include <FastLED.h>
 #include "fragmentColumnMovingRight.h"
 #include "fragmentRowMovingDown.h"
+#include "fragmentProperties.h"
 #include "vector"
 
 using namespace std;
@@ -117,12 +118,12 @@ void loop()
 
 
 
-void startCmr1() { 
-  cmr1.setColorProperties(39, 1.0, 150, 1.0);
+void startCmr1(FragmentProperties fP) {
+  cmr1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   cmr1.setAnimationProperties(80, 230, true, 30, 30);
 }
-void startCmr2() {
-  cmr2.setColorProperties(30, 200, 250, 0.0);
+void startCmr2(FragmentProperties fP) {
+  cmr2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   cmr2.setAnimationProperties(30, 180, false);
 }
 void startRmd1()
@@ -195,12 +196,24 @@ void processMIDI(void)
     else if (data1 == 2) {
       Serial.println("note 2");
       cmr1Running = 1;
-      startCmr1();
+      
+      FragmentProperties fP;
+      fP.hue = 39;
+      fP.sat = 1;
+      fP.bri = 150;
+      fP.hueIncrement = 1.0;
+      startCmr1(fP);
     }
     else if (data1 == 3) {
       Serial.println("note 3");
       cmr2Running = 1;
-      startCmr2();
+      
+      FragmentProperties fP;
+      fP.hue = 30;
+      fP.sat = 200;
+      fP.bri = 250;
+      fP.hueIncrement = 0.0;
+      startCmr2(fP);
     }
 
 
