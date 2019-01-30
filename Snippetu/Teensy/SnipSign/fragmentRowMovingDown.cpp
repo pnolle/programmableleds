@@ -40,7 +40,7 @@ void RowMovingDown::resetTimer(unsigned long time) {
     this->time = time;
 }
 
-void RowMovingDown::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, bool &animationFinished) {
+void RowMovingDown::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, int &animationRunning) {
     if (DEBUG) Serial.println((String) "nextFrame: currentTime " + currentTime + " > time " + this->time + " + wait " + this->wait + " = " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
 
     // check if defined wait is over
@@ -79,7 +79,7 @@ void RowMovingDown::nextFrame(unsigned long currentTime, vector<PixelUpdate> &ma
             this->lengthCounter++;
         }
         else {
-            animationFinished = true;
+            animationRunning = 0;
         }
     }
 }
