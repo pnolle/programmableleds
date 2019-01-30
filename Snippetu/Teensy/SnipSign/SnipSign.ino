@@ -175,16 +175,18 @@ void processMIDI(void)
     Serial.print(", velocity=");
     Serial.println(data2, DEC);
 
-    if (data1 == 0) {
+    // data1 = note
+    // data2 = velocity
+    if (data1 == 30) {
       Serial.println("note 0");
       rmd2Running = 1;
 
       FragmentProperties fP;
-      fP.hue = 0;
+      fP.hue = data2*2;
       fP.sat = 255; //200;
       fP.bri = 255; //60;
       fP.hueIncrement = 0.0;
-      fP.wait = 30;
+      fP.wait = channel*10; // channel number 1-16
       fP.fade = 230;
       fP.reverse = true;
       startRmd2(fP);
