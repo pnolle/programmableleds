@@ -181,8 +181,8 @@ void processMIDI(void)
 
       FragmentProperties fP;
       fP.hue = 0;
-      fP.sat = 200;
-      fP.bri = 60;
+      fP.sat = 255; //200;
+      fP.bri = 255; //60;
       fP.hueIncrement = 0.0;
       fP.wait = 30;
       fP.fade = 230;
@@ -195,9 +195,9 @@ void processMIDI(void)
 
       FragmentProperties fP;
       fP.hue = 42;
-      fP.sat = 200;
-      fP.bri = 60;
-      fP.hueIncrement = 0.0;
+      fP.sat = 255; //200;
+      fP.bri = 255; //60;
+      fP.hueIncrement = 0.9;
       fP.wait = 30;
       fP.fade = 230;
       fP.reverse = true;
