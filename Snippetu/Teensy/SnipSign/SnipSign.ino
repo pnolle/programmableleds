@@ -120,21 +120,21 @@ void loop()
 
 void startCmr1(FragmentProperties fP) {
   cmr1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
-  cmr1.setAnimationProperties(80, 230, true, 30, 30);
+  cmr1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
 void startCmr2(FragmentProperties fP) {
   cmr2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
-  cmr2.setAnimationProperties(30, 180, false);
+  cmr2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
-void startRmd1()
+void startRmd1(FragmentProperties fP)
 {
-  rmd1.setColorProperties(42, 200, 60, 0.0);
-  rmd1.setAnimationProperties(30, 230, true, 30, 0);
+  rmd1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  rmd1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
-void startRmd2()
+void startRmd2(FragmentProperties fP)
 {
-  rmd2.setColorProperties(0, 200, 60, 0.0);
-  rmd2.setAnimationProperties(30, 230, true);
+  rmd2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  rmd2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
 
 void processMIDI(void)
@@ -178,20 +178,32 @@ void processMIDI(void)
     if (data1 == 0) {
       Serial.println("note 0");
       rmd2Running = 1;
-      startRmd2();
 
-      // cmr1Running = 1;
-      // cmr1.setColorProperties(data1, 200, 250, 0.0);
-      // cmr1.setAnimationProperties(30, 180, false, 0, 0);
+      FragmentProperties fP;
+      fP.hue = 0;
+      fP.sat = 200;
+      fP.bri = 60;
+      fP.hueIncrement = 0.0;
+      fP.wait = 30;
+      fP.fade = 230;
+      fP.reverse = true;
+      startRmd2(fP);
     }
     else if (data1 == 1) {
       Serial.println("note 1");
       rmd1Running = 1;
-      startRmd1();
 
-      // cmr1Running = 1;
-      // cmr1.setColorProperties(data1, 200, 250, 0.0);
-      // cmr1.setAnimationProperties(30, 180, false, 0, 0);
+      FragmentProperties fP;
+      fP.hue = 42;
+      fP.sat = 200;
+      fP.bri = 60;
+      fP.hueIncrement = 0.0;
+      fP.wait = 30;
+      fP.fade = 230;
+      fP.reverse = true;
+      fP.length = 30;
+      fP.start = 0;
+      startRmd1(fP);
     }
     else if (data1 == 2) {
       Serial.println("note 2");
@@ -202,23 +214,27 @@ void processMIDI(void)
       fP.sat = 1;
       fP.bri = 150;
       fP.hueIncrement = 1.0;
+      fP.wait = 80;
+      fP.fade = 230;
+      fP.reverse = true;
+      fP.length = 30;
+      fP.start = 30;
       startCmr1(fP);
     }
     else if (data1 == 3) {
       Serial.println("note 3");
       cmr2Running = 1;
-      
+
       FragmentProperties fP;
       fP.hue = 30;
       fP.sat = 200;
       fP.bri = 250;
       fP.hueIncrement = 0.0;
+      fP.wait = 30;
+      fP.fade = 180;
+      fP.reverse = false;
       startCmr2(fP);
     }
-
-
-  // cmr2.setColorProperties(30, 200, 250, 0.0);
-  // cmr2.setAnimationProperties(30, 180, false);
     break;
 
   case usbMIDI.AfterTouchPoly: // 0xA0
