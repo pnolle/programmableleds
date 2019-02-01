@@ -211,7 +211,7 @@ void processMIDI(void)
     if (data1 <= 22) {
       Serial.println((String)"Region On");
       reg1Running = 1; 
-      reg1.setAnimationProperties(data1, 250);
+      reg1.setAnimationProperties(data1, 200);
     }
     else if (data1 == 30) {
       rmd2Running = 1;
