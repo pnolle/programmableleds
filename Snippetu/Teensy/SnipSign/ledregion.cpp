@@ -30,19 +30,20 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
     int regionPa[regionPaCount] = {170, 364, 365, 366, 367};
     
     int thisCount = 0;
+    int *thisRegion;
     switch (this->midiNote)
     {
     case 10:
         Serial.print("midiNote 10");
         thisCount = regionPCount;
+        thisRegion = regionP;
         break;
     case 11:
         Serial.print("midiNote 11");
         thisCount = regionPaCount;
+        thisRegion = regionP;
         break;
     }
-
-    Serial.println(" ---");
 
     // for (vector<int>::iterator it = regionByNote.begin(); it != regionByNote.end(); ++it) {
     //     //Serial.println((String) "regionU " + *it + " ... " + "h " + this->hue + " | s " + this->sat + " | b " + this->bri);
@@ -50,13 +51,13 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
 if (thisCount > 0) {
  
     for (int i = 0; i < thisCount; i++) {
-         Serial.println((String) "region " + i + " ... " + regionP[i] + " ... h " + this->hue + " | s " + this->sat + " | b " + this->bri);
+         Serial.println((String) "region " + i + " ... " + thisRegion[i] + " ... h " + this->hue + " | s " + this->sat + " | b " + this->bri);
 
         if (this->hueIncrement > 0)
             hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
         PixelUpdate onePixelUpdate;
-        onePixelUpdate.ledNum = regionP[i];
+        onePixelUpdate.ledNum = thisRegion[i];
         onePixelUpdate.hue = hue;
         onePixelUpdate.sat = this->sat;
         onePixelUpdate.bri = this->bri;
