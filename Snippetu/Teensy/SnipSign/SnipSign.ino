@@ -208,7 +208,7 @@ void processMIDI(void)
 
     // data1 = note
     // data2 = velocity
-    if (data1 == 10) {  // note 10 = U
+    if (data1 <= 22) {
       Serial.println((String)"Region On");
       reg1Running = 1; 
       reg1.setAnimationProperties(data1, 250);
