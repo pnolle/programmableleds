@@ -2,6 +2,7 @@
 #define PIXELUPDATE
 
 struct PixelUpdate {
+    int ledNum = -1;
     int col;
     int row;  
     double hue;

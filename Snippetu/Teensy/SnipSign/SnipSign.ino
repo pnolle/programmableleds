@@ -10,11 +10,12 @@ Contains parts from Marc Merlin's work Neopixel-IR.
 MIDI part adapted from Teensy MIDI demo.
 */
 
-#include "const.h"
+#include "constMatrix.h"
 #include <FastLED.h>
 #include "fragmentColumnMovingRight.h"
 #include "fragmentRowMovingDown.h"
 #include "fragmentProperties.h"
+#include "ledregion.h"
 #include "vector"
 
 using namespace std;
@@ -24,12 +25,14 @@ ColumnMovingRight cmr1(ledUtils, millis());
 ColumnMovingRight cmr2(ledUtils, millis());
 RowMovingDown rmd1(ledUtils, millis());
 RowMovingDown rmd2(ledUtils, millis());
+LedRegion reg1(ledUtils);
 
 // The following flags are ints, because bools couldn't be overwritten from functions. Strange! 0=false, 1=true.
 int cmr1Running = 0;
 int cmr2Running = 0;
 int rmd1Running = 0;
 int rmd2Running = 0;
+int reg1Running = 0;
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
@@ -97,12 +100,22 @@ void loop()
   {
     rmd2.nextFrame(millis(), matrixUpdate, rmd2Running);
   }
+  if (reg1Running > 0)
+  {
+    reg1.nextFrame(matrixUpdate);
+  }
 
   if (matrixUpdate.size() > 0)
   {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it)
     {
-      int ledNum = snipSignMatrix[it->row][it->col];
+      int ledNum = -1;
+      if (it->ledNum > -1) {
+        ledNum = it->ledNum;
+      }
+      else {
+        ledNum = snipSignMatrix[it->row][it->col];
+      }
       if (ledNum > -1)
       {
         crgbledstrip[ledNum] = CHSV(it->hue, it->sat, it->bri);
@@ -137,6 +150,20 @@ void startRmd2(FragmentProperties fP)
   rmd2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
 
+
+// void lightRegion(vector<PixelUpdate> &matrixUpdate) {
+//       for (int l=0; l<sizeof(regionU); l++) {
+//         PixelUpdate onePixelUpdate;
+//         onePixelUpdate.ledNum = regionU[l];
+//         onePixelUpdate.hue = data2*2;
+//         onePixelUpdate.sat = 200;
+//         onePixelUpdate.bri = 200;
+//         onePixelUpdate.fade = 200;
+//         matrixUpdate.push_back(onePixelUpdate);
+//       }
+// }
+
+
 void processMIDI(void)
 {
   byte type, channel, data1, data2, cable;
@@ -159,6 +186,10 @@ void processMIDI(void)
   switch (type)
   {
   case usbMIDI.NoteOff: // 0x80
+    if (data1 == 10) {  // note 10 = U
+      Serial.println((String)"Region Off");
+      reg1Running = 0; 
+    }
     // Serial.print("Note Off, ch=");
     // Serial.print(channel, DEC);
     // Serial.print(", note=");
@@ -177,8 +208,12 @@ void processMIDI(void)
 
     // data1 = note
     // data2 = velocity
-    if (data1 == 30) {
-      Serial.println("note 0");
+    if (data1 == 10) {  // note 10 = U
+      Serial.println((String)"Region On");
+      reg1Running = 1; 
+      reg1.setAnimationProperties(data1, 250);
+    }
+    else if (data1 == 30) {
       rmd2Running = 1;
 
       FragmentProperties fP;

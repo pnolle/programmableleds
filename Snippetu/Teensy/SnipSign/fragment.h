@@ -2,7 +2,7 @@
 #define FRAGMENT
 
 #include "Arduino.h"
-#include "const.h"
+#include "constMatrix.h"
 #include "pixelUpdate.h"
 #include "FastLED.h"
 #include "vector"
