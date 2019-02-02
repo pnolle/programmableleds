@@ -19,7 +19,7 @@ class LedRegion
         uint8_t hue, sat, bri;
         LedUtils ledUtils;
     public:
-        LedRegion(LedUtils ledUtils);
+        LedRegion(LedUtils ledUtils, int midiNote=0);
         virtual void setAnimationProperties(int midiNote, int fade=250);
         virtual void setColorProperties(uint8_t hue=0, uint8_t sat=0, uint8_t bri=255, double hueIncrement=0);
         virtual void nextFrame(vector<PixelUpdate> &matrixUpdate);

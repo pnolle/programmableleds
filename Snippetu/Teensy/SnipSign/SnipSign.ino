@@ -25,14 +25,58 @@ ColumnMovingRight cmr1(ledUtils, millis());
 ColumnMovingRight cmr2(ledUtils, millis());
 RowMovingDown rmd1(ledUtils, millis());
 RowMovingDown rmd2(ledUtils, millis());
-LedRegion reg1(ledUtils);
+LedRegion reg00(ledUtils, 0);
+LedRegion reg01(ledUtils, 1);
+LedRegion reg02(ledUtils, 2);
+LedRegion reg03(ledUtils, 3);
+LedRegion reg04(ledUtils, 4);
+LedRegion reg05(ledUtils, 5);
+LedRegion reg06(ledUtils, 6);
+LedRegion reg07(ledUtils, 7);
+LedRegion reg08(ledUtils, 8);
+LedRegion reg09(ledUtils, 9);
+LedRegion reg10(ledUtils, 10);
+LedRegion reg11(ledUtils, 11);
+LedRegion reg12(ledUtils, 12);
+LedRegion reg13(ledUtils, 13);
+LedRegion reg14(ledUtils, 14);
+LedRegion reg15(ledUtils, 15);
+LedRegion reg16(ledUtils, 16);
+LedRegion reg17(ledUtils, 17);
+LedRegion reg18(ledUtils, 18);
+LedRegion reg19(ledUtils, 19);
+LedRegion reg20(ledUtils, 20);
+LedRegion reg21(ledUtils, 21);
+LedRegion reg22(ledUtils, 22);
 
 // The following flags are ints, because bools couldn't be overwritten from functions. Strange! 0=false, 1=true.
 int cmr1Running = 0;
 int cmr2Running = 0;
 int rmd1Running = 0;
 int rmd2Running = 0;
-int reg1Running = 0;
+int reg00Running = 0;
+int reg01Running = 0;
+int reg02Running = 0;
+int reg03Running = 0;
+int reg04Running = 0;
+int reg05Running = 0;
+int reg06Running = 0;
+int reg07Running = 0;
+int reg08Running = 0;
+int reg09Running = 0;
+int reg10Running = 0;
+int reg11Running = 0;
+int reg12Running = 0;
+int reg13Running = 0;
+int reg14Running = 0;
+int reg15Running = 0;
+int reg16Running = 0;
+int reg17Running = 0;
+int reg18Running = 0;
+int reg19Running = 0;
+int reg20Running = 0;
+int reg21Running = 0;
+int reg22Running = 0;
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
@@ -68,7 +112,6 @@ void setup()
   Serial.println("Setup done");
 }
 
-
 void loop()
 {
   vector<PixelUpdate> matrixUpdate;
@@ -100,9 +143,99 @@ void loop()
   {
     rmd2.nextFrame(millis(), matrixUpdate, rmd2Running);
   }
-  if (reg1Running > 0)
+
+  // Check for enabled regions
+  if (reg00Running > 0)
   {
-    reg1.nextFrame(matrixUpdate);
+    reg00.nextFrame(matrixUpdate);
+  }
+  if (reg01Running > 0)
+  {
+    reg01.nextFrame(matrixUpdate);
+  }
+  if (reg02Running > 0)
+  {
+    reg02.nextFrame(matrixUpdate);
+  }
+  if (reg03Running > 0)
+  {
+    reg03.nextFrame(matrixUpdate);
+  }
+  if (reg04Running > 0)
+  {
+    reg04.nextFrame(matrixUpdate);
+  }
+  if (reg05Running > 0)
+  {
+    reg05.nextFrame(matrixUpdate);
+  }
+  if (reg06Running > 0)
+  {
+    reg06.nextFrame(matrixUpdate);
+  }
+  if (reg07Running > 0)
+  {
+    reg07.nextFrame(matrixUpdate);
+  }
+  if (reg08Running > 0)
+  {
+    reg08.nextFrame(matrixUpdate);
+  }
+  if (reg09Running > 0)
+  {
+    reg09.nextFrame(matrixUpdate);
+  }
+  if (reg10Running > 0)
+  {
+    reg10.nextFrame(matrixUpdate);
+  }
+  if (reg11Running > 0)
+  {
+    reg11.nextFrame(matrixUpdate);
+  }
+  if (reg12Running > 0)
+  {
+    reg12.nextFrame(matrixUpdate);
+  }
+  if (reg13Running > 0)
+  {
+    reg13.nextFrame(matrixUpdate);
+  }
+  if (reg14Running > 0)
+  {
+    reg14.nextFrame(matrixUpdate);
+  }
+  if (reg15Running > 0)
+  {
+    reg15.nextFrame(matrixUpdate);
+  }
+  if (reg16Running > 0)
+  {
+    reg16.nextFrame(matrixUpdate);
+  }
+  if (reg17Running > 0)
+  {
+    reg17.nextFrame(matrixUpdate);
+  }
+  if (reg18Running > 0)
+  {
+    reg18.nextFrame(matrixUpdate);
+  }
+  if (reg19Running > 0)
+  {
+    reg19.nextFrame(matrixUpdate);
+  }
+  if (reg20Running > 0)
+  {
+    reg20.nextFrame(matrixUpdate);
+  }
+  if (reg21Running > 0)
+  {
+    reg21.nextFrame(matrixUpdate);
+  }
+  if (reg22Running > 0)
+  {
+    reg22.nextFrame(matrixUpdate);
   }
 
   if (matrixUpdate.size() > 0)
@@ -110,10 +243,12 @@ void loop()
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it)
     {
       int ledNum = -1;
-      if (it->ledNum > -1) {
+      if (it->ledNum > -1)
+      {
         ledNum = it->ledNum;
       }
-      else {
+      else
+      {
         ledNum = snipSignMatrix[it->row][it->col];
       }
       if (ledNum > -1)
@@ -129,13 +264,13 @@ void loop()
   fadeIndividual();
 }
 
-
-
-void startCmr1(FragmentProperties fP) {
+void startCmr1(FragmentProperties fP)
+{
   cmr1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   cmr1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
-void startCmr2(FragmentProperties fP) {
+void startCmr2(FragmentProperties fP)
+{
   cmr2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   cmr2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
@@ -149,20 +284,6 @@ void startRmd2(FragmentProperties fP)
   rmd2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   rmd2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
-
-
-// void lightRegion(vector<PixelUpdate> &matrixUpdate) {
-//       for (int l=0; l<sizeof(regionU); l++) {
-//         PixelUpdate onePixelUpdate;
-//         onePixelUpdate.ledNum = regionU[l];
-//         onePixelUpdate.hue = data2*2;
-//         onePixelUpdate.sat = 200;
-//         onePixelUpdate.bri = 200;
-//         onePixelUpdate.fade = 200;
-//         matrixUpdate.push_back(onePixelUpdate);
-//       }
-// }
-
 
 void processMIDI(void)
 {
@@ -186,9 +307,97 @@ void processMIDI(void)
   switch (type)
   {
   case usbMIDI.NoteOff: // 0x80
-    if (data1 == 10) {  // note 10 = U
-      Serial.println((String)"Region Off");
-      reg1Running = 0; 
+    if (data1 == 0)
+    {
+      reg00Running = 0;
+    }
+    else if (data1 == 1)
+    {
+      reg01Running = 0;
+    }
+    else if (data1 == 2)
+    {
+      reg02Running = 0;
+    }
+    else if (data1 == 3)
+    {
+      reg03Running = 0;
+    }
+    else if (data1 == 4)
+    {
+      reg04Running = 0;
+    }
+    else if (data1 == 5)
+    {
+      reg05Running = 0;
+    }
+    else if (data1 == 6)
+    {
+      reg06Running = 0;
+    }
+    else if (data1 == 7)
+    {
+      reg07Running = 0;
+    }
+    else if (data1 == 8)
+    {
+      reg08Running = 0;
+    }
+    else if (data1 == 9)
+    {
+      reg09Running = 0;
+    }
+    else if (data1 == 10)
+    {
+      reg10Running = 0;
+    }
+    else if (data1 == 11)
+    {
+      reg11Running = 0;
+    }
+    else if (data1 == 12)
+    {
+      reg12Running = 0;
+    }
+    else if (data1 == 13)
+    {
+      reg13Running = 0;
+    }
+    else if (data1 == 14)
+    {
+      reg14Running = 0;
+    }
+    else if (data1 == 15)
+    {
+      reg15Running = 0;
+    }
+    else if (data1 == 16)
+    {
+      reg16Running = 0;
+    }
+    else if (data1 == 17)
+    {
+      reg17Running = 0;
+    }
+    else if (data1 == 18)
+    {
+      reg18Running = 0;
+    }
+    else if (data1 == 19)
+    {
+      reg19Running = 0;
+    }
+    else if (data1 == 20)
+    {
+      reg20Running = 0;
+    }
+    else if (data1 == 21)
+    {
+      reg21Running = 0;
+    }
+    else if (data1 == 22)
+    {
+      reg22Running = 0;
     }
     // Serial.print("Note Off, ch=");
     // Serial.print(channel, DEC);
@@ -208,30 +417,125 @@ void processMIDI(void)
 
     // data1 = note
     // data2 = velocity
-    if (data1 <= 22) {
-      Serial.println((String)"Region On");
-      reg1Running = 1; 
-      reg1.setAnimationProperties(data1, 200);
+    if (data1 == 00)
+    {
+      reg00Running = 1;
     }
-    else if (data1 == 30) {
+    else if (data1 == 1)
+    {
+      reg01Running = 1;
+    }
+    else if (data1 == 2)
+    {
+      reg02Running = 1;
+    }
+    else if (data1 == 3)
+    {
+      reg03Running = 1;
+    }
+    else if (data1 == 4)
+    {
+      reg04Running = 1;
+    }
+    else if (data1 == 5)
+    {
+      reg05Running = 1;
+    }
+    else if (data1 == 6)
+    {
+      reg06Running = 1;
+    }
+    else if (data1 == 7)
+    {
+      reg07Running = 1;
+    }
+    else if (data1 == 8)
+    {
+      reg08Running = 1;
+    }
+    else if (data1 == 9)
+    {
+      reg09Running = 1;
+    }
+    else if (data1 == 10)
+    {
+      reg10Running = 1;
+    }
+    else if (data1 == 11)
+    {
+      reg11Running = 1;
+    }
+    else if (data1 == 12)
+    {
+      reg12Running = 1;
+    }
+    else if (data1 == 13)
+    {
+      reg13Running = 1;
+    }
+    else if (data1 == 14)
+    {
+      reg14Running = 1;
+    }
+    else if (data1 == 15)
+    {
+      reg15Running = 1;
+    }
+    else if (data1 == 16)
+    {
+      reg16Running = 1;
+    }
+    else if (data1 == 17)
+    {
+      reg17Running = 1;
+    }
+    else if (data1 == 18)
+    {
+      reg18Running = 1;
+    }
+    else if (data1 == 19)
+    {
+      reg19Running = 1;
+    }
+    else if (data1 == 20)
+    {
+      reg20Running = 1;
+    }
+    else if (data1 == 21)
+    {
+      reg21Running = 1;
+    }
+    else if (data1 == 22)
+    {
+      reg22Running = 1;
+    }
+    else if (data1 == 30)
+    {
       rmd2Running = 1;
+
+//      int data2Hundreds = floor(data2/100)*100;
+//      double data2TensAndOnes = data2-data2Hundreds;
+//      Serial.println((String)"data2 " + data2 + " => " + data2Hundreds + " , " + data2TensAndOnes);
+
+      int bri = 255-((channel-1)*10.625); // channel 1-16 => 16*10.625=170, which is 2/3 of the total brightness. Lower that that doesn't really make sense.
+      Serial.println((String)"channel " + channel + " .. bri " + bri);
 
       FragmentProperties fP;
       fP.hue = data2*2;
       fP.sat = 255; //200;
-      fP.bri = 255; //60;
+      fP.bri = bri;
       fP.hueIncrement = 0.0;
-      fP.wait = channel*10; // channel number 1-16
+      fP.wait = 30;
       fP.fade = 230;
       fP.reverse = true;
       startRmd2(fP);
     }
-    else if (data1 == 1) {
-      Serial.println("note 1");
+    else if (data1 == 31)
+    {
       rmd1Running = 1;
 
       FragmentProperties fP;
-      fP.hue = 42;
+      fP.hue = data2*2;
       fP.sat = 255; //200;
       fP.bri = 255; //60;
       fP.hueIncrement = 0.9;
@@ -242,12 +546,12 @@ void processMIDI(void)
       fP.start = 0;
       startRmd1(fP);
     }
-    else if (data1 == 2) {
-      Serial.println("note 2");
+    else if (data1 == 40)
+    {
       cmr1Running = 1;
-      
+
       FragmentProperties fP;
-      fP.hue = 39;
+      fP.hue = data2*2;
       fP.sat = 1;
       fP.bri = 150;
       fP.hueIncrement = 1.0;
@@ -258,12 +562,12 @@ void processMIDI(void)
       fP.start = 30;
       startCmr1(fP);
     }
-    else if (data1 == 3) {
-      Serial.println("note 3");
+    else if (data1 == 41)
+    {
       cmr2Running = 1;
 
       FragmentProperties fP;
-      fP.hue = 30;
+      fP.hue = data2*2;
       fP.sat = 200;
       fP.bri = 250;
       fP.hueIncrement = 0.0;
