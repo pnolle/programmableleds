@@ -2,6 +2,11 @@
 #define FRAGMENTPROPERTIES
 
 struct FragmentProperties {
+    // FragmentProperties(int wait, int fade, bool reverse, int length, int start, bool strobe, int strobeIncDec, uint8_t hue, uint8_t sat, uint8_t bri, double hueIncrement, uint8_t thickness, uint8_t fadeIn)
+    // : wait(wait), fade(fade), reverse(reverse), length(length), start(start), strobe(strobe), strobeIncDec(strobeIncDec), hue(hue), sat(sat), bri(bri), hueIncrement(hueIncrement), thickness(thickness) { 
+
+    // }
+
     // Animation Properties
     int wait = 10;
     int fade = 250;

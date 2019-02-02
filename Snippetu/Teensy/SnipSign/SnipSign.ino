@@ -420,94 +420,117 @@ void processMIDI(void)
     if (data1 == 00)
     {
       reg00Running = 1;
+      reg00.setColorProperties(data2*2, 100);
     }
     else if (data1 == 1)
     {
       reg01Running = 1;
+      reg01.setColorProperties(data2*2, 100);
     }
     else if (data1 == 2)
     {
       reg02Running = 1;
+      reg02.setColorProperties(data2*2, 100);
     }
     else if (data1 == 3)
     {
       reg03Running = 1;
+      reg03.setColorProperties(data2*2, 100);
     }
     else if (data1 == 4)
     {
       reg04Running = 1;
+      reg04.setColorProperties(data2*2, 100);
     }
     else if (data1 == 5)
     {
       reg05Running = 1;
+      reg05.setColorProperties(data2*2, 100);
     }
     else if (data1 == 6)
     {
       reg06Running = 1;
+      reg06.setColorProperties(data2*2, 100);
     }
     else if (data1 == 7)
     {
       reg07Running = 1;
+      reg07.setColorProperties(data2*2, 100);
     }
     else if (data1 == 8)
     {
       reg08Running = 1;
+      reg08.setColorProperties(data2*2, 100);
     }
     else if (data1 == 9)
     {
       reg09Running = 1;
+      reg09.setColorProperties(data2*2, 100);
     }
     else if (data1 == 10)
     {
       reg10Running = 1;
+      reg10.setColorProperties(data2*2, 100);
     }
     else if (data1 == 11)
     {
       reg11Running = 1;
+      reg11.setColorProperties(data2*2, 100);
     }
     else if (data1 == 12)
     {
       reg12Running = 1;
+      reg12.setColorProperties(data2*2, 100);
     }
     else if (data1 == 13)
     {
       reg13Running = 1;
+      reg13.setColorProperties(data2*2, 100);
     }
     else if (data1 == 14)
     {
       reg14Running = 1;
+      reg14.setColorProperties(data2*2, 100);
     }
     else if (data1 == 15)
     {
       reg15Running = 1;
+      reg15.setColorProperties(data2*2, 100);
     }
     else if (data1 == 16)
     {
       reg16Running = 1;
+      reg16.setColorProperties(data2*2, 100);
     }
     else if (data1 == 17)
     {
       reg17Running = 1;
+      reg17.setColorProperties(data2*2, 100);
     }
     else if (data1 == 18)
     {
       reg18Running = 1;
+      reg18.setColorProperties(data2*2, 100);
     }
     else if (data1 == 19)
     {
       reg19Running = 1;
+      reg19.setColorProperties(data2*2, 100);
     }
     else if (data1 == 20)
     {
       reg20Running = 1;
+      reg20.setColorProperties(data2*2, 100);
     }
     else if (data1 == 21)
     {
       reg21Running = 1;
+      reg21.setColorProperties(data2*2, 100);
     }
     else if (data1 == 22)
     {
       reg22Running = 1;
+      reg22.setColorProperties(data2*2, 100);
     }
     else if (data1 == 30)
     {
