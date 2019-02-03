@@ -51,7 +51,35 @@ LedRegion reg20(ledUtils, 20);
 LedRegion reg21(ledUtils, 21);
 LedRegion reg22(ledUtils, 22);
 
-// 32 bit flag for running regions
+// The following flags are ints, because bools couldn't be overwritten from functions. Strange! 0=false, 1=true.
+int cmr1Running = 0;
+int cmr2Running = 0;
+int rmd1Running = 0;
+int rmd2Running = 0;
+int reg00Running = 0;
+int reg01Running = 0;
+int reg02Running = 0;
+int reg03Running = 0;
+int reg04Running = 0;
+int reg05Running = 0;
+int reg06Running = 0;
+int reg07Running = 0;
+int reg08Running = 0;
+int reg09Running = 0;
+int reg10Running = 0;
+int reg11Running = 0;
+int reg12Running = 0;
+int reg13Running = 0;
+int reg14Running = 0;
+int reg15Running = 0;
+int reg16Running = 0;
+int reg17Running = 0;
+int reg18Running = 0;
+int reg19Running = 0;
+int reg20Running = 0;
+int reg21Running = 0;
+int reg22Running = 0;
+
 uint32_t regionsRunning = 0;
 
 #define DATA_PIN 6
