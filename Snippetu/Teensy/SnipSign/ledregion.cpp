@@ -27,8 +27,8 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
     int regionN[regionNCount] = {301, 302, 300, 253, 252, 251, 250};
     int regionSICount = 6;
     int regionSI[regionSICount] = {303, 306, 307, 305, 304, 249};
-    int regionSP1Count = 12;
-    int regionSP1[regionSP1Count] = {308, 309, 310, 248, 177, 176, 247, 178, 246, 179, 180, 181};
+    int regionSPCount = 12;
+    int regionSP[regionSPCount] = {308, 309, 310, 248, 177, 176, 247, 178, 246, 179, 180, 181};
     int regionSP2Count = 13;
     int regionSP2[regionSP2Count] = {311, 313, 312, 175, 174, 173, 205, 201, 200, 197, 199, 198, 202};
     int regionSECount = 6;
@@ -86,8 +86,8 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
         thisRegion = regionSI;
         break;
     case 3:
-        thisCount = regionSP1Count;
-        thisRegion = regionSP1;
+        thisCount = regionSPCount;
+        thisRegion = regionSP;
         break;
     case 4:
         thisCount = regionSP2Count;

@@ -23,8 +23,10 @@ using namespace std;
 LedUtils ledUtils;
 ColumnMovingRight cmr1(ledUtils, millis());
 ColumnMovingRight cmr2(ledUtils, millis());
+ColumnMovingRight cmr3(ledUtils, millis());
 RowMovingDown rmd1(ledUtils, millis());
 RowMovingDown rmd2(ledUtils, millis());
+RowMovingDown rmd3(ledUtils, millis());
 LedRegion reg00(ledUtils, 0);
 LedRegion reg01(ledUtils, 1);
 LedRegion reg02(ledUtils, 2);
@@ -49,34 +51,8 @@ LedRegion reg20(ledUtils, 20);
 LedRegion reg21(ledUtils, 21);
 LedRegion reg22(ledUtils, 22);
 
-// The following flags are ints, because bools couldn't be overwritten from functions. Strange! 0=false, 1=true.
-int cmr1Running = 0;
-int cmr2Running = 0;
-int rmd1Running = 0;
-int rmd2Running = 0;
-int reg00Running = 0;
-int reg01Running = 0;
-int reg02Running = 0;
-int reg03Running = 0;
-int reg04Running = 0;
-int reg05Running = 0;
-int reg06Running = 0;
-int reg07Running = 0;
-int reg08Running = 0;
-int reg09Running = 0;
-int reg10Running = 0;
-int reg11Running = 0;
-int reg12Running = 0;
-int reg13Running = 0;
-int reg14Running = 0;
-int reg15Running = 0;
-int reg16Running = 0;
-int reg17Running = 0;
-int reg18Running = 0;
-int reg19Running = 0;
-int reg20Running = 0;
-int reg21Running = 0;
-int reg22Running = 0;
+// 32 bit flag for running regions
+uint32_t regionsRunning = 0;
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
@@ -145,95 +121,95 @@ void loop()
   }
 
   // Check for enabled regions
-  if (reg00Running > 0)
+  if (regionsRunning & (1 << 0))
   {
     reg00.nextFrame(matrixUpdate);
   }
-  if (reg01Running > 0)
+  if (regionsRunning & (1 << 1))
   {
     reg01.nextFrame(matrixUpdate);
   }
-  if (reg02Running > 0)
+  if (regionsRunning & (1 << 2))
   {
     reg02.nextFrame(matrixUpdate);
   }
-  if (reg03Running > 0)
+  if (regionsRunning & (1 << 3))
   {
     reg03.nextFrame(matrixUpdate);
   }
-  if (reg04Running > 0)
+  if (regionsRunning & (1 << 4))
   {
     reg04.nextFrame(matrixUpdate);
   }
-  if (reg05Running > 0)
+  if (regionsRunning & (1 << 5))
   {
     reg05.nextFrame(matrixUpdate);
   }
-  if (reg06Running > 0)
+  if (regionsRunning & (1 << 6))
   {
     reg06.nextFrame(matrixUpdate);
   }
-  if (reg07Running > 0)
+  if (regionsRunning & (1 << 7))
   {
     reg07.nextFrame(matrixUpdate);
   }
-  if (reg08Running > 0)
+  if (regionsRunning & (1 << 8))
   {
     reg08.nextFrame(matrixUpdate);
   }
-  if (reg09Running > 0)
+  if (regionsRunning & (1 << 9))
   {
     reg09.nextFrame(matrixUpdate);
   }
-  if (reg10Running > 0)
+  if (regionsRunning & (1 << 10))
   {
     reg10.nextFrame(matrixUpdate);
   }
-  if (reg11Running > 0)
+  if (regionsRunning & (1 << 11))
   {
     reg11.nextFrame(matrixUpdate);
   }
-  if (reg12Running > 0)
+  if (regionsRunning & (1 << 12))
   {
     reg12.nextFrame(matrixUpdate);
   }
-  if (reg13Running > 0)
+  if (regionsRunning & (1 << 13))
   {
     reg13.nextFrame(matrixUpdate);
   }
-  if (reg14Running > 0)
+  if (regionsRunning & (1 << 14))
   {
     reg14.nextFrame(matrixUpdate);
   }
-  if (reg15Running > 0)
+  if (regionsRunning & (1 << 15))
   {
     reg15.nextFrame(matrixUpdate);
   }
-  if (reg16Running > 0)
+  if (regionsRunning & (1 << 16))
   {
     reg16.nextFrame(matrixUpdate);
   }
-  if (reg17Running > 0)
+  if (regionsRunning & (1 << 17))
   {
     reg17.nextFrame(matrixUpdate);
   }
-  if (reg18Running > 0)
+  if (regionsRunning & (1 << 18))
   {
     reg18.nextFrame(matrixUpdate);
   }
-  if (reg19Running > 0)
+  if (regionsRunning & (1 << 19))
   {
     reg19.nextFrame(matrixUpdate);
   }
-  if (reg20Running > 0)
+  if (regionsRunning & (1 << 20))
   {
     reg20.nextFrame(matrixUpdate);
   }
-  if (reg21Running > 0)
+  if (regionsRunning & (1 << 21))
   {
     reg21.nextFrame(matrixUpdate);
   }
-  if (reg22Running > 0)
+  if (regionsRunning & (1 << 22))
   {
     reg22.nextFrame(matrixUpdate);
   }
@@ -319,96 +295,96 @@ void processMIDI(void)
 
     if (data1 == 0)
     {
-      reg00Running = 0;
+      regionsRunning &= (0 << 0);
       reg00.setAnimationProperties(data1, 250);
     }
     else if (data1 == 1)
     {
-      reg01Running = 0;
+      regionsRunning &= (0 << 1);
     }
     else if (data1 == 2)
     {
-      reg02Running = 0;
+      regionsRunning &= (0 << 2);
     }
     else if (data1 == 3)
     {
-      reg03Running = 0;
+      regionsRunning &= (0 << 3);
     }
     else if (data1 == 4)
     {
-      reg04Running = 0;
+      regionsRunning &= (0 << 4);
     }
     else if (data1 == 5)
     {
-      reg05Running = 0;
+      regionsRunning &= (0 << 5);
     }
     else if (data1 == 6)
     {
-      reg06Running = 0;
+      regionsRunning &= (0 << 6);
     }
     else if (data1 == 7)
     {
-      reg07Running = 0;
+      regionsRunning &= (0 << 7);
     }
     else if (data1 == 8)
     {
-      reg08Running = 0;
+      regionsRunning &= (0 << 8);
     }
     else if (data1 == 9)
     {
-      reg09Running = 0;
+      regionsRunning &= (0 << 9);
     }
     else if (data1 == 10)
     {
-      reg10Running = 0;
+      regionsRunning &= (0 << 10);
     }
     else if (data1 == 11)
     {
-      reg11Running = 0;
+      regionsRunning &= (0 << 11);
     }
     else if (data1 == 12)
     {
-      reg12Running = 0;
+      regionsRunning &= (0 << 12);
     }
     else if (data1 == 13)
     {
-      reg13Running = 0;
+      regionsRunning &= (0 << 13);
     }
     else if (data1 == 14)
     {
-      reg14Running = 0;
+      regionsRunning &= (0 << 14);
     }
     else if (data1 == 15)
     {
-      reg15Running = 0;
+      regionsRunning &= (0 << 15);
     }
     else if (data1 == 16)
     {
-      reg16Running = 0;
+      regionsRunning &= (0 << 16);
     }
     else if (data1 == 17)
     {
-      reg17Running = 0;
+      regionsRunning &= (0 << 17);
     }
     else if (data1 == 18)
     {
-      reg18Running = 0;
+      regionsRunning &= (0 << 18);
     }
     else if (data1 == 19)
     {
-      reg19Running = 0;
+      regionsRunning &= (0 << 19);
     }
     else if (data1 == 20)
     {
-      reg20Running = 0;
+      regionsRunning &= (0 << 20);
     }
     else if (data1 == 21)
     {
-      reg21Running = 0;
+      regionsRunning &= (0 << 21);
     }
     else if (data1 == 22)
     {
-      reg22Running = 0;
+      regionsRunning &= (0 << 22);
     }
     break;
 
@@ -424,117 +400,117 @@ void processMIDI(void)
     // data2 = velocity
     if (data1 == 0) // S
     {
-      reg00Running = 1;
+      regionsRunning |= (1 << 0);
       reg00.setColorProperties(data2*2, 100);
     }
     else if (data1 == 1)  // n
     {
-      reg01Running = 1;
+      regionsRunning |= (1 << 1);
       reg01.setColorProperties(data2*2, 100);
     }
     else if (data1 == 2)  // i
     {
-      reg02Running = 1;
+      regionsRunning |= (1 << 2);
       reg02.setColorProperties(data2*2, 100);
     }
-    else if (data1 == 3)  // Sp1
-    {
-      reg03Running = 1;
-      reg03.setColorProperties(data2*2, 100);
-    }
+     else if (data1 == 3)  // Sp1
+     {
+       regionsRunning |= (1 << 3);
+       reg03.setColorProperties(data2*2, 100);
+     }
     else if (data1 == 4)  // Sp2
     {
-      reg04Running = 1;
+      regionsRunning |= (1 << 4);
       reg04.setColorProperties(data2*2, 100);
     }
     else if (data1 == 5)  // Se
     {
-      reg05Running = 1;
+      regionsRunning |= (1 << 5);
       reg05.setColorProperties(data2*2, 100);
     }
     else if (data1 == 6)  // t
     {
-      reg06Running = 1;
+      regionsRunning |= (1 << 6);
       reg06.setColorProperties(data2*2, 100);
     }
     else if (data1 == 7)
     {
-      reg07Running = 1;
+      regionsRunning |= (1 << 7);
       reg07.setColorProperties(data2*2, 100);
     }
     else if (data1 == 8)
     {
-      reg08Running = 1;
+      regionsRunning |= (1 << 8);
       reg08.setColorProperties(data2*2, 100);
     }
     else if (data1 == 9)
     {
-      reg09Running = 1;
+      regionsRunning |= (1 << 9);
       reg09.setColorProperties(data2*2, 100);
     }
     else if (data1 == 10)
     {
-      reg10Running = 1;
+      regionsRunning |= (1 << 10);
       reg10.setColorProperties(data2*2, 100);
     }
     else if (data1 == 11)
     {
-      reg11Running = 1;
+      regionsRunning |= (1 << 11);
       reg11.setColorProperties(data2*2, 100);
     }
     else if (data1 == 12)
     {
-      reg12Running = 1;
+      regionsRunning |= (1 << 12);
       reg12.setColorProperties(data2*2, 100);
     }
     else if (data1 == 13)
     {
-      reg13Running = 1;
+      regionsRunning |= (1 << 13);
       reg13.setColorProperties(data2*2, 100);
     }
     else if (data1 == 14)
     {
-      reg14Running = 1;
+      regionsRunning |= (1 << 14);
       reg14.setColorProperties(data2*2, 100);
     }
     else if (data1 == 15)
     {
-      reg15Running = 1;
+      regionsRunning |= (1 << 15);
       reg15.setColorProperties(data2*2, 100);
     }
     else if (data1 == 16)
     {
-      reg16Running = 1;
+      regionsRunning |= (1 << 16);
       reg16.setColorProperties(data2*2, 100);
     }
     else if (data1 == 17)
     {
-      reg17Running = 1;
+      regionsRunning |= (1 << 17);
       reg17.setColorProperties(data2*2, 100);
     }
     else if (data1 == 18)
     {
-      reg18Running = 1;
+      regionsRunning |= (1 << 18);
       reg18.setColorProperties(data2*2, 100);
     }
     else if (data1 == 19)
     {
-      reg19Running = 1;
+      regionsRunning |= (1 << 19);
       reg19.setColorProperties(data2*2, 100);
     }
     else if (data1 == 20)
     {
-      reg20Running = 1;
+      regionsRunning |= (1 << 20);
       reg20.setColorProperties(data2*2, 100);
     }
     else if (data1 == 21)
     {
-      reg21Running = 1;
+      regionsRunning |= (1 << 21);
       reg21.setColorProperties(data2*2, 100);
     }
     else if (data1 == 22)
     {
-      reg22Running = 1;
+      regionsRunning |= (1 << 22);
       reg22.setColorProperties(data2*2, 100);
     }
     else if (data1 == 30)
