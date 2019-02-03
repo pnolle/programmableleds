@@ -307,9 +307,17 @@ void processMIDI(void)
   switch (type)
   {
   case usbMIDI.NoteOff: // 0x80
+    Serial.print("Note Off, ch=");
+    Serial.print(channel, DEC);
+    Serial.print(", note=");
+    Serial.print(data1, DEC);
+    Serial.print(", velocity=");
+    Serial.println(data2, DEC);
+
     if (data1 == 0)
     {
       reg00Running = 0;
+      reg00.setAnimationProperties(data1, 250);
     }
     else if (data1 == 1)
     {
@@ -399,12 +407,6 @@ void processMIDI(void)
     {
       reg22Running = 0;
     }
-    // Serial.print("Note Off, ch=");
-    // Serial.print(channel, DEC);
-    // Serial.print(", note=");
-    // Serial.print(data1, DEC);
-    // Serial.print(", velocity=");
-    // Serial.println(data2, DEC);
     break;
 
   case usbMIDI.NoteOn: // 0x90
@@ -417,7 +419,7 @@ void processMIDI(void)
 
     // data1 = note
     // data2 = velocity
-    if (data1 == 00)
+    if (data1 == 0)
     {
       reg00Running = 1;
       reg00.setColorProperties(data2*2, 100);
