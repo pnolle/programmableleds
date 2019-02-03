@@ -260,6 +260,9 @@ void loop()
       fadestrip[ledNum] = it->fade;
     }
   }
+  else {
+      crgbledstrip[0] = CHSV(0, 0, 0);
+  }
   FastLED.show();
   fadeIndividual();
 }
@@ -419,37 +422,37 @@ void processMIDI(void)
 
     // data1 = note
     // data2 = velocity
-    if (data1 == 0)
+    if (data1 == 0) // S
     {
       reg00Running = 1;
       reg00.setColorProperties(data2*2, 100);
     }
-    else if (data1 == 1)
+    else if (data1 == 1)  // n
     {
       reg01Running = 1;
       reg01.setColorProperties(data2*2, 100);
     }
-    else if (data1 == 2)
+    else if (data1 == 2)  // i
     {
       reg02Running = 1;
       reg02.setColorProperties(data2*2, 100);
     }
-    else if (data1 == 3)
+    else if (data1 == 3)  // Sp1
     {
       reg03Running = 1;
       reg03.setColorProperties(data2*2, 100);
     }
-    else if (data1 == 4)
+    else if (data1 == 4)  // Sp2
     {
       reg04Running = 1;
       reg04.setColorProperties(data2*2, 100);
     }
-    else if (data1 == 5)
+    else if (data1 == 5)  // Se
     {
       reg05Running = 1;
       reg05.setColorProperties(data2*2, 100);
     }
-    else if (data1 == 6)
+    else if (data1 == 6)  // t
     {
       reg06Running = 1;
       reg06.setColorProperties(data2*2, 100);

@@ -25,22 +25,24 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
     int regionS[regionSCount] = {254, 292, 293, 290, 291, 294, 289, 295, 288, 296, 286, 287, 297, 285, 298, 284, 283, 282, 281, 280, 299, 279, 278, 276, 277, 267, 275, 266, 268, 274, 273, 265, 269, 272, 270, 271, 255, 264, 257, 256, 263, 258, 259, 262, 260, 261};
     int regionNCount = 7;
     int regionN[regionNCount] = {301, 302, 300, 253, 252, 251, 250};
-    int regionICount = 6;
-    int regionI[regionICount] = {306, 307, 305, 304, 303, 249};
+
+    int regionSICount = 12;
+    int regionSI[regionSICount] = {303, 306, 307, 305, 304, 249, 0,1,2,3,4,5};
+
     int regionSP1Count = 12;
     int regionSP1[regionSP1Count] = {308, 309, 310, 248, 177, 176, 247, 178, 246, 179, 180, 181};
     int regionSP2Count = 13;
-    int regionSP2[regionSP2Count] = {311, 313, 312, 175, 174, 173, 205, 201, 200, 197, 199, 198, 196};
+    int regionSP2[regionSP2Count] = {311, 313, 312, 175, 174, 173, 205, 201, 200, 197, 199, 198, 202};
     int regionSECount = 6;
-    int regionSE[regionSECount] = {315, 314, 316, 171, 363, 362};
-    int regionSTCount = 22;
-    int regionST[regionSTCount] = {326, 325, 327, 324, 328, 323, 329, 322, 321, 210, 219, 318, 353, 317, 354, 355, 356, 357, 358, 359, 360, 361};
-    int regionSC1Count = 4;
-    int regionSC1[regionSC1Count] = {330, 331, 351, 352};
-    int regionSC2Count = 2;
-    int regionSC2[regionSC2Count] = {332, 350};
-    int regionSCISSORSCount = 17;
-    int regionSCISSORS[regionSCISSORSCount] = {337, 338, 335, 336, 339, 333, 334, 340, 341, 342, 348, 347, 346, 343, 349, 345, 344};
+    int regionSE[regionSECount] = {315, 314, 316, 171, 363, 172};
+    int regionSTCount = 21;
+    int regionST[regionSTCount] = {326, 325, 327, 324, 328, 323, 322, 321, 363, 362, 318, 353, 317, 354, 355, 356, 357, 358, 359, 360, 361};
+    int regionSC1Count = 3;
+    int regionSC1[regionSC1Count] = {329, 330, 352};
+    int regionSC2Count = 3;
+    int regionSC2[regionSC2Count] = {331, 351, 350};
+    int regionSCISSORSCount = 18;
+    int regionSCISSORS[regionSCISSORSCount] = {332, 337, 338, 335, 336, 339, 333, 334, 340, 341, 342, 348, 347, 346, 343, 349, 345, 344};
     int regionUCount = 59;
     int regionU[regionUCount] = {240, 241, 242, 239, 243, 204, 205, 206, 207, 238, 203, 208, 237, 244, 209, 236, 245, 247, 210, 235, 246, 211, 183, 196, 212, 234, 184, 195, 213, 233, 185, 194, 214, 232, 186, 193, 215, 231, 187, 192, 216, 230, 188, 189, 190, 191, 217, 229, 218, 228, 219, 227, 220, 226, 221, 225, 224, 223, 222};
     int regionP1Count = 40;
@@ -80,8 +82,8 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
         thisRegion = regionN;
         break;
     case 2:
-        thisCount = regionICount;
-        thisRegion = regionI;
+        thisCount = regionSICount;
+        thisRegion = regionSI;
         break;
     case 3:
         thisCount = regionSP1Count;
@@ -163,9 +165,10 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
 
     if (thisCount > 0)
     {
+        Serial.println((String)"thisCount " + thisCount);
         for (int i = 0; i < thisCount; i++)
         {
-            if (DEBUG) Serial.println((String) "region " + i + " ... " + thisRegion[i] + " ... h " + this->hue + " | s " + this->sat + " | b " + this->bri);
+            Serial.println((String) "region " + i + " ... " + thisRegion[i] + " ... h " + this->hue + " | s " + this->sat + " | b " + this->bri);
 
             if (this->hueIncrement > 0)
                 hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
