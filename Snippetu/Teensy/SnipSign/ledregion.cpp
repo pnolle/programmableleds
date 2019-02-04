@@ -55,8 +55,8 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
     int regionR[regionRCount] = {442, 443, 444, 445, 446, 440, 441, 447, 448, 438, 439, 449, 450, 451, 437, 436, 452, 435, 453, 434, 454, 456, 455, 433, 458, 457, 432, 459, 460, 431, 467, 466, 465, 464, 463, 462, 461, 468, 469, 470, 471, 472, 473, 474, 475, 103, 102, 101, 100, 99, 98, 97, 96, 95};
     int regionLaser1Count = 11;
     int regionLaser1[regionLaser1Count] = {66, 67, 68, 69, 65, 64, 63, 62, 61, 60, 70};
-    int regionLLCount = 17;
-    int regionLL[regionLLCount] = {421, 422, 423, 424, 112, 74, 75, 73, 76, 72, 77, 71, 59, 58, 57, 56, 55};
+    int regionLLCount = 16;
+    int regionLL[regionLLCount] = {422, 423, 424, 112, 74, 75, 73, 76, 72, 77, 71, 59, 58, 57, 56, 55};
     int regionLACount = 16;
     int regionLA[regionLACount] = {425, 426, 427, 111, 110, 109, 108, 78, 79, 80, 81, 54, 53, 52, 51, 50};
     int regionLSCount = 21;
@@ -169,9 +169,9 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
 
     if (thisCount > 0)
     {
-        Serial.println((String)"thisCount " + thisCount);
         for (int i = 0; i < thisCount; i++)
         {
+            // Do not uncomment. Teensy seems to require this waste of time to correctly render the small regions.
             Serial.println((String) "region " + i + " ... " + thisRegion[i] + " ... h " + this->hue + " | s " + this->sat + " | b " + this->bri);
 
             if (this->hueIncrement > 0)
