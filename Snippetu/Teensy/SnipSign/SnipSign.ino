@@ -445,125 +445,125 @@ void processMIDI(void)
     if (data1 == 0) // S
     {
       regionsRunning |= (1 << 0);
-      reg00.setColorProperties(data2*2, 100);
+      reg00.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 1)  // n
     {
       regionsRunning |= (1 << 1);
-      reg01.setColorProperties(data2*2, 100);
+      reg01.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 2)  // i
     {
       regionsRunning |= (1 << 2);
-      reg02.setColorProperties(data2*2, 100);
+      reg02.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
      else if (data1 == 3)  // Sp1
      {
        regionsRunning |= (1 << 3);
-       reg03.setColorProperties(data2*2, 100);
+       reg03.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
      }
     else if (data1 == 4)  // Sp2
     {
       regionsRunning |= (1 << 4);
-      reg04.setColorProperties(data2*2, 100);
+      reg04.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 5)  // Se
     {
       regionsRunning |= (1 << 5);
-      reg05.setColorProperties(data2*2, 100);
+      reg05.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 6)  // t
     {
       regionsRunning |= (1 << 6);
-      reg06.setColorProperties(data2*2, 100);
+      reg06.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 7)
     {
       regionsRunning |= (1 << 7);
-      reg07.setColorProperties(data2*2, 100);
+      reg07.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 8)
     {
       regionsRunning |= (1 << 8);
-      reg08.setColorProperties(data2*2, 100);
+      reg08.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 9)
     {
       regionsRunning |= (1 << 9);
-      reg09.setColorProperties(data2*2, 100);
+      reg09.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 10)
     {
       regionsRunning |= (1 << 10);
-      reg10.setColorProperties(data2*2, 100);
+      reg10.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 11)
     {
       regionsRunning |= (1 << 11);
-      reg11.setColorProperties(data2*2, 100);
+      reg11.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 12)
     {
       regionsRunning |= (1 << 12);
-      reg12.setColorProperties(data2*2, 100);
+      reg12.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 13)
     {
       regionsRunning |= (1 << 13);
-      reg13.setColorProperties(data2*2, 100);
+      reg13.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 14)
     {
       regionsRunning |= (1 << 14);
-      reg14.setColorProperties(data2*2, 100);
+      reg14.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 15)
     {
       regionsRunning |= (1 << 15);
-      reg15.setColorProperties(data2*2, 100);
+      reg15.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 16)
     {
       regionsRunning |= (1 << 16);
-      reg16.setColorProperties(data2*2, 100);
+      reg16.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 17)
     {
       regionsRunning |= (1 << 17);
-      reg17.setColorProperties(data2*2, 100);
+      reg17.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 18)
     {
       regionsRunning |= (1 << 18);
-      reg18.setColorProperties(data2*2, 100);
+      reg18.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 19)
     {
       regionsRunning |= (1 << 19);
-      reg19.setColorProperties(data2*2, 100);
+      reg19.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 20)
     {
       regionsRunning |= (1 << 20);
-      reg20.setColorProperties(data2*2, 100);
+      reg20.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 21)
     {
       regionsRunning |= (1 << 21);
-      reg21.setColorProperties(data2*2, 100);
+      reg21.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 22)
     {
       regionsRunning |= (1 << 22);
-      reg22.setColorProperties(data2*2, 100);
+      reg22.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 30)
     {
       rmd1Running = 1;
       FragmentProperties fP;
       fP.hue = data2*2;
-      fP.sat = 255; //200;
-      fP.bri = 255; //60;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
       fP.hueIncrement = 0.9;
       fP.wait = 30;
       fP.fade = 230;
@@ -578,8 +578,8 @@ void processMIDI(void)
       int bri = 255; //255-((channel-1)*10.625); // channel 1-16 => 16*10.625=170, which is 2/3 of the total value. Lower doesn't really make sense.
       FragmentProperties fP;
       fP.hue = data2*2;
-      fP.sat = 255-((channel-1)*15.9375); // channel 1-16 => 16*10.625=170, which is 2/3 of the total value. Lower doesn't really make sense.
-      fP.bri = bri;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
       fP.hueIncrement = 0.0;
       fP.wait = 30;
       fP.fade = 230;
@@ -592,8 +592,8 @@ void processMIDI(void)
 
       FragmentProperties fP;
       fP.hue = data2*2;
-      fP.sat = 1;
-      fP.bri = 150;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
       fP.hueIncrement = 1.0;
       fP.wait = 80;
       fP.fade = 230;
@@ -607,8 +607,8 @@ void processMIDI(void)
       cmr2Running = 1;
       FragmentProperties fP;
       fP.hue = data2*2;
-      fP.sat = 200;
-      fP.bri = 250;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
       fP.hueIncrement = 0.0;
       fP.wait = 30;
       fP.fade = 180;
@@ -620,8 +620,8 @@ void processMIDI(void)
       gr1Running = 1;
       FragmentProperties fP;
       fP.hue = data2*2;
-      fP.sat = 1;
-      fP.bri = 250;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
       fP.hueIncrement = 1.0;
       fP.wait = 10;
       fP.fade = 230;
