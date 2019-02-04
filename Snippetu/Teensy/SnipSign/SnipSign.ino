@@ -14,6 +14,7 @@ MIDI part adapted from Teensy MIDI demo.
 #include <FastLED.h>
 #include "fragmentColumnMovingRight.h"
 #include "fragmentRowMovingDown.h"
+#include "fragmentGoRound.h"
 #include "fragmentProperties.h"
 #include "ledregion.h"
 #include "vector"
@@ -27,6 +28,7 @@ ColumnMovingRight cmr3(ledUtils, millis());
 RowMovingDown rmd1(ledUtils, millis());
 RowMovingDown rmd2(ledUtils, millis());
 RowMovingDown rmd3(ledUtils, millis());
+GoRound gr1(ledUtils, millis());
 LedRegion reg00(ledUtils, 0);
 LedRegion reg01(ledUtils, 1);
 LedRegion reg02(ledUtils, 2);
@@ -56,6 +58,7 @@ int cmr1Running = 0;
 int cmr2Running = 0;
 int rmd1Running = 0;
 int rmd2Running = 0;
+int gr1Running = 0;
 
 uint32_t regionsRunning = 0;
 
@@ -291,6 +294,11 @@ void startRmd2(FragmentProperties fP)
 {
   rmd2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   rmd2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+}
+void startGr1(FragmentProperties fP)
+{
+  gr1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  gr1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
 
 void processMIDI(void)
@@ -544,29 +552,7 @@ void processMIDI(void)
     }
     else if (data1 == 30)
     {
-      rmd2Running = 1;
-
-//      int data2Hundreds = floor(data2/100)*100;
-//      double data2TensAndOnes = data2-data2Hundreds;
-//      Serial.println((String)"data2 " + data2 + " => " + data2Hundreds + " , " + data2TensAndOnes);
-
-      int bri = 255-((channel-1)*10.625); // channel 1-16 => 16*10.625=170, which is 2/3 of the total brightness. Lower that that doesn't really make sense.
-      Serial.println((String)"channel " + channel + " .. bri " + bri);
-
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = 255; //200;
-      fP.bri = bri;
-      fP.hueIncrement = 0.0;
-      fP.wait = 30;
-      fP.fade = 230;
-      fP.reverse = true;
-      startRmd2(fP);
-    }
-    else if (data1 == 31)
-    {
       rmd1Running = 1;
-
       FragmentProperties fP;
       fP.hue = data2*2;
       fP.sat = 255; //200;
@@ -578,6 +564,20 @@ void processMIDI(void)
       fP.length = 30;
       fP.start = 0;
       startRmd1(fP);
+    }
+    else if (data1 == 31)
+    {
+      rmd2Running = 1;
+      int bri = 255; //255-((channel-1)*10.625); // channel 1-16 => 16*10.625=170, which is 2/3 of the total value. Lower doesn't really make sense.
+      FragmentProperties fP;
+      fP.hue = data2*2;
+      fP.sat = 255-((channel-1)*15.9375); // channel 1-16 => 16*10.625=170, which is 2/3 of the total value. Lower doesn't really make sense.
+      fP.bri = bri;
+      fP.hueIncrement = 0.0;
+      fP.wait = 30;
+      fP.fade = 230;
+      fP.reverse = true;
+      startRmd2(fP);
     }
     else if (data1 == 40)
     {
@@ -598,7 +598,6 @@ void processMIDI(void)
     else if (data1 == 41)
     {
       cmr2Running = 1;
-
       FragmentProperties fP;
       fP.hue = data2*2;
       fP.sat = 200;
@@ -608,6 +607,21 @@ void processMIDI(void)
       fP.fade = 180;
       fP.reverse = false;
       startCmr2(fP);
+    }
+    else if (data1 == 70)
+    {
+      gr1Running = 1;
+      FragmentProperties fP;
+      fP.hue = data2*2;
+      fP.sat = 1;
+      fP.bri = 150;
+      fP.hueIncrement = 1.0;
+      fP.wait = 80;
+      fP.fade = 230;
+      // fP.reverse = true;
+      // fP.length = 30;
+      // fP.start = 30;
+      startGr1(fP);
     }
     break;
 
