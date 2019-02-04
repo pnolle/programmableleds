@@ -97,6 +97,12 @@ CRGB crgbledstrip[NUM_LEDS];
 // The fade values of the last 2 LEDs were always messed up. By increasing the array size by 2 the problem disappears... don't know why.
 int fadestrip[NUM_LEDS + 2];
 
+uint8_t fragmentsSaturation = 127;
+uint8_t fragmentsBrightness = 127;
+uint8_t regionsSaturation = 127;
+uint8_t regionsBrightness = 127;
+
+
 // AudioIn
 byte incomingAudio;
 boolean clipping = 0;
@@ -642,6 +648,17 @@ void processMIDI(void)
     Serial.print(data1, DEC);
     Serial.print(", value=");
     Serial.println(data2, DEC);
+
+    if (channel == 1) { // change applies to fragments
+      fragmentsSaturation = data1;
+      fragmentsBrightness = data2;
+    }
+    else if (channel == 2) {  // change applies to regions
+      regionsSaturation = data1;
+      regionsBrightness = data2;
+    }
+
+    Serial.println((String)"fSat " + fragmentsSaturation + " .. fBri " + fragmentsBrightness + " .. rSat " + regionsSaturation + " .. rBri " + regionsBrightness);
     break;
 
   case usbMIDI.ProgramChange: // 0xC0
