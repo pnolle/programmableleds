@@ -23,12 +23,12 @@ void GoRound::setAnimationProperties(int wait, int fade, bool reverse, int lengt
     this->goRoundCountLocal = goRoundCount;
     this->currentGoRound = 0;
     if (start>-1) {
-      if (this->reverse) {
+        if (this->reverse) {
         this->currentGoRound = goRoundCount-1-start;
-      }
-      else {
+        }
+        else {
         this->currentGoRound = start;
-      }
+        }
     }
     else if (this->reverse) {
         this->currentGoRound = colCount-1;
@@ -40,7 +40,8 @@ void GoRound::resetTimer(unsigned long time) {
 }
 
 void GoRound::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, int &animationRunning) {
-    if (DEBUG) Serial.println((String) "nextFrame: currentTime " + currentTime + " > time " + this->time + " + wait " + this->wait + " = " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
+    // Do not uncomment. Teensy seems to require this waste of time to do anything at all here!
+    Serial.println((String) "GoRound nextFrame: currentTime " + currentTime + " > time " + this->time + " + wait " + this->wait + " = " + (this->time+this->wait) + " ... t/f " + (currentTime >= this->time+this->wait));
 
     // check if defined wait is over
     if (currentTime >= this->time+this->wait) {
@@ -53,6 +54,7 @@ void GoRound::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUp
             (this->lengthLocal == -1 ||
              (this->lengthLocal>-1 && this->lengthCounter<this->lengthLocal))
              ) {
+              Serial.println((String)"GoRound update " + goRoundMatrix[this->currentGoRound]);
             PixelUpdate onePixelUpdate;
             onePixelUpdate.ledNum = goRoundMatrix[this->currentGoRound];
             onePixelUpdate.hue = hue;

@@ -14,7 +14,7 @@ MIDI part adapted from Teensy MIDI demo.
 #include <FastLED.h>
 #include "fragmentColumnMovingRight.h"
 #include "fragmentRowMovingDown.h"
-//#include "fragmentGoRound.h"
+#include "fragmentGoRound.h"
 #include "fragmentProperties.h"
 #include "ledregion.h"
 #include "vector"
@@ -28,7 +28,7 @@ ColumnMovingRight cmr3(ledUtils, millis());
 RowMovingDown rmd1(ledUtils, millis());
 RowMovingDown rmd2(ledUtils, millis());
 RowMovingDown rmd3(ledUtils, millis());
-// GoRound gr1(ledUtils, millis());
+GoRound gr1(ledUtils, millis());
 LedRegion reg00(ledUtils, 0);
 LedRegion reg01(ledUtils, 1);
 LedRegion reg02(ledUtils, 2);
@@ -147,10 +147,10 @@ void loop()
   {
     rmd2.nextFrame(millis(), matrixUpdate, rmd2Running);
   }
-  // if (gr1Running > 0)
-  // {
-  //   gr1.nextFrame(millis(), matrixUpdate, gr1Running);
-  // }
+  if (gr1Running > 0)
+  {
+    gr1.nextFrame(millis(), matrixUpdate, gr1Running);
+  }
 
   // Check for enabled regions
   if (regionsRunning & (1 << 0))
@@ -298,8 +298,8 @@ void startRmd2(FragmentProperties fP)
 void startGr1(FragmentProperties fP)
 {
   Serial.println("startGr1");
-  // gr1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
-  // gr1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+  gr1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  gr1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
 
 void processMIDI(void)
@@ -615,9 +615,9 @@ void processMIDI(void)
       FragmentProperties fP;
       fP.hue = data2*2;
       fP.sat = 1;
-      fP.bri = 150;
+      fP.bri = 250;
       fP.hueIncrement = 1.0;
-      fP.wait = 80;
+      fP.wait = 10;
       fP.fade = 230;
       // fP.reverse = true;
       // fP.length = 30;
