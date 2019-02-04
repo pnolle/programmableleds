@@ -56,6 +56,9 @@ int cmr1Running = 0;
 int cmr2Running = 0;
 int rmd1Running = 0;
 int rmd2Running = 0;
+
+uint32_t regionsRunning = 0;
+
 int reg00Running = 0;
 int reg01Running = 0;
 int reg02Running = 0;
@@ -79,8 +82,6 @@ int reg19Running = 0;
 int reg20Running = 0;
 int reg21Running = 0;
 int reg22Running = 0;
-
-uint32_t regionsRunning = 0;
 
 #define DATA_PIN 6
 #define NUM_LEDS 479
