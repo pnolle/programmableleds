@@ -22,7 +22,7 @@ void GoRound::setAnimationProperties(int wait, int fade, bool reverse, int lengt
     this->lengthCounter = 0;
     this->goRoundCountLocal = goRoundCount;
     this->currentGoRound = 0;
-    if (start>-1) {
+    if (start>0) {
         if (this->reverse) {
         this->currentGoRound = goRoundCount-1-start;
         }
@@ -47,12 +47,11 @@ void GoRound::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUp
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
         // paint next frame
-        bool proceed = false;
         if  (
             ((this->reverse && this->currentGoRound>=0) ||
              (!this->reverse && this->currentGoRound<this->goRoundCountLocal)) &&
-            (this->lengthLocal == -1 ||
-             (this->lengthLocal>-1 && this->lengthCounter<this->lengthLocal))
+            (this->lengthLocal == 0 ||
+             (this->lengthLocal>0 && this->lengthCounter<this->lengthLocal))
              ) {
               Serial.println((String)"GoRound update " + goRoundMatrix[this->currentGoRound]);
             PixelUpdate onePixelUpdate;

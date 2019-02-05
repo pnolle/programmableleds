@@ -22,7 +22,7 @@ void ColumnMovingRight::setAnimationProperties(int wait, int fade, bool reverse,
     this->lengthCounter = 0;
     this->colCountLocal = colCount;
     this->currentCol = 0;
-    if (start>-1) {
+    if (start>0) {
       if (this->reverse) {
         this->currentCol = colCount-1-start;
       }
@@ -46,16 +46,12 @@ void ColumnMovingRight::nextFrame(unsigned long currentTime, vector<PixelUpdate>
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
         // paint next frame
-        bool proceed = false;
         if  (
             ((this->reverse && this->currentCol>=0) ||
              (!this->reverse && this->currentCol<this->colCountLocal)) &&
-            (this->lengthLocal == -1 ||
-             (this->lengthLocal>-1 && this->lengthCounter<this->lengthLocal))
+            (this->lengthLocal == 0 ||
+             (this->lengthLocal>0 && this->lengthCounter<this->lengthLocal))
              ) {
-          proceed = true;
-        }
-        if (proceed == true) {
             for (int currentRow=0; currentRow<rowCount; currentRow++) {
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 

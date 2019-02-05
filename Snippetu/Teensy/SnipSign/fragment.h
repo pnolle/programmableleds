@@ -19,7 +19,7 @@ class Fragment
         uint8_t hue, sat, bri;
     public:
         Fragment() {};
-        virtual void setAnimationProperties(int wait=10, int fade=250, bool reverse=false, int length=-1, int start=-1);
+        virtual void setAnimationProperties(int wait=10, int fade=250, bool reverse=false, int length=0, int start=0);
         virtual void setColorProperties(uint8_t hue=0, uint8_t sat=0, uint8_t bri=255, double hueIncrement=0);
         virtual void nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUpdate, int &animationRunning);
         virtual void resetTimer(unsigned long time);

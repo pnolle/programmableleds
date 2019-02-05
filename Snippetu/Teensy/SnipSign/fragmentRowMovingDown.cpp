@@ -23,7 +23,7 @@ void RowMovingDown::setAnimationProperties(int wait, int fade, bool reverse, int
     this->lengthCounter = 0;
     this->rowCountLocal = rowCount;
     this->currentRow = 0;
-    if (start>-1) {
+    if (start>0) {
         if (this->reverse) {
             this->currentRow = rowCount-1-start;
         }
@@ -47,16 +47,12 @@ void RowMovingDown::nextFrame(unsigned long currentTime, vector<PixelUpdate> &ma
     if (currentTime >= this->time+this->wait) {
         this->time = currentTime;
         // paint next frame 
-        bool proceed = false;
         if  (
             ((this->reverse && this->currentRow>=0) ||
              (!this->reverse && this->currentRow<this->rowCountLocal)) &&
-            (this->lengthLocal == -1 ||
-             (this->lengthLocal>-1 && this->lengthCounter<this->lengthLocal))
+            (this->lengthLocal == 0 ||
+             (this->lengthLocal>0 && this->lengthCounter<this->lengthLocal))
              ) {
-          proceed = true;
-        }
-        if (proceed == true) {
             for (int currentCol=0; currentCol<colCount; currentCol++) {
                 if (this->hueIncrement > 0) hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
 
