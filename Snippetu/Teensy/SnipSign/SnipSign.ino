@@ -29,6 +29,10 @@ RowMovingDown rmd1(ledUtils, millis());
 RowMovingDown rmd2(ledUtils, millis());
 RowMovingDown rmd3(ledUtils, millis());
 GoRound gr1(ledUtils, millis());
+GoRound gr2(ledUtils, millis());
+GoRound gr3(ledUtils, millis());
+GoRound gr4(ledUtils, millis());
+GoRound gr5(ledUtils, millis());
 LedRegion reg00(ledUtils, 0);
 LedRegion reg01(ledUtils, 1);
 LedRegion reg02(ledUtils, 2);
@@ -59,6 +63,10 @@ int cmr2Running = 0;
 int rmd1Running = 0;
 int rmd2Running = 0;
 int gr1Running = 0;
+int gr2Running = 0;
+int gr3Running = 0;
+int gr4Running = 0;
+int gr5Running = 0;
 
 uint32_t regionsRunning = 0;
 
@@ -161,6 +169,22 @@ void loop()
   if (gr1Running > 0)
   {
     gr1.nextFrame(millis(), matrixUpdate, gr1Running);
+  }
+  if (gr2Running > 0)
+  {
+    gr2.nextFrame(millis(), matrixUpdate, gr2Running);
+  }
+  if (gr3Running > 0)
+  {
+    gr3.nextFrame(millis(), matrixUpdate, gr3Running);
+  }
+  if (gr4Running > 0)
+  {
+    gr4.nextFrame(millis(), matrixUpdate, gr4Running);
+  }
+  if (gr5Running > 0)
+  {
+    gr5.nextFrame(millis(), matrixUpdate, gr5Running);
   }
 
   // Check for enabled regions
@@ -310,6 +334,26 @@ void startGr1(FragmentProperties fP)
 {
   gr1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   gr1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+}
+void startGr2(FragmentProperties fP)
+{
+  gr2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  gr2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+}
+void startGr3(FragmentProperties fP)
+{
+  gr3.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  gr3.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+}
+void startGr4(FragmentProperties fP)
+{
+  gr4.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  gr4.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+}
+void startGr5(FragmentProperties fP)
+{
+  gr5.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  gr5.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
 
 void processMIDI(void)
@@ -659,6 +703,66 @@ void processMIDI(void)
       fP.length = fragmentsLength;
       fP.start = fragmentsStart;
       startGr1(fP);
+    }
+    else if (data1 == 71)
+    {
+      gr2Running = 1;
+      FragmentProperties fP;
+      fP.hue = data2*2;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
+      fP.hueIncrement = 1.0;
+      fP.wait = fragmentsWait;
+      fP.fade = fragmentsFade*2;
+      // fP.reverse = true;
+      fP.length = fragmentsLength;
+      fP.start = fragmentsStart;
+      startGr2(fP);
+    }
+    else if (data1 == 72)
+    {
+      gr3Running = 1;
+      FragmentProperties fP;
+      fP.hue = data2*2;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
+      fP.hueIncrement = 1.0;
+      fP.wait = fragmentsWait;
+      fP.fade = fragmentsFade*2;
+      // fP.reverse = true;
+      fP.length = fragmentsLength;
+      fP.start = fragmentsStart;
+      startGr3(fP);
+    }
+    else if (data1 == 73)
+    {
+      gr4Running = 1;
+      FragmentProperties fP;
+      fP.hue = data2*2;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
+      fP.hueIncrement = 1.0;
+      fP.wait = fragmentsWait;
+      fP.fade = fragmentsFade*2;
+      // fP.reverse = true;
+      fP.length = fragmentsLength;
+      fP.start = fragmentsStart;
+      startGr4(fP);
+    }
+    else if (data1 == 74)
+    {
+      gr5Running = 1;
+      FragmentProperties fP;
+      fP.hue = data2*2;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
+      fP.hueIncrement = 1.0;
+      fP.wait = fragmentsWait;
+      fP.fade = fragmentsFade*2;
+      // fP.reverse = true;
+      fP.length = fragmentsLength;
+      fP.start = fragmentsStart;
+      startGr5(fP);
     }
     break;
 
