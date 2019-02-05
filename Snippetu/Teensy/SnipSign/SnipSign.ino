@@ -101,6 +101,11 @@ uint8_t fragmentsSaturation = 127;
 uint8_t fragmentsBrightness = 127;
 uint8_t regionsSaturation = 127;
 uint8_t regionsBrightness = 127;
+uint8_t fragmentsFade = 120;
+uint8_t fragmentsWait = 30;
+uint8_t regionsFade = 120;
+uint8_t fragmentsStart = 0;
+uint8_t fragmentsLength = 0;
 
 
 // AudioIn
@@ -340,7 +345,6 @@ void processMIDI(void)
     if (data1 == 0)
     {
       regionsRunning &= (0 << 0);
-      reg00.setAnimationProperties(data1, 250);
     }
     else if (data1 == 1)
     {
@@ -445,116 +449,139 @@ void processMIDI(void)
     if (data1 == 0) // S
     {
       regionsRunning |= (1 << 0);
+      reg00.setAnimationProperties(data1, regionsFade);
       reg00.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 1)  // n
     {
       regionsRunning |= (1 << 1);
+      reg01.setAnimationProperties(data1, regionsFade);
       reg01.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 2)  // i
     {
       regionsRunning |= (1 << 2);
+      reg02.setAnimationProperties(data1, regionsFade);
       reg02.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
      else if (data1 == 3)  // Sp1
      {
-       regionsRunning |= (1 << 3);
-       reg03.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      regionsRunning |= (1 << 3);
+      reg03.setAnimationProperties(data1, regionsFade);
+      reg03.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
      }
     else if (data1 == 4)  // Sp2
     {
       regionsRunning |= (1 << 4);
+      reg04.setAnimationProperties(data1, regionsFade);
       reg04.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 5)  // Se
     {
       regionsRunning |= (1 << 5);
+      reg05.setAnimationProperties(data1, regionsFade);
       reg05.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 6)  // t
     {
       regionsRunning |= (1 << 6);
+      reg06.setAnimationProperties(data1, regionsFade);
       reg06.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 7)
     {
       regionsRunning |= (1 << 7);
+      reg07.setAnimationProperties(data1, regionsFade);
       reg07.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 8)
     {
       regionsRunning |= (1 << 8);
+      reg08.setAnimationProperties(data1, regionsFade);
       reg08.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 9)
     {
       regionsRunning |= (1 << 9);
+      reg09.setAnimationProperties(data1, regionsFade);
       reg09.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 10)
     {
       regionsRunning |= (1 << 10);
+      reg10.setAnimationProperties(data1, regionsFade);
       reg10.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 11)
     {
       regionsRunning |= (1 << 11);
+      reg11.setAnimationProperties(data1, regionsFade);
       reg11.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 12)
     {
       regionsRunning |= (1 << 12);
+      reg12.setAnimationProperties(data1, regionsFade);
       reg12.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 13)
     {
       regionsRunning |= (1 << 13);
+      reg13.setAnimationProperties(data1, regionsFade);
       reg13.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 14)
     {
       regionsRunning |= (1 << 14);
+      reg14.setAnimationProperties(data1, regionsFade);
       reg14.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 15)
     {
       regionsRunning |= (1 << 15);
+      reg15.setAnimationProperties(data1, regionsFade);
       reg15.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 16)
     {
       regionsRunning |= (1 << 16);
+      reg16.setAnimationProperties(data1, regionsFade);
       reg16.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 17)
     {
       regionsRunning |= (1 << 17);
+      reg17.setAnimationProperties(data1, regionsFade);
       reg17.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 18)
     {
       regionsRunning |= (1 << 18);
+      reg18.setAnimationProperties(data1, regionsFade);
       reg18.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 19)
     {
       regionsRunning |= (1 << 19);
+      reg19.setAnimationProperties(data1, regionsFade);
       reg19.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 20)
     {
       regionsRunning |= (1 << 20);
+      reg20.setAnimationProperties(data1, regionsFade);
       reg20.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 21)
     {
       regionsRunning |= (1 << 21);
+      reg21.setAnimationProperties(data1, regionsFade);
       reg21.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 22)
     {
       regionsRunning |= (1 << 22);
+      reg22.setAnimationProperties(data1, regionsFade);
       reg22.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
     }
     else if (data1 == 30)
@@ -649,16 +676,31 @@ void processMIDI(void)
     Serial.print(", value=");
     Serial.println(data2, DEC);
 
-    if (channel == 1) { // change applies to fragments
-      fragmentsSaturation = data1;
-      fragmentsBrightness = data2;
-    }
-    else if (channel == 2) {  // change applies to regions
-      regionsSaturation = data1;
-      regionsBrightness = data2;
-    }
+    // Sometimes messages with 0 values come in, that have not been defined in the DAW.
+    if (data1 > 0  && data2 > 0) {
+      if (channel == 1) { // saturation and brightness for fragments
+        fragmentsSaturation = data1;
+        fragmentsBrightness = data2;
+      }
+      else if (channel == 2) {  // saturation and brightness for regions
+        regionsSaturation = data1;
+        regionsBrightness = data2;
+      }
+      else if (channel == 3) {  // fade and wait for fragments
+        fragmentsFade = data1;
+        fragmentsWait = data2;
+      }
+      else if (channel == 4) {  // fade for regions
+        regionsFade = data1;
+      }
+      else if (channel == 5) {  // length and start for fragments
+        fragmentsLength = data1;
+        fragmentsStart = data2;
+      }
+      Serial.println((String)"fSat " + fragmentsSaturation + " .. fBri " + fragmentsBrightness + " .. fFad " + fragmentsFade + " .. fWai " + fragmentsWait + " .. fLen " + fragmentsLength + " .. fSta " + fragmentsStart);
+      Serial.println((String)"rSat " + regionsSaturation + " .. rBri " + regionsBrightness + " .. rFad " + regionsFade);
+    };
 
-    Serial.println((String)"fSat " + fragmentsSaturation + " .. fBri " + fragmentsBrightness + " .. rSat " + regionsSaturation + " .. rBri " + regionsBrightness);
     break;
 
   case usbMIDI.ProgramChange: // 0xC0
