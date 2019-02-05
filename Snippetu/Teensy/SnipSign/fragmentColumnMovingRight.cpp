@@ -18,7 +18,12 @@ void ColumnMovingRight::setAnimationProperties(int wait, int fade, bool reverse,
     this->wait = wait;
     this->fade = fade;
     this->reverse = reverse;
-    this->lengthLocal = length;
+    if (length > 0) {
+        this->lengthLocal = length;
+    }
+    else {
+        this->lengthLocal = colCount;
+    }
     this->lengthCounter = 0;
     this->colCountLocal = colCount;
     this->currentCol = 0;

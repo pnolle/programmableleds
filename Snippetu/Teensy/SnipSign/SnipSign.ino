@@ -679,6 +679,12 @@ void processMIDI(void)
     Serial.print(", value=");
     Serial.println(data2, DEC);
 
+    // These can be 0
+    if (channel == 5) {  // length and start for fragments
+      fragmentsLength = data1;
+      fragmentsStart = data2;
+    }
+
     // Sometimes messages with 0 values come in, that have not been defined in the DAW.
     if (data1 > 0  && data2 > 0) {
       if (channel == 1) { // saturation and brightness for fragments
@@ -695,10 +701,6 @@ void processMIDI(void)
       }
       else if (channel == 4) {  // fade for regions
         regionsFade = data1;
-      }
-      else if (channel == 5) {  // length and start for fragments
-        fragmentsLength = data1;
-        fragmentsStart = data2;
       }
       Serial.println((String)"fSat " + fragmentsSaturation + " .. fBri " + fragmentsBrightness + " .. fFad " + fragmentsFade + " .. fWai " + fragmentsWait + " .. fLen " + fragmentsLength + " .. fSta " + fragmentsStart);
       Serial.println((String)"rSat " + regionsSaturation + " .. rBri " + regionsBrightness + " .. rFad " + regionsFade);

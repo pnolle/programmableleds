@@ -19,7 +19,12 @@ void RowMovingDown::setAnimationProperties(int wait, int fade, bool reverse, int
     this->wait = wait;
     this->fade = fade;
     this->reverse = reverse;
-    this->lengthLocal = length;
+    if (length > 0) {
+        this->lengthLocal = length;
+    }
+    else {
+        this->lengthLocal = rowCount;
+    }
     this->lengthCounter = 0;
     this->rowCountLocal = rowCount;
     this->currentRow = 0;

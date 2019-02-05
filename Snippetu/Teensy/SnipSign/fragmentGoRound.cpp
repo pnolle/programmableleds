@@ -18,7 +18,14 @@ void GoRound::setAnimationProperties(int wait, int fade, bool reverse, int lengt
     this->wait = wait;
     this->fade = fade;
     this->reverse = reverse;
-    this->lengthLocal = length;
+        Serial.println((String)"GoRound::setAnimationProperties length >0? " + length);
+    if (length > 0) {
+        this->lengthLocal = length;
+    }
+    else {
+        this->lengthLocal = goRoundCount;
+    }
+        Serial.println((String)"GoRound::setAnimationProperties lengthLocal set to " + this->lengthLocal + " ... " + goRoundCount);
     this->lengthCounter = 0;
     this->goRoundCountLocal = goRoundCount;
     this->currentGoRound = 0;
@@ -53,7 +60,7 @@ void GoRound::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUp
             (this->lengthLocal == 0 ||
              (this->lengthLocal>0 && this->lengthCounter<this->lengthLocal))
              ) {
-              Serial.println((String)"GoRound update " + goRoundMatrix[this->currentGoRound]);
+              Serial.println((String)"GoRound update " + goRoundMatrix[this->currentGoRound] + " .. currentGoRound " + this->currentGoRound + " .. goRoundCountLocal " + this->goRoundCountLocal + " .. lengthLocal " + this->lengthLocal + " .. lengthCounter " + this->lengthCounter);
             PixelUpdate onePixelUpdate;
             onePixelUpdate.ledNum = goRoundMatrix[this->currentGoRound];
             onePixelUpdate.hue = hue;
@@ -72,6 +79,7 @@ void GoRound::nextFrame(unsigned long currentTime, vector<PixelUpdate> &matrixUp
             this->lengthCounter++;
         }
         else {
+            Serial.println((String)"GoRound stopped " + goRoundMatrix[this->currentGoRound] + " .. currentGoRound " + this->currentGoRound + " .. goRoundCountLocal " + this->goRoundCountLocal + " .. lengthLocal " + this->lengthLocal + " .. lengthCounter " + this->lengthCounter);
             animationRunning = 0;
         }
     }

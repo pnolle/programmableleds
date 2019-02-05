@@ -7,7 +7,7 @@ class GoRound : public Fragment
 {
     private:
         // shape
-        int lengthLocal, goRoundCountLocal, currentGoRound, lengthCounter;
+        uint16_t lengthLocal, goRoundCountLocal, currentGoRound, lengthCounter;
         LedUtils ledUtils;
         unsigned long time;
         bool reverse;
