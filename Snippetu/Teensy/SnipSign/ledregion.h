@@ -5,6 +5,7 @@
 #include "pixelUpdate.h"
 #include "FastLED.h"
 #include "constRegions.h"
+#include "constMatrix.h"
 
 using namespace std;
 

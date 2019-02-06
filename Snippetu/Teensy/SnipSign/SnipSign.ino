@@ -56,12 +56,19 @@ LedRegion reg19(ledUtils, 19);
 LedRegion reg20(ledUtils, 20);
 LedRegion reg21(ledUtils, 21);
 LedRegion reg22(ledUtils, 22);
+LedRegion reg23(ledUtils, 23);
+LedRegion reg24(ledUtils, 24);
+LedRegion reg25(ledUtils, 25);
+LedRegion reg26(ledUtils, 26);
+LedRegion reg27(ledUtils, 27);
 
 // The following flags are ints, because bools couldn't be overwritten from functions. Strange! 0=false, 1=true.
 int cmr1Running = 0;
 int cmr2Running = 0;
+int cmr3Running = 0;
 int rmd1Running = 0;
 int rmd2Running = 0;
+int rmd3Running = 0;
 int gr1Running = 0;
 int gr2Running = 0;
 int gr3Running = 0;
@@ -112,6 +119,7 @@ uint8_t regionsBrightness = 127;
 uint8_t fragmentsFade = 120;
 uint8_t fragmentsWait = 30;
 uint8_t regionsFade = 120;
+uint8_t regionsHueInc = 0;
 uint8_t fragmentsStart = 0;
 uint8_t fragmentsLength = 0;
 
@@ -158,6 +166,10 @@ void loop()
   {
     cmr2.nextFrame(millis(), matrixUpdate, cmr2Running);
   }
+  if (cmr3Running > 0)
+  {
+    cmr3.nextFrame(millis(), matrixUpdate, cmr3Running);
+  }
   if (rmd1Running > 0)
   {
     rmd1.nextFrame(millis(), matrixUpdate, rmd1Running);
@@ -165,6 +177,10 @@ void loop()
   if (rmd2Running > 0)
   {
     rmd2.nextFrame(millis(), matrixUpdate, rmd2Running);
+  }
+  if (rmd3Running > 0)
+  {
+    rmd3.nextFrame(millis(), matrixUpdate, rmd3Running);
   }
   if (gr1Running > 0)
   {
@@ -280,6 +296,26 @@ void loop()
   {
     reg22.nextFrame(matrixUpdate);
   }
+  if (regionsRunning & (1 << 23))
+  {
+    reg23.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 24))
+  {
+    reg24.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 25))
+  {
+    reg25.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 26))
+  {
+    reg26.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 27))
+  {
+    reg27.nextFrame(matrixUpdate);
+  }
 
   if (matrixUpdate.size() > 0)
   {
@@ -320,6 +356,11 @@ void startCmr2(FragmentProperties fP)
   cmr2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   cmr2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
+void startCmr3(FragmentProperties fP)
+{
+  cmr3.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  cmr3.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+}
 void startRmd1(FragmentProperties fP)
 {
   rmd1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
@@ -329,6 +370,11 @@ void startRmd2(FragmentProperties fP)
 {
   rmd2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
   rmd2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+}
+void startRmd3(FragmentProperties fP)
+{
+  rmd3.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  rmd3.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
 }
 void startGr1(FragmentProperties fP)
 {
@@ -477,6 +523,26 @@ void processMIDI(void)
     {
       regionsRunning &= (0 << 22);
     }
+    else if (data1 == 23)
+    {
+      regionsRunning &= (0 << 23);
+    }
+    else if (data1 == 24)
+    {
+      regionsRunning &= (0 << 24);
+    }
+    else if (data1 == 25)
+    {
+      regionsRunning &= (0 << 25);
+    }
+    else if (data1 == 26)
+    {
+      regionsRunning &= (0 << 26);
+    }
+    else if (data1 == 27)
+    {
+      regionsRunning &= (0 << 27);
+    }
     break;
 
   case usbMIDI.NoteOn: // 0x90
@@ -493,276 +559,229 @@ void processMIDI(void)
     {
       regionsRunning |= (1 << 0);
       reg00.setAnimationProperties(data1, regionsFade*2);
-      reg00.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg00.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 1)  // n
     {
       regionsRunning |= (1 << 1);
       reg01.setAnimationProperties(data1, regionsFade*2);
-      reg01.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg01.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 2)  // i
     {
       regionsRunning |= (1 << 2);
       reg02.setAnimationProperties(data1, regionsFade*2);
-      reg02.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg02.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
      else if (data1 == 3)  // Sp1
      {
       regionsRunning |= (1 << 3);
       reg03.setAnimationProperties(data1, regionsFade*2);
-      reg03.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg03.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
      }
     else if (data1 == 4)  // Sp2
     {
       regionsRunning |= (1 << 4);
       reg04.setAnimationProperties(data1, regionsFade*2);
-      reg04.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg04.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 5)  // Se
     {
       regionsRunning |= (1 << 5);
       reg05.setAnimationProperties(data1, regionsFade*2);
-      reg05.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg05.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 6)  // t
     {
       regionsRunning |= (1 << 6);
       reg06.setAnimationProperties(data1, regionsFade*2);
-      reg06.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg06.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 7)
     {
       regionsRunning |= (1 << 7);
       reg07.setAnimationProperties(data1, regionsFade*2);
-      reg07.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg07.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 8)
     {
       regionsRunning |= (1 << 8);
       reg08.setAnimationProperties(data1, regionsFade*2);
-      reg08.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg08.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 9)
     {
       regionsRunning |= (1 << 9);
       reg09.setAnimationProperties(data1, regionsFade*2);
-      reg09.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg09.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 10)
     {
       regionsRunning |= (1 << 10);
       reg10.setAnimationProperties(data1, regionsFade*2);
-      reg10.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg10.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 11)
     {
       regionsRunning |= (1 << 11);
       reg11.setAnimationProperties(data1, regionsFade*2);
-      reg11.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg11.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 12)
     {
       regionsRunning |= (1 << 12);
       reg12.setAnimationProperties(data1, regionsFade*2);
-      reg12.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg12.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 13)
     {
       regionsRunning |= (1 << 13);
       reg13.setAnimationProperties(data1, regionsFade*2);
-      reg13.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg13.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 14)
     {
       regionsRunning |= (1 << 14);
       reg14.setAnimationProperties(data1, regionsFade*2);
-      reg14.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg14.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 15)
     {
       regionsRunning |= (1 << 15);
       reg15.setAnimationProperties(data1, regionsFade*2);
-      reg15.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg15.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 16)
     {
       regionsRunning |= (1 << 16);
       reg16.setAnimationProperties(data1, regionsFade*2);
-      reg16.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg16.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 17)
     {
       regionsRunning |= (1 << 17);
       reg17.setAnimationProperties(data1, regionsFade*2);
-      reg17.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg17.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 18)
     {
       regionsRunning |= (1 << 18);
       reg18.setAnimationProperties(data1, regionsFade*2);
-      reg18.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg18.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 19)
     {
       regionsRunning |= (1 << 19);
       reg19.setAnimationProperties(data1, regionsFade*2);
-      reg19.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg19.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 20)
     {
       regionsRunning |= (1 << 20);
       reg20.setAnimationProperties(data1, regionsFade*2);
-      reg20.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg20.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 21)
     {
       regionsRunning |= (1 << 21);
       reg21.setAnimationProperties(data1, regionsFade*2);
-      reg21.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg21.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 22)
     {
       regionsRunning |= (1 << 22);
       reg22.setAnimationProperties(data1, regionsFade*2);
-      reg22.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1);
+      reg22.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+    }
+    else if (data1 == 23)
+    {
+      regionsRunning |= (1 << 23);
+      reg23.setAnimationProperties(data1, regionsFade*2);
+      reg23.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+    }
+    else if (data1 == 24)
+    {
+      regionsRunning |= (1 << 24);
+      reg24.setAnimationProperties(data1, regionsFade*2);
+      reg24.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+    }
+    else if (data1 == 25)
+    {
+      regionsRunning |= (1 << 25);
+      reg25.setAnimationProperties(data1, regionsFade*2);
+      reg25.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+    }
+    else if (data1 == 26)
+    {
+      regionsRunning |= (1 << 26);
+      reg26.setAnimationProperties(data1, regionsFade*2);
+      reg26.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+    }
+    else if (data1 == 27)
+    {
+      regionsRunning |= (1 << 27);
+      reg27.setAnimationProperties(data1, regionsFade*2);
+      reg27.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 30)
     {
       rmd1Running = 1;
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 0.9;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      fP.reverse = true;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startRmd1(fP);
+      startRmd1(getFragmentProperties(channel, data2));
     }
     else if (data1 == 31)
     {
       rmd2Running = 1;
-      int bri = 255; //255-((channel-1)*10.625); // channel 1-16 => 16*10.625=170, which is 2/3 of the total value. Lower doesn't really make sense.
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 0.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      fP.reverse = true;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startRmd2(fP);
+      startRmd2(getFragmentProperties(channel, data2));
+    }
+    else if (data1 == 32)
+    {
+      rmd3Running = 1;
+      startRmd3(getFragmentProperties(channel, data2));
     }
     else if (data1 == 40)
     {
       cmr1Running = 1;
-
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 1.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      fP.reverse = true;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startCmr1(fP);
+      startCmr1(getFragmentProperties(channel, data2));
     }
     else if (data1 == 41)
     {
       cmr2Running = 1;
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 0.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      fP.reverse = false;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startCmr2(fP);
+      startCmr2(getFragmentProperties(channel, data2));
+    }
+    else if (data1 == 42)
+    {
+      cmr3Running = 1;
+      startCmr3(getFragmentProperties(channel, data2));
+    }
+    else if (data1 == 41)
+    {
+      cmr2Running = 1;
+      startCmr2(getFragmentProperties(channel, data2));
     }
     else if (data1 == 70)
     {
       gr1Running = 1;
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 1.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      // fP.reverse = true;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startGr1(fP);
+      startGr1(getFragmentProperties(channel, data2));
     }
     else if (data1 == 71)
     {
       gr2Running = 1;
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 1.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      // fP.reverse = true;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startGr2(fP);
+      startGr2(getFragmentProperties(channel, data2));
     }
     else if (data1 == 72)
     {
       gr3Running = 1;
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 1.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      // fP.reverse = true;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startGr3(fP);
+      startGr3(getFragmentProperties(channel, data2));
     }
     else if (data1 == 73)
     {
       gr4Running = 1;
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 1.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      // fP.reverse = true;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startGr4(fP);
+      startGr4(getFragmentProperties(channel, data2));
     }
     else if (data1 == 74)
     {
       gr5Running = 1;
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 1.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      // fP.reverse = true;
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
-      startGr5(fP);
+      startGr5(getFragmentProperties(channel, data2));
     }
     break;
 
@@ -805,6 +824,8 @@ void processMIDI(void)
       }
       else if (channel == 4) {  // fade for regions
         regionsFade = data1;
+        // ToDo: HueInc commented out because sometimes it changes without the right message
+        //regionsHueInc = data2;
       }
       Serial.println((String)"fSat " + fragmentsSaturation + " .. fBri " + fragmentsBrightness + " .. fFad " + fragmentsFade + " .. fWai " + fragmentsWait + " .. fLen " + fragmentsLength + " .. fSta " + fragmentsStart);
       Serial.println((String)"rSat " + regionsSaturation + " .. rBri " + regionsBrightness + " .. rFad " + regionsFade);
@@ -890,6 +911,26 @@ void processMIDI(void)
   default:
     Serial.println("Opps, an unknown MIDI message type!");
   }
+}
+
+FragmentProperties getFragmentProperties(byte channel, byte data2) {
+      FragmentProperties fP;
+      fP.hue = data2*2;
+      fP.sat = fragmentsSaturation*2;
+      fP.bri = fragmentsBrightness*2;
+      fP.hueIncrement = 0.0;
+      fP.wait = fragmentsWait;
+      fP.fade = fragmentsFade*2;
+      if (channel == 1) {
+        fP.reverse = false;
+      }
+      else {
+        fP.reverse = true;
+      }
+      fP.length = fragmentsLength;
+      fP.start = fragmentsStart;
+
+      return fP;
 }
 
 void eraseAll()
