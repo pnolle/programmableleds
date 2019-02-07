@@ -220,10 +220,10 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
     {
         for (int i = 0; i < thisCount; i++)
         {
-            if (thisRegion[i] > -1) {
               // Do not uncomment. Teensy seems to require this waste of time to correctly render the small regions.
               Serial.println((String) "region " + i + " ... " + thisRegion[i] + " ... h " + this->hue + " | s " + this->sat + " | b " + this->bri + " | hueInc " + this->hueIncrement);
   
+            if (thisRegion[i] > -1) {
               if (this->hueIncrement > 0)
                   hue = ledUtils.incrementHue(this->hue, this->hueIncrement);
   
