@@ -149,7 +149,17 @@ void setup()
 
 void loop()
 {
-  vector<PixelUpdate> matrixUpdate;
+  vector<PixelUpdate> matrixUpdate; 
+  // dummy data
+  PixelUpdate onePixelUpdate;
+  for (uint16_t i = 0; i < NUM_LEDS; i+=25) {
+    onePixelUpdate.ledNum = i;
+    onePixelUpdate.hue = 1;
+    onePixelUpdate.sat = 1;
+    onePixelUpdate.bri = 1;
+    onePixelUpdate.fade = 1;
+    matrixUpdate.push_back(onePixelUpdate);
+  }
 
   // usbMIDI.read() needs to be called rapidly from loop().  When
   // each MIDI messages arrives, it return true.  The message must
@@ -317,6 +327,7 @@ void loop()
     reg27.nextFrame(matrixUpdate);
   }
 
+Serial.println((String)"marix size" + matrixUpdate.size());
   if (matrixUpdate.size() > 0)
   {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it)
