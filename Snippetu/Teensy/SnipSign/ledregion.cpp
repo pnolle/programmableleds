@@ -89,156 +89,139 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
 
     int16_t thisCount = 0;
     const int16_t *thisRegion;
+
+    if (this->channel == 1) {
     switch (this->midiNote)
     {
-    case 0:
-        if (this->channel <= 2) {
+        case 0:
             thisCount = regionSCount;
             thisRegion = regionS;
-        }
-        else if (this->channel == 3) {  // row regions
-            Serial.println((String)"row region " + this->midiNote);
-            thisCount = colCount;
-            thisRegion = snipSignMatrix[this->midiNote];
-        }
-        else if (this->channel == 4) {  // col regions
-            thisCount = rowCount;
-            int16_t colRegion[rowCount];
-            Serial.println((String)"assemblin col region " + this->midiNote);
-            for (int i=0; i<rowCount; i++) {
-                colRegion[i] = snipSignMatrix[i][this->midiNote];
-                Serial.print((String) colRegion[i] + ", ");
-            }
-            thisRegion = colRegion;
-        }
-        break;
-    case 1:
-        if (this->channel <= 2) {
+            break;
+        case 1:
             thisCount = regionNCount;
             thisRegion = regionN;
+            break;
+        case 2:
+            thisCount = regionSICount;
+            thisRegion = regionSI;
+            break;
+        case 3:
+            thisCount = regionSPCount;
+            thisRegion = regionSP;
+            break;
+        case 4:
+            thisCount = regionSP2Count;
+            thisRegion = regionSP2;
+            break;
+        case 5:
+            thisCount = regionSECount;
+            thisRegion = regionSE;
+            break;
+        case 6:
+            thisCount = regionSTCount;
+            thisRegion = regionST;
+            break;
+        case 7:
+            thisCount = regionSC1Count;
+            thisRegion = regionSC1;
+            break;
+        case 8:
+            thisCount = regionSC2Count;
+            thisRegion = regionSC2;
+            break;
+        case 9:
+            thisCount = regionSCISSORSCount;
+            thisRegion = regionSCISSORS;
+            break;
+        case 10:
+            thisCount = regionUCount;
+            thisRegion = regionU;
+            break;
+        case 11:
+            thisCount = regionP1Count;
+            thisRegion = regionP1;
+            break;
+        case 12:
+            thisCount = regionPARRCount;
+            thisRegion = regionPARR;
+            break;
+        case 13:
+            thisCount = regionP2Count;
+            thisRegion = regionP2;
+            break;
+        case 14:
+            thisCount = regionECount;
+            thisRegion = regionE;
+            break;
+        case 15:
+            thisCount = regionRCount;
+            thisRegion = regionR;
+            break;
+        case 16:
+            thisCount = regionLaser1Count;
+            thisRegion = regionLaser1;
+            break;
+        case 17:
+            thisCount = regionLLCount;
+            thisRegion = regionLL;
+            break;
+        case 18:
+            thisCount = regionLACount;
+            thisRegion = regionLA;
+            break;
+        case 19:
+            thisCount = regionLSCount;
+            thisRegion = regionLS;
+            break;
+        case 20:
+            thisCount = regionLECount;
+            thisRegion = regionLE;
+            break;
+        case 21:
+            thisCount = regionLRCount;
+            thisRegion = regionLR;
+            break;
+        case 22:
+            thisCount = regionLaser2Count;
+            thisRegion = regionLaser2;
+            break;
+        case 23:
+            thisCount = regionSnippetCount;
+            thisRegion = regionSnippet;
+            break;
+        case 24:
+            thisCount = regionUpperCount;
+            thisRegion = regionUpper;
+            break;
+        case 25:
+            thisCount = regionLaserCount;
+            thisRegion = regionLaser;
+            break;
+        case 26:
+            thisCount = regionAllCount;
+            thisRegion = regionAll;
+            break;
+        case 27:
+            thisCount = goRoundCount;
+            thisRegion = goRoundMatrix;
+            break;
         }
-        else if (this->channel == 3) {  // row regions
-            Serial.println((String)"row region " + this->midiNote);
+    }
+    else if (this->channel == 3) {  // row regions
+        if (this->midiNote < rowCount) {
             thisCount = colCount;
             thisRegion = snipSignMatrix[this->midiNote];
         }
-        else if (this->channel == 4) {  // col regions
+    }
+    else if (this->channel == 4) {  // col regions
+        if (this->midiNote < colCount) {
             thisCount = rowCount;
-//            thisRegion = getColRegion();
             int16_t colRegion[rowCount];
-            Serial.println((String)"assemblin col region " + this->midiNote);
             for (int i=0; i<rowCount; i++) {
                 colRegion[i] = snipSignMatrix[i][this->midiNote];
-                Serial.print((String) colRegion[i] + ", ");
             }
             thisRegion = colRegion;
         }
-        break;
-        break;
-    case 2:
-        thisCount = regionSICount;
-        thisRegion = regionSI;
-        break;
-    case 3:
-        thisCount = regionSPCount;
-        thisRegion = regionSP;
-        break;
-    case 4:
-        thisCount = regionSP2Count;
-        thisRegion = regionSP2;
-        break;
-    case 5:
-        thisCount = regionSECount;
-        thisRegion = regionSE;
-        break;
-    case 6:
-        thisCount = regionSTCount;
-        thisRegion = regionST;
-        break;
-    case 7:
-        thisCount = regionSC1Count;
-        thisRegion = regionSC1;
-        break;
-    case 8:
-        thisCount = regionSC2Count;
-        thisRegion = regionSC2;
-        break;
-    case 9:
-        thisCount = regionSCISSORSCount;
-        thisRegion = regionSCISSORS;
-        break;
-    case 10:
-        thisCount = regionUCount;
-        thisRegion = regionU;
-        break;
-    case 11:
-        thisCount = regionP1Count;
-        thisRegion = regionP1;
-        break;
-    case 12:
-        thisCount = regionPARRCount;
-        thisRegion = regionPARR;
-        break;
-    case 13:
-        thisCount = regionP2Count;
-        thisRegion = regionP2;
-        break;
-    case 14:
-        thisCount = regionECount;
-        thisRegion = regionE;
-        break;
-    case 15:
-        thisCount = regionRCount;
-        thisRegion = regionR;
-        break;
-    case 16:
-        thisCount = regionLaser1Count;
-        thisRegion = regionLaser1;
-        break;
-    case 17:
-        thisCount = regionLLCount;
-        thisRegion = regionLL;
-        break;
-    case 18:
-        thisCount = regionLACount;
-        thisRegion = regionLA;
-        break;
-    case 19:
-        thisCount = regionLSCount;
-        thisRegion = regionLS;
-        break;
-    case 20:
-        thisCount = regionLECount;
-        thisRegion = regionLE;
-        break;
-    case 21:
-        thisCount = regionLRCount;
-        thisRegion = regionLR;
-        break;
-    case 22:
-        thisCount = regionLaser2Count;
-        thisRegion = regionLaser2;
-        break;
-    case 23:
-        thisCount = regionSnippetCount;
-        thisRegion = regionSnippet;
-        break;
-    case 24:
-        thisCount = regionUpperCount;
-        thisRegion = regionUpper;
-        break;
-    case 25:
-        thisCount = regionLaserCount;
-        thisRegion = regionLaser;
-        break;
-    case 26:
-        thisCount = regionAllCount;
-        thisRegion = regionAll;
-        break;
-    case 27:
-        thisCount = goRoundCount;
-        thisRegion = goRoundMatrix;
-        break;
     }
 
     if (thisCount > 0)
