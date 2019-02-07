@@ -33,34 +33,34 @@ GoRound gr2(ledUtils, millis());
 GoRound gr3(ledUtils, millis());
 GoRound gr4(ledUtils, millis());
 GoRound gr5(ledUtils, millis());
-LedRegion reg00(ledUtils, 0);
-LedRegion reg01(ledUtils, 1);
-LedRegion reg02(ledUtils, 2);
-LedRegion reg03(ledUtils, 3);
-LedRegion reg04(ledUtils, 4);
-LedRegion reg05(ledUtils, 5);
-LedRegion reg06(ledUtils, 6);
-LedRegion reg07(ledUtils, 7);
-LedRegion reg08(ledUtils, 8);
-LedRegion reg09(ledUtils, 9);
-LedRegion reg10(ledUtils, 10);
-LedRegion reg11(ledUtils, 11);
-LedRegion reg12(ledUtils, 12);
-LedRegion reg13(ledUtils, 13);
-LedRegion reg14(ledUtils, 14);
-LedRegion reg15(ledUtils, 15);
-LedRegion reg16(ledUtils, 16);
-LedRegion reg17(ledUtils, 17);
-LedRegion reg18(ledUtils, 18);
-LedRegion reg19(ledUtils, 19);
-LedRegion reg20(ledUtils, 20);
-LedRegion reg21(ledUtils, 21);
-LedRegion reg22(ledUtils, 22);
-LedRegion reg23(ledUtils, 23);
-LedRegion reg24(ledUtils, 24);
-LedRegion reg25(ledUtils, 25);
-LedRegion reg26(ledUtils, 26);
-LedRegion reg27(ledUtils, 27);
+LedRegion reg00(ledUtils, 0, 1);
+LedRegion reg01(ledUtils, 1, 1);
+LedRegion reg02(ledUtils, 2, 1);
+LedRegion reg03(ledUtils, 3, 1);
+LedRegion reg04(ledUtils, 4, 1);
+LedRegion reg05(ledUtils, 5, 1);
+LedRegion reg06(ledUtils, 6, 1);
+LedRegion reg07(ledUtils, 7, 1);
+LedRegion reg08(ledUtils, 8, 1);
+LedRegion reg09(ledUtils, 9, 1);
+LedRegion reg10(ledUtils, 10, 1);
+LedRegion reg11(ledUtils, 11, 1);
+LedRegion reg12(ledUtils, 12, 1);
+LedRegion reg13(ledUtils, 13, 1);
+LedRegion reg14(ledUtils, 14, 1);
+LedRegion reg15(ledUtils, 15, 1);
+LedRegion reg16(ledUtils, 16, 1);
+LedRegion reg17(ledUtils, 17, 1);
+LedRegion reg18(ledUtils, 18, 1);
+LedRegion reg19(ledUtils, 19, 1);
+LedRegion reg20(ledUtils, 20, 1);
+LedRegion reg21(ledUtils, 21, 1);
+LedRegion reg22(ledUtils, 22, 1);
+LedRegion reg23(ledUtils, 23, 1);
+LedRegion reg24(ledUtils, 24, 1);
+LedRegion reg25(ledUtils, 25, 1);
+LedRegion reg26(ledUtils, 26, 1);
+LedRegion reg27(ledUtils, 27, 1);
 
 // The following flags are ints, because bools couldn't be overwritten from functions. Strange! 0=false, 1=true.
 int cmr1Running = 0;
@@ -75,7 +75,7 @@ int gr3Running = 0;
 int gr4Running = 0;
 int gr5Running = 0;
 
-uint32_t regionsRunning = 0;
+uint64_t regionsRunning = 0;
 
 int reg00Running = 0;
 int reg01Running = 0;
@@ -327,7 +327,6 @@ void loop()
     reg27.nextFrame(matrixUpdate);
   }
 
-Serial.println((String)"marix size" + matrixUpdate.size());
   if (matrixUpdate.size() > 0)
   {
     for (vector<PixelUpdate>::iterator it = matrixUpdate.begin(); it != matrixUpdate.end(); ++it)
@@ -442,118 +441,120 @@ void processMIDI(void)
     Serial.print(", velocity=");
     Serial.println(data2, DEC);
 
-    if (data1 == 0)
-    {
-      regionsRunning &= (0 << 0);
-    }
-    else if (data1 == 1)
-    {
-      regionsRunning &= (0 << 1);
-    }
-    else if (data1 == 2)
-    {
-      regionsRunning &= (0 << 2);
-    }
-    else if (data1 == 3)
-    {
-      regionsRunning &= (0 << 3);
-    }
-    else if (data1 == 4)
-    {
-      regionsRunning &= (0 << 4);
-    }
-    else if (data1 == 5)
-    {
-      regionsRunning &= (0 << 5);
-    }
-    else if (data1 == 6)
-    {
-      regionsRunning &= (0 << 6);
-    }
-    else if (data1 == 7)
-    {
-      regionsRunning &= (0 << 7);
-    }
-    else if (data1 == 8)
-    {
-      regionsRunning &= (0 << 8);
-    }
-    else if (data1 == 9)
-    {
-      regionsRunning &= (0 << 9);
-    }
-    else if (data1 == 10)
-    {
-      regionsRunning &= (0 << 10);
-    }
-    else if (data1 == 11)
-    {
-      regionsRunning &= (0 << 11);
-    }
-    else if (data1 == 12)
-    {
-      regionsRunning &= (0 << 12);
-    }
-    else if (data1 == 13)
-    {
-      regionsRunning &= (0 << 13);
-    }
-    else if (data1 == 14)
-    {
-      regionsRunning &= (0 << 14);
-    }
-    else if (data1 == 15)
-    {
-      regionsRunning &= (0 << 15);
-    }
-    else if (data1 == 16)
-    {
-      regionsRunning &= (0 << 16);
-    }
-    else if (data1 == 17)
-    {
-      regionsRunning &= (0 << 17);
-    }
-    else if (data1 == 18)
-    {
-      regionsRunning &= (0 << 18);
-    }
-    else if (data1 == 19)
-    {
-      regionsRunning &= (0 << 19);
-    }
-    else if (data1 == 20)
-    {
-      regionsRunning &= (0 << 20);
-    }
-    else if (data1 == 21)
-    {
-      regionsRunning &= (0 << 21);
-    }
-    else if (data1 == 22)
-    {
-      regionsRunning &= (0 << 22);
-    }
-    else if (data1 == 23)
-    {
-      regionsRunning &= (0 << 23);
-    }
-    else if (data1 == 24)
-    {
-      regionsRunning &= (0 << 24);
-    }
-    else if (data1 == 25)
-    {
-      regionsRunning &= (0 << 25);
-    }
-    else if (data1 == 26)
-    {
-      regionsRunning &= (0 << 26);
-    }
-    else if (data1 == 27)
-    {
-      regionsRunning &= (0 << 27);
-    }
+    regionsRunning &= (0 << data1);
+
+    // if (data1 == 0)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 1)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 2)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 3)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 4)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 5)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 6)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 7)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 8)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 9)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 10)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 11)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 12)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 13)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 14)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 15)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 16)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 17)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 18)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 19)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 20)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 21)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 22)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 23)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 24)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 25)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 26)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
+    // else if (data1 == 27)
+    // {
+    //   regionsRunning &= (0 << data1);
+    // }
     break;
 
   case usbMIDI.NoteOn: // 0x90
@@ -564,174 +565,172 @@ void processMIDI(void)
     Serial.print(", velocity=");
     Serial.println(data2, DEC);
 
-    // data1 = note
-    // data2 = velocity
     if (data1 == 0) // S
     {
-      regionsRunning |= (1 << 0);
-      reg00.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg00.setAnimationProperties(data1, channel, regionsFade*2);
       reg00.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 1)  // n
     {
-      regionsRunning |= (1 << 1);
-      reg01.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg01.setAnimationProperties(data1, channel, regionsFade*2);
       reg01.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 2)  // i
     {
-      regionsRunning |= (1 << 2);
-      reg02.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg02.setAnimationProperties(data1, channel, regionsFade*2);
       reg02.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
-     else if (data1 == 3)  // Sp1
-     {
-      regionsRunning |= (1 << 3);
-      reg03.setAnimationProperties(data1, regionsFade*2);
+    else if (data1 == 3)  // Sp1
+    {
+      regionsRunning |= (1 << data1);
+      reg03.setAnimationProperties(data1, channel, regionsFade*2);
       reg03.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
-     }
+    }
     else if (data1 == 4)  // Sp2
     {
-      regionsRunning |= (1 << 4);
-      reg04.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg04.setAnimationProperties(data1, channel, regionsFade*2);
       reg04.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 5)  // Se
     {
-      regionsRunning |= (1 << 5);
-      reg05.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg05.setAnimationProperties(data1, channel, regionsFade*2);
       reg05.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 6)  // t
     {
-      regionsRunning |= (1 << 6);
-      reg06.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg06.setAnimationProperties(data1, channel, regionsFade*2);
       reg06.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 7)
     {
-      regionsRunning |= (1 << 7);
-      reg07.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg07.setAnimationProperties(data1, channel, regionsFade*2);
       reg07.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 8)
     {
-      regionsRunning |= (1 << 8);
-      reg08.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg08.setAnimationProperties(data1, channel, regionsFade*2);
       reg08.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 9)
     {
-      regionsRunning |= (1 << 9);
-      reg09.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg09.setAnimationProperties(data1, channel, regionsFade*2);
       reg09.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 10)
     {
-      regionsRunning |= (1 << 10);
-      reg10.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg10.setAnimationProperties(data1, channel, regionsFade*2);
       reg10.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 11)
     {
-      regionsRunning |= (1 << 11);
-      reg11.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg11.setAnimationProperties(data1, channel, regionsFade*2);
       reg11.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 12)
     {
-      regionsRunning |= (1 << 12);
-      reg12.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg12.setAnimationProperties(data1, channel, regionsFade*2);
       reg12.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 13)
     {
-      regionsRunning |= (1 << 13);
-      reg13.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg13.setAnimationProperties(data1, channel, regionsFade*2);
       reg13.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 14)
     {
-      regionsRunning |= (1 << 14);
-      reg14.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg14.setAnimationProperties(data1, channel, regionsFade*2);
       reg14.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 15)
     {
-      regionsRunning |= (1 << 15);
-      reg15.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg15.setAnimationProperties(data1, channel, regionsFade*2);
       reg15.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 16)
     {
-      regionsRunning |= (1 << 16);
-      reg16.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg16.setAnimationProperties(data1, channel, regionsFade*2);
       reg16.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 17)
     {
-      regionsRunning |= (1 << 17);
-      reg17.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg17.setAnimationProperties(data1, channel, regionsFade*2);
       reg17.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 18)
     {
-      regionsRunning |= (1 << 18);
-      reg18.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg18.setAnimationProperties(data1, channel, regionsFade*2);
       reg18.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 19)
     {
-      regionsRunning |= (1 << 19);
-      reg19.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg19.setAnimationProperties(data1, channel, regionsFade*2);
       reg19.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 20)
     {
-      regionsRunning |= (1 << 20);
-      reg20.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg20.setAnimationProperties(data1, channel, regionsFade*2);
       reg20.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 21)
     {
-      regionsRunning |= (1 << 21);
-      reg21.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg21.setAnimationProperties(data1, channel, regionsFade*2);
       reg21.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 22)
     {
-      regionsRunning |= (1 << 22);
-      reg22.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg22.setAnimationProperties(data1, channel, regionsFade*2);
       reg22.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 23)
     {
-      regionsRunning |= (1 << 23);
-      reg23.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg23.setAnimationProperties(data1, channel, regionsFade*2);
       reg23.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 24)
     {
-      regionsRunning |= (1 << 24);
-      reg24.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg24.setAnimationProperties(data1, channel, regionsFade*2);
       reg24.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 25)
     {
-      regionsRunning |= (1 << 25);
-      reg25.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg25.setAnimationProperties(data1, channel, regionsFade*2);
       reg25.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 26)
     {
-      regionsRunning |= (1 << 26);
-      reg26.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg26.setAnimationProperties(data1, channel, regionsFade*2);
       reg26.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 27)
     {
-      regionsRunning |= (1 << 27);
-      reg27.setAnimationProperties(data1, regionsFade*2);
+      regionsRunning |= (1 << data1);
+      reg27.setAnimationProperties(data1, channel, regionsFade*2);
       reg27.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
     else if (data1 == 30)
@@ -925,23 +924,23 @@ void processMIDI(void)
 }
 
 FragmentProperties getFragmentProperties(byte channel, byte data2) {
-      FragmentProperties fP;
-      fP.hue = data2*2;
-      fP.sat = fragmentsSaturation*2;
-      fP.bri = fragmentsBrightness*2;
-      fP.hueIncrement = 0.0;
-      fP.wait = fragmentsWait;
-      fP.fade = fragmentsFade*2;
-      if (channel == 1) {
-        fP.reverse = false;
-      }
-      else {
-        fP.reverse = true;
-      }
-      fP.length = fragmentsLength;
-      fP.start = fragmentsStart;
+  FragmentProperties fP;
+  fP.hue = data2*2;
+  fP.sat = fragmentsSaturation*2;
+  fP.bri = fragmentsBrightness*2;
+  fP.hueIncrement = 0.0;
+  fP.wait = fragmentsWait;
+  fP.fade = fragmentsFade*2;
+  if (channel == 1) {
+    fP.reverse = false;
+  }
+  else {
+    fP.reverse = true;
+  }
+  fP.length = fragmentsLength;
+  fP.start = fragmentsStart;
 
-      return fP;
+  return fP;
 }
 
 void eraseAll()

@@ -11,17 +11,20 @@ using namespace std;
 
 class LedRegion
 {
+//    private:
+//        const uint16_t getColRegion();
     protected:
         // animation
-        int midiNote;
+        uint8_t midiNote;
+        uint8_t channel;
         int fade;
         // color
         double hueIncrement;
         uint8_t hue, sat, bri;
         LedUtils ledUtils;
     public:
-        LedRegion(LedUtils ledUtils, int midiNote=0);
-        virtual void setAnimationProperties(int midiNote, int fade=250);
+        LedRegion(LedUtils ledUtils, uint8_t midiNote=0, uint8_t channel=1);
+        virtual void setAnimationProperties(uint8_t midiNote, uint8_t channel, int fade=250);
         virtual void setColorProperties(uint8_t hue=0, uint8_t sat=0, uint8_t bri=255, double hueIncrement=0);
         virtual void nextFrame(vector<PixelUpdate> &matrixUpdate);
         virtual ~LedRegion() {};
