@@ -20,16 +20,6 @@ void LedRegion::setAnimationProperties(uint8_t midiNote, uint8_t channel, int fa
     this->fade = fade;
 }
 
-//const uint16_t LedRegion::getColRegion() {
-//    const uint16_t colRegion[rowCount];
-//    Serial.println("assembling col region");
-//    for (int i=0; i<rowCount; i++) {
-//        colRegion[i] = (uint16_t)snipSignMatrix[rowCount][this->midiNote];
-//        Serial.print((String) colRegion[i] + ", ");
-//    }
-//    return colRegion;
-//}
-
 void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
 {
     const int16_t regionSCount = 46;
@@ -214,11 +204,13 @@ void LedRegion::nextFrame(vector<PixelUpdate> &matrixUpdate)
         }
     }
     else if (this->channel == 4) {  // col regions
+      Serial.println((String)"col region " + this->midiNote + " .. assembling ");
         if (this->midiNote < colCount) {
             thisCount = rowCount;
             int16_t colRegion[rowCount];
             for (int i=0; i<rowCount; i++) {
                 colRegion[i] = snipSignMatrix[i][this->midiNote];
+      Serial.print((String) + colRegion[i] + ", ");
             }
             thisRegion = colRegion;
         }

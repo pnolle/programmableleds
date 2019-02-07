@@ -61,6 +61,64 @@ LedRegion reg24(ledUtils, 24, 1);
 LedRegion reg25(ledUtils, 25, 1);
 LedRegion reg26(ledUtils, 26, 1);
 LedRegion reg27(ledUtils, 27, 1);
+LedRegion reg28(ledUtils, 28, 1);
+LedRegion reg29(ledUtils, 29, 1);
+LedRegion reg30(ledUtils, 30, 1);
+LedRegion reg31(ledUtils, 31, 1);
+LedRegion reg32(ledUtils, 32, 1);
+LedRegion reg33(ledUtils, 33, 1);
+LedRegion reg34(ledUtils, 34, 1);
+LedRegion reg35(ledUtils, 35, 1);
+LedRegion reg36(ledUtils, 36, 1);
+LedRegion reg37(ledUtils, 37, 1);
+LedRegion reg38(ledUtils, 38, 1);
+LedRegion reg39(ledUtils, 39, 1);
+LedRegion reg40(ledUtils, 40, 1);
+LedRegion reg41(ledUtils, 41, 1);
+LedRegion reg42(ledUtils, 42, 1);
+LedRegion reg43(ledUtils, 43, 1);
+LedRegion reg44(ledUtils, 44, 1);
+LedRegion reg45(ledUtils, 45, 1);
+LedRegion reg46(ledUtils, 46, 1);
+LedRegion reg47(ledUtils, 47, 1);
+LedRegion reg48(ledUtils, 48, 1);
+LedRegion reg49(ledUtils, 49, 1);
+LedRegion reg50(ledUtils, 50, 1);
+LedRegion reg51(ledUtils, 51, 1);
+LedRegion reg52(ledUtils, 52, 1);
+LedRegion reg53(ledUtils, 53, 1);
+LedRegion reg54(ledUtils, 54, 1);
+LedRegion reg55(ledUtils, 55, 1);
+LedRegion reg56(ledUtils, 56, 1);
+LedRegion reg57(ledUtils, 57, 1);
+LedRegion reg58(ledUtils, 58, 1);
+LedRegion reg59(ledUtils, 59, 1);
+LedRegion reg60(ledUtils, 60, 1);
+LedRegion reg61(ledUtils, 61, 1);
+LedRegion reg62(ledUtils, 62, 1);
+LedRegion reg63(ledUtils, 63, 1);
+LedRegion reg64(ledUtils, 64, 1);
+LedRegion reg65(ledUtils, 65, 1);
+LedRegion reg66(ledUtils, 66, 1);
+LedRegion reg67(ledUtils, 67, 1);
+LedRegion reg68(ledUtils, 68, 1);
+LedRegion reg69(ledUtils, 69, 1);
+LedRegion reg70(ledUtils, 70, 1);
+LedRegion reg71(ledUtils, 71, 1);
+LedRegion reg72(ledUtils, 72, 1);
+LedRegion reg73(ledUtils, 73, 1);
+LedRegion reg74(ledUtils, 74, 1);
+LedRegion reg75(ledUtils, 75, 1);
+LedRegion reg76(ledUtils, 76, 1);
+LedRegion reg77(ledUtils, 77, 1);
+LedRegion reg78(ledUtils, 78, 1);
+LedRegion reg79(ledUtils, 79, 1);
+LedRegion reg80(ledUtils, 80, 1);
+LedRegion reg81(ledUtils, 81, 1);
+LedRegion reg82(ledUtils, 82, 1);
+LedRegion reg83(ledUtils, 83, 1);
+LedRegion reg84(ledUtils, 84, 1);
+LedRegion reg85(ledUtils, 85, 1);
 
 // The following flags are ints, because bools couldn't be overwritten from functions. Strange! 0=false, 1=true.
 int cmr1Running = 0;
@@ -76,6 +134,7 @@ int gr4Running = 0;
 int gr5Running = 0;
 
 uint64_t regionsRunning = 0;
+uint64_t regionsRunning2 = 0;
 
 int reg00Running = 0;
 int reg01Running = 0;
@@ -326,6 +385,238 @@ void loop()
   {
     reg27.nextFrame(matrixUpdate);
   }
+  if (regionsRunning & (1 << 28))
+  {
+    reg28.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 29))
+  {
+    reg29.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 30))
+  {
+    reg30.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 31))
+  {
+    reg31.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 32))
+  {
+    reg32.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 33))
+  {
+    reg33.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 34))
+  {
+    reg34.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 35))
+  {
+    reg35.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 36))
+  {
+    reg36.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 37))
+  {
+    reg37.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 38))
+  {
+    reg38.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 39))
+  {
+    reg39.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 40))
+  {
+    reg40.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 41))
+  {
+    reg41.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 42))
+  {
+    reg42.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 43))
+  {
+    reg43.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 44))
+  {
+    reg44.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 45))
+  {
+    reg45.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 46))
+  {
+    reg46.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 47))
+  {
+    reg47.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 48))
+  {
+    reg48.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 49))
+  {
+    reg49.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 50))
+  {
+    reg50.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 51))
+  {
+    reg51.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 52))
+  {
+    reg52.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 53))
+  {
+    reg53.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 54))
+  {
+    reg54.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 55))
+  {
+    reg55.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 56))
+  {
+    reg56.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 57))
+  {
+    reg57.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 58))
+  {
+    reg58.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 59))
+  {
+    reg59.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 60))
+  {
+    reg60.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 61))
+  {
+    reg61.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 62))
+  {
+    reg62.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning & (1 << 63))
+  {
+    reg63.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 64-64))
+  {
+    reg64.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 65-64))
+  {
+    reg65.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 66-64))
+  {
+    reg66.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 67-64))
+  {
+    reg67.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 68-64))
+  {
+    reg68.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 69-64))
+  {
+    reg69.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 70-64))
+  {
+    reg70.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 71-64))
+  {
+    reg71.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 72-64))
+  {
+    reg72.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 73-64))
+  {
+    reg73.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 74-64))
+  {
+    reg74.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 75-64))
+  {
+    reg75.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 76-64))
+  {
+    reg76.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 77-64))
+  {
+    reg77.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 78-64))
+  {
+    reg78.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 79-64))
+  {
+    reg79.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 80-64))
+  {
+    reg80.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 81-64))
+  {
+    reg81.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 82-64))
+  {
+    reg82.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 83-64))
+  {
+    reg83.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 84-64))
+  {
+    reg84.nextFrame(matrixUpdate);
+  }
+  if (regionsRunning2 & (1 << 85-64))
+  {
+    reg85.nextFrame(matrixUpdate);
+  }
 
   if (matrixUpdate.size() > 0)
   {
@@ -441,120 +732,12 @@ void processMIDI(void)
     Serial.print(", velocity=");
     Serial.println(data2, DEC);
 
-    regionsRunning &= (0 << data1);
-
-    // if (data1 == 0)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 1)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 2)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 3)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 4)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 5)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 6)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 7)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 8)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 9)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 10)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 11)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 12)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 13)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 14)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 15)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 16)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 17)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 18)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 19)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 20)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 21)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 22)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 23)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 24)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 25)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 26)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
-    // else if (data1 == 27)
-    // {
-    //   regionsRunning &= (0 << data1);
-    // }
+    if (data1 <= 64) {
+      regionsRunning &= (0 << data1);
+    }
+    else {
+      regionsRunning2 &= (0 << data1-64);
+    }
     break;
 
   case usbMIDI.NoteOn: // 0x90
@@ -733,65 +916,162 @@ void processMIDI(void)
       reg27.setAnimationProperties(data1, channel, regionsFade*2);
       reg27.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
     }
+    else if (data1 == 28)
+    {
+      regionsRunning |= (1 << data1);
+      reg28.setAnimationProperties(data1, channel, regionsFade*2);
+      reg28.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+    }
+    else if (data1 == 29)
+    {
+      regionsRunning |= (1 << data1);
+      reg29.setAnimationProperties(data1, channel, regionsFade*2);
+      reg29.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+    }
     else if (data1 == 30)
     {
-      rmd1Running = 1;
-      startRmd1(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        rmd1Running = 1;
+        startRmd1(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning |= (1 << data1);
+        reg30.setAnimationProperties(data1, channel, regionsFade*2);
+        reg30.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     else if (data1 == 31)
     {
-      rmd2Running = 1;
-      startRmd2(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        rmd2Running = 1;
+        startRmd2(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning |= (1 << data1);
+        reg31.setAnimationProperties(data1, channel, regionsFade*2);
+        reg31.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     else if (data1 == 32)
     {
-      rmd3Running = 1;
-      startRmd3(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        rmd3Running = 1;
+        startRmd3(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning |= (1 << data1);
+        reg32.setAnimationProperties(data1, channel, regionsFade*2);
+        reg32.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
+
+
+
+
     else if (data1 == 40)
     {
-      cmr1Running = 1;
-      startCmr1(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        cmr1Running = 1;
+        startCmr1(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning |= (1 << data1);
+        reg40.setAnimationProperties(data1, channel, regionsFade*2);
+        reg40.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     else if (data1 == 41)
     {
-      cmr2Running = 1;
-      startCmr2(getFragmentProperties(channel, data2));
+      Serial.println((String)"midiNote " + data1 + " .. channel " + channel);
+      if (channel <= 2) {
+        cmr2Running = 1;
+        startCmr2(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+      Serial.println((String)"channel >=3");
+        regionsRunning |= (1 << data1);
+        reg41.setAnimationProperties(data1, channel, regionsFade*2);
+        reg41.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     else if (data1 == 42)
     {
-      cmr3Running = 1;
-      startCmr3(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        cmr3Running = 1;
+        startCmr3(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning |= (1 << data1);
+        reg42.setAnimationProperties(data1, channel, regionsFade*2);
+        reg42.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
-    else if (data1 == 41)
-    {
-      cmr2Running = 1;
-      startCmr2(getFragmentProperties(channel, data2));
-    }
+
+
+
+
+
     else if (data1 == 70)
     {
-      gr1Running = 1;
-      startGr1(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        gr1Running = 1;
+        startGr1(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning2 |= (1 << data1-64);
+        reg70.setAnimationProperties(data1, channel, regionsFade*2);
+        reg70.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     else if (data1 == 71)
     {
-      gr2Running = 1;
-      startGr2(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        gr2Running = 1;
+        startGr2(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning2 |= (1 << data1-64);
+        reg71.setAnimationProperties(data1, channel, regionsFade*2);
+        reg71.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     else if (data1 == 72)
     {
-      gr3Running = 1;
-      startGr3(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        gr3Running = 1;
+        startGr3(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning2 |= (1 << data1-64);
+        reg72.setAnimationProperties(data1, channel, regionsFade*2);
+        reg72.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     else if (data1 == 73)
     {
-      gr4Running = 1;
-      startGr4(getFragmentProperties(channel, data2));
+      if (channel <= 2) {
+        gr4Running = 1;
+        startGr4(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+        regionsRunning2 |= (1 << data1-64);
+        reg73.setAnimationProperties(data1, channel, regionsFade*2);
+        reg73.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     else if (data1 == 74)
     {
-      gr5Running = 1;
-      startGr5(getFragmentProperties(channel, data2));
+      Serial.println((String)"midiNote " + data1 + " .. channel " + channel);
+      if (channel <= 2) {
+        gr5Running = 1;
+        startGr5(getFragmentProperties(channel, data2));
+      }
+      else if (channel >= 3) {
+      Serial.println((String)"channel >=3");
+        regionsRunning2 |= (1 << data1-64);
+        reg74.setAnimationProperties(data1, channel, regionsFade*2);
+        reg74.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);
+      }
     }
     break;
 
