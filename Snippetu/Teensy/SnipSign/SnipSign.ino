@@ -934,7 +934,6 @@ void processMIDI(void)
     }
     else if (data1 == 32)
     {
-      Serial.println((String)"midi in 32: " + data1);
       if (channel <= 2) {
         rmd3Running = 1;
         startRmd3(getFragmentProperties(channel, data2));
@@ -947,7 +946,6 @@ void processMIDI(void)
     }
     else if (data1 == 33)
     {
-      Serial.println((String)"midi in 33: " + data1);
       regionsRunning2 |= (1 << data1-32);
       reg33.setAnimationProperties(data1, channel, regionsFade*2);
       reg33.setColorProperties(data2*2, regionsSaturation*2+1, regionsBrightness*2+1); //, regionsHueInc/100);

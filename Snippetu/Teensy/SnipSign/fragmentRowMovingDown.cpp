@@ -71,6 +71,17 @@ void RowMovingDown::nextFrame(unsigned long currentTime, vector<PixelUpdate> &ma
                 onePixelUpdate.time = currentTime;
                 matrixUpdate.push_back(onePixelUpdate);
             }
+
+            // dirty fix for bad pixel 477 glowing blue in fragment RMD and fragmentCMR
+            // ToDo: find the cause and fix it for real!
+            PixelUpdate onePixelUpdate;
+            onePixelUpdate.ledNum = 478;
+            onePixelUpdate.hue = hue;
+            onePixelUpdate.sat = 0;
+            onePixelUpdate.bri = 0;
+            onePixelUpdate.fade = this->fade;
+            matrixUpdate.push_back(onePixelUpdate);
+            
             if (this->reverse) {
                 this->currentRow--;
             }
