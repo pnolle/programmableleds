@@ -137,30 +137,6 @@ uint64_t regionsRunning = 0;
 uint64_t regionsRunning2 = 0;
 uint64_t regionsRunning3 = 0;
 
-int reg00Running = 0;
-int reg01Running = 0;
-int reg02Running = 0;
-int reg03Running = 0;
-int reg04Running = 0;
-int reg05Running = 0;
-int reg06Running = 0;
-int reg07Running = 0;
-int reg08Running = 0;
-int reg09Running = 0;
-int reg10Running = 0;
-int reg11Running = 0;
-int reg12Running = 0;
-int reg13Running = 0;
-int reg14Running = 0;
-int reg15Running = 0;
-int reg16Running = 0;
-int reg17Running = 0;
-int reg18Running = 0;
-int reg19Running = 0;
-int reg20Running = 0;
-int reg21Running = 0;
-int reg22Running = 0;
-
 #define DATA_PIN 6
 #define NUM_LEDS 479
 #define DEBUG false
@@ -681,27 +657,27 @@ void startRmd3(FragmentProperties fP)
 void startGr1(FragmentProperties fP)
 {
   gr1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
-  gr1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+  gr1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, 0, 0); //fP.length, fP.start);
 }
 void startGr2(FragmentProperties fP)
 {
   gr2.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
-  gr2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+  gr2.setAnimationProperties(fP.wait, fP.fade, fP.reverse, 0, 0); //fP.length, fP.start);
 }
 void startGr3(FragmentProperties fP)
 {
   gr3.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
-  gr3.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+  gr3.setAnimationProperties(fP.wait, fP.fade, fP.reverse, 0, 0); //fP.length, fP.start);
 }
 void startGr4(FragmentProperties fP)
 {
   gr4.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
-  gr4.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+  gr4.setAnimationProperties(fP.wait, fP.fade, fP.reverse, 0, 0); //fP.length, fP.start);
 }
 void startGr5(FragmentProperties fP)
 {
   gr5.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
-  gr5.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+  gr5.setAnimationProperties(fP.wait, fP.fade, fP.reverse, 0, 0); //fP.length, fP.start);
 }
 
 void processMIDI(void)
