@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "/Users/nik/Documents/Arduino/libraries"
+		},
+		{
+			"path": "/Users/nik/Documents/Arduino/otherprojects"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"valarray": "cpp",
+			"__locale": "cpp",
+			"__string": "cpp",
+			"string": "cpp",
+			"string_view": "cpp",
+			"char_traits": "cpp",
+			"iosfwd": "cpp",
+			"iterator": "cpp",
+			"vector": "cpp",
+			"__config": "cpp",
+			"__nullptr": "cpp",
+			"cstddef": "cpp",
+			"exception": "cpp",
+			"initializer_list": "cpp",
+			"new": "cpp",
+			"stdexcept": "cpp",
+			"type_traits": "cpp",
+			"typeinfo": "cpp",
+			"algorithm": "cpp"
+		}
+	}
+}
