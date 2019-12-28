@@ -7,10 +7,13 @@
                 "/Users/nik/Library/Arduino15/packages/arduino/hardware/avr/1.6.21/**",
                 "/Users/nik/Documents/Arduino/libraries/git_FastLED/**",
                 "/Users/nik/Documents/Arduino/libraries/StandardCplusplus/**",
-                "/Users/nik/Documents/Arduino/libraries/**"
+                "/Users/nik/Documents/Arduino/libraries/**",
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/**",
+                "/Applications/Arduino.app/Contents/Java/tools/**"
             ],
             "forcedInclude": [
-                "/Users/nik/Library/Arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino/Arduino.h"
+                "/Users/nik/Library/Arduino15/packages/arduino/hardware/avr/1.6.21/cores/arduino/Arduino.h",
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino/Arduino.h"
             ],
             "macFrameworkPath": [
                 "/System/Library/Frameworks",
