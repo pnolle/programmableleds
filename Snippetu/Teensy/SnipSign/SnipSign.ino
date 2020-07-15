@@ -138,6 +138,7 @@ uint64_t regionsRunning2 = 0;
 uint64_t regionsRunning3 = 0;
 
 #define DATA_PIN 6
+#define NUM_STRIPS 2
 #define NUM_LEDS 479
 #define DEBUG false
 #define SOUND2LIGHT false
@@ -175,7 +176,9 @@ void setup()
   }
 
   Serial.println("LED Setup");
-  FastLED.addLeds<NEOPIXEL, DATA_PIN>(crgbledstrip, NUM_LEDS);
+  // FastLED.addLeds<NEOPIXEL, DATA_PIN>(crgbledstrip, NUM_LEDS);
+  FastLED.addLeds<NUM_STRIPS, WS2813, 19, GRB>(crgbledstrip, NUM_LEDS);
+  FastLED.addLeds<NUM_STRIPS, WS2813, 17, GRB>(crgbledstrip, NUM_LEDS);
   LEDS.setBrightness(84);
   eraseAll();
 
