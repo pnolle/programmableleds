@@ -1,15 +1,9 @@
 #include <FastLED.h>
+#include "constMatrix.h"
 
 FASTLED_USING_NAMESPACE
 
-// FastLED "100-lines-of-code" demo reel, showing just a few 
-// of the kinds of animation patterns you can quickly and easily 
-// compose using FastLED.  
-//
-// This example also shows one easy way to define multiple 
-// animations patterns and have them automatically rotate.
-//
-// -Mark Kriegsman, December 2014
+// Standard patterns taken from the FastLED "100-lines-of-code" demo reel
 
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
 #warning "Requires FastLED 3.1 or later; check github for latest code."
@@ -19,13 +13,19 @@ FASTLED_USING_NAMESPACE
 //#define CLK_PIN   4
 #define LED_TYPE    NEOPIXEL
 #define COLOR_ORDER GRB
-#define NUM_LEDS    80
+#define NUM_LEDS    93
 CRGB leds[NUM_LEDS];
 
 #define BRIGHTNESS          96
 #define FRAMES_PER_SECOND  120
+#define UPDATESEC           10
+#define UPDATEBLINK        100
+#define FADEBLINK           50
+
+int arrowCount=0;
 
 void setup() {
+  Serial.begin(9600); // open the serial port at 9600 bps:
   delay(3000); // 3 second delay for recovery
   
   // tell FastLED about the LED strip configuration
@@ -40,7 +40,7 @@ void setup() {
 
 // List of patterns to cycle through.  Each is defined as a separate function below.
 typedef void (*SimplePatternList[])();
-SimplePatternList gPatterns = { igColors, igColorsWithGlitter, confetti, sinelon, juggle, bpm };
+SimplePatternList gPatterns = { blinkArrowsO2I, igColors, igColorsWithGlitter, blinkArrowsLR, confetti, sinelon, juggle, bpm };
 
 uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
 uint8_t gHue = 0; // rotating "base color" used by many of the patterns
@@ -57,7 +57,10 @@ void loop()
 
   // do some periodic updates
   EVERY_N_MILLISECONDS( 20 ) { gHue++; } // slowly cycle the "base color" through the rainbow
-  EVERY_N_SECONDS( 20 ) { nextPattern(); } // change patterns periodically
+  EVERY_N_SECONDS( UPDATESEC ) { 
+    nextPattern(); 
+    Serial.print("Next pattern.\n");
+  } // change patterns periodically
 }
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
@@ -67,6 +70,100 @@ void nextPattern()
   // add one to the current pattern number, and wrap around at the end
   gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE( gPatterns);
 }
+
+// Sign regions
+
+// blink arrows outer to inner
+void blinkArrowsO2I() 
+{
+  EVERY_N_MILLISECONDS( UPDATEBLINK ) { 
+    arrowCount++;
+    if (arrowCount >= numArrows) {
+      arrowCount = 0;
+    }
+  }
+  switch (arrowCount) {
+    case 0:
+      arr1(CHSV( gHue, 255, 192));
+      arr6(CHSV( gHue, 255, 192));
+      break;
+    case 1:
+      arr2(CHSV( gHue, 255, 192));
+      arr5(CHSV( gHue, 255, 192));
+      break;
+    case 2:
+      arr3(CHSV( gHue, 255, 192));
+      arr4(CHSV( gHue, 255, 192));
+      break;
+  }
+  fadeToBlackBy( leds, NUM_LEDS, FADEBLINK);
+}
+
+// blink arrows outer to inner
+void blinkArrowsLR() 
+{
+  EVERY_N_MILLISECONDS( UPDATEBLINK ) { 
+    arrowCount++;
+    if (arrowCount >= numArrows) {
+      arrowCount = 0;
+    }
+  }
+  switch (arrowCount) {
+    case 0:
+      arr1(CHSV( gHue, 255, 192));
+      break;
+    case 1:
+      arr2(CHSV( gHue, 255, 192));
+      break;
+    case 2:
+      arr3(CHSV( gHue, 255, 192));
+      break;
+    case 3:
+      arr6(CHSV( gHue, 255, 192));
+      break;
+    case 4:
+      arr5(CHSV( gHue, 255, 192));
+      break;
+    case 5:
+      arr4(CHSV( gHue, 255, 192));
+      break;
+  }
+  fadeToBlackBy( leds, NUM_LEDS, FADEBLINK);
+}
+
+void arr1(CHSV color) {
+  for (int i=0; i<arr1Count; i++) {
+    leds[ arr1Matrix[i] ] += color;
+  }
+}
+void arr2(CHSV color) {
+  for (int i=0; i<arr2Count; i++) {
+    leds[ arr2Matrix[i] ] += color;
+  }
+}
+void arr3(CHSV color) {
+  for (int i=0; i<arr3Count; i++) {
+    leds[ arr3Matrix[i] ] += color;
+  }
+}
+void arr4(CHSV color) {
+  for (int i=0; i<arr4Count; i++) {
+    leds[ arr4Matrix[i] ] += color;
+  }
+}
+void arr5(CHSV color) {
+  for (int i=0; i<arr5Count; i++) {
+    leds[ arr5Matrix[i] ] += color;
+  }
+}
+void arr6(CRGB color) {
+  for (int i=0; i<arr6Count; i++) {
+    leds[ arr6Matrix[i] ] += color;
+  }
+}
+
+
+// Default patterns
 
 void igColors() 
 {
