@@ -13,7 +13,8 @@ FASTLED_USING_NAMESPACE
 //#define CLK_PIN   4
 #define LED_TYPE    NEOPIXEL
 #define COLOR_ORDER GRB
-#define NUM_LEDS    93
+#define NUM_LEDS    120
+#define LEDS_IN_SIGN 93
 CRGB leds[NUM_LEDS];
 
 #define BRIGHTNESS          96
@@ -29,7 +30,7 @@ void setup() {
   delay(3000); // 3 second delay for recovery
   
   // tell FastLED about the LED strip configuration
-  	  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
   //FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   //FastLED.addLeds<LED_TYPE,DATA_PIN,CLK_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
 
@@ -40,7 +41,7 @@ void setup() {
 
 // List of patterns to cycle through.  Each is defined as a separate function below.
 typedef void (*SimplePatternList[])();
-SimplePatternList gPatterns = { blinkArrowsO2I, igColors, igColorsWithGlitter, blinkArrowsLR, confetti, sinelon, juggle, bpm };
+SimplePatternList gPatterns = { snipColors1, snipColors1WithGlitter, snipColors2, snipColors2WithGlitter, blinkArrowsO2I, blinkArrowsLR, confetti, sinelon, juggle, bpm };
 
 uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
 uint8_t gHue = 0; // rotating "base color" used by many of the patterns
@@ -49,6 +50,7 @@ void loop()
 {
   // Call the current pattern function once, updating the 'leds' array
   gPatterns[gCurrentPatternNumber]();
+  whiteout();
 
   // send the 'leds' array out to the actual LED strip
   FastLED.show();  
@@ -71,7 +73,19 @@ void nextPattern()
   gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE( gPatterns);
 }
 
+
+
+
+
+
 // Sign regions
+
+// white light > LEDS_IN_SIGN
+void whiteout() {
+  for (int i=LEDS_IN_SIGN; i<NUM_LEDS; i++) {
+    leds[i] = CRGB::White;
+  }
+}
 
 // blink arrows outer to inner
 void blinkArrowsO2I() 
@@ -163,29 +177,59 @@ void arr6(CRGB color) {
 }
 
 
-// Default patterns
 
-void igColors() 
+
+
+// Fill colors
+
+void snipColors1() 
 {
   // FastLED's built-in rainbow generator
   //fill_rainbow( leds, NUM_LEDS, gHue, 7);
   //fill_gradient_RGB (CRGB *leds, uint16_t numLeds, const CRGB &c1, const CRGB &c2)
+
+  CRGB c1 = CRGB::DarkRed;
+  CRGB c2 = CRGB::Yellow;
+  fill_gradient_RGB (leds, NUM_LEDS, c1, c2);
+}
+
+void snipColors1WithGlitter() 
+{
+  // built-in FastLED rainbow, plus some random sparkly glitter
+  snipColors1();
+  addGlitter(80);
+}
+
+
+void snipColors2() 
+{
+  // FastLED's built-in rainbow generator
+  //fill_rainbow( leds, NUM_LEDS, gHue, 7);
+  //fill_gradient_RGB (CRGB *leds, uint16_t numLeds, const CRGB &c1, const CRGB &c2)
+
   CRGB c1 = CRGB::DarkBlue;
   CRGB c2 = CRGB::Cyan;
   fill_gradient_RGB (leds, NUM_LEDS, c1, c2);
 }
 
-void igColorsWithGlitter() 
+void snipColors2WithGlitter() 
 {
   // built-in FastLED rainbow, plus some random sparkly glitter
-  igColors();
+  snipColors2();
   addGlitter(80);
 }
+
+
+
+
+
+// F/X
 
 void addGlitter( fract8 chanceOfGlitter) 
 {
   if( random8() < chanceOfGlitter) {
     leds[ random16(NUM_LEDS) ] += CRGB::White;
+  Serial.println(random16(NUM_LEDS)); 
   }
 }
 
