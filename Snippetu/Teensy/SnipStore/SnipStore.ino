@@ -41,7 +41,7 @@ void setup() {
 
 // List of patterns to cycle through.  Each is defined as a separate function below.
 typedef void (*SimplePatternList[])();
-SimplePatternList gPatterns = { snipColors1, snipColors1WithGlitter, snipColors2, snipColors2WithGlitter, blinkArrowsO2I, blinkArrowsLR, confetti, sinelon, juggle, bpm };
+SimplePatternList gPatterns = { buildup, snipColors1, snipColors1WithGlitter, blinkArrowsO2I, snipColors2, snipColors2WithGlitter, blinkLtR, confetti, sinelon, blinkArrowsLR, juggle, bpm };
 
 uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
 uint8_t gHue = 0; // rotating "base color" used by many of the patterns
@@ -92,7 +92,7 @@ void blinkArrowsO2I()
 {
   EVERY_N_MILLISECONDS( UPDATEBLINK ) { 
     arrowCount++;
-    if (arrowCount >= numArrows) {
+    if (arrowCount >= numArrows+1) {
       arrowCount = 0;
     }
   }
@@ -109,6 +109,9 @@ void blinkArrowsO2I()
       arr3(CHSV( gHue, 255, 192));
       arr4(CHSV( gHue, 255, 192));
       break;
+    case 3:
+      store(CHSV( gHue, 255, 192));
+      break;
   }
   fadeToBlackBy( leds, NUM_LEDS, FADEBLINK);
 }
@@ -118,7 +121,7 @@ void blinkArrowsLR()
 {
   EVERY_N_MILLISECONDS( UPDATEBLINK ) { 
     arrowCount++;
-    if (arrowCount >= numArrows) {
+    if (arrowCount >= numArrows+1) {
       arrowCount = 0;
     }
   }
@@ -141,9 +144,194 @@ void blinkArrowsLR()
     case 5:
       arr4(CHSV( gHue, 255, 192));
       break;
+    case 6:
+      store(CHSV( gHue, 255, 192));
+      break;
   }
   fadeToBlackBy( leds, NUM_LEDS, FADEBLINK);
 }
+
+// blink LtR
+void blinkLtR() 
+{
+  EVERY_N_MILLISECONDS( UPDATEBLINK ) { 
+    arrowCount++;
+    if (arrowCount > numArrows+6) {
+      arrowCount = 0;
+    }
+  }
+  switch (arrowCount) {
+    case 0:
+      arr1(CHSV( gHue, 255, 192));
+      break;
+    case 1:
+      arr2(CHSV( gHue, 255, 192));
+      break;
+    case 2:
+      arr3(CHSV( gHue, 255, 192));
+      break;
+    case 3:
+      S(CHSV( gHue, 255, 192));
+      break;
+    case 4:
+      T(CHSV( gHue, 255, 192));
+      break;
+    case 5:
+      O(CHSV( gHue, 255, 192));
+      break;
+    case 6:
+      R(CHSV( gHue, 255, 192));
+      break;
+    case 7:
+      E(CHSV( gHue, 255, 192));
+      break;
+    case 9:
+      arr4(CHSV( gHue, 255, 192));
+      break;
+    case 10:
+      arr5(CHSV( gHue, 255, 192));
+      break;
+    case 11:
+      arr6(CHSV( gHue, 255, 192));
+      break;
+    case 12:
+      store(CHSV( gHue, 255, 192));
+      break;
+  }
+  fadeToBlackBy( leds, NUM_LEDS, FADEBLINK);
+}
+
+
+// buildup
+void buildup() 
+{
+  EVERY_N_MILLISECONDS( UPDATEBLINK ) { 
+    arrowCount++;
+    if (arrowCount > 23) {
+      arrowCount = 0;
+    }
+  }
+  switch (arrowCount) {
+    case 0:
+      arr1(CHSV( gHue, 255, 192));
+      break;
+    case 1:
+      arr2(CHSV( gHue, 255, 192));
+      break;
+    case 2:
+      arr3(CHSV( gHue, 255, 192));
+      break;
+    case 3:
+      S(CHSV( gHue, 255, 192));
+      break;
+
+    case 4:
+      arr6(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      break;
+    case 5:
+      arr5(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      break;
+    case 6:
+      arr4(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      break;
+    case 7:
+      S(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+
+    case 8:
+      arr1(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+    case 9:
+      arr2(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+    case 10:
+      arr3(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+    case 11:
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+
+    case 12:
+      arr6(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+    case 13:
+      arr5(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+    case 14:
+      arr4(CHSV( gHue, 255, 192));
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+    case 15:
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      R(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+
+    case 16:
+      O(CHSV( gHue, 255, 192));
+      break;
+    case 17:
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      O(CHSV( gHue, 255, 192));
+      R(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+
+    case 18:
+      O(CHSV( gHue, 255, 192));
+      break;
+    case 19:
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      O(CHSV( gHue, 255, 192));
+      R(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+
+    case 20:
+      O(CHSV( gHue, 255, 192));
+      break;
+    case 21:
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      O(CHSV( gHue, 255, 192));
+      R(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+
+    case 22:
+      O(CHSV( gHue, 255, 192));
+      break;
+    case 23:
+      S(CHSV( gHue, 255, 192));
+      T(CHSV( gHue, 255, 192));
+      O(CHSV( gHue, 255, 192));
+      R(CHSV( gHue, 255, 192));
+      E(CHSV( gHue, 255, 192));
+      break;
+  }
+  fadeToBlackBy( leds, NUM_LEDS, FADEBLINK);
+}
+
 
 void arr1(CHSV color) {
   for (int i=0; i<arr1Count; i++) {
@@ -173,6 +361,48 @@ void arr5(CHSV color) {
 void arr6(CRGB color) {
   for (int i=0; i<arr6Count; i++) {
     leds[ arr6Matrix[i] ] += color;
+  }
+}
+void S(CRGB color) {
+  for (int i=0; i<SCount; i++) {
+    leds[ SMatrix[i] ] += color;
+  }
+}
+void T(CRGB color) {
+  for (int i=0; i<TCount; i++) {
+    leds[ TMatrix[i] ] += color;
+  }
+}
+void O(CRGB color) {
+  for (int i=0; i<OCount; i++) {
+    leds[ OMatrix[i] ] += color;
+  }
+}
+void R(CRGB color) {
+  for (int i=0; i<RCount; i++) {
+    leds[ RMatrix[i] ] += color;
+  }
+}
+void E(CRGB color) {
+  for (int i=0; i<ECount; i++) {
+    leds[ EMatrix[i] ] += color;
+  }
+}
+void store(CRGB color) {
+  for (int i=0; i<SCount; i++) {
+    leds[ SMatrix[i] ] += color;
+  }
+  for (int i=0; i<TCount; i++) {
+    leds[ TMatrix[i] ] += color;
+  }
+  for (int i=0; i<OCount; i++) {
+    leds[ OMatrix[i] ] += color;
+  }
+  for (int i=0; i<RCount; i++) {
+    leds[ RMatrix[i] ] += color;
+  }
+  for (int i=0; i<ECount; i++) {
+    leds[ EMatrix[i] ] += color;
   }
 }
 
