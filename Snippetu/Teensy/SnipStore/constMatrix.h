@@ -48,11 +48,11 @@ const int16_t arr6Matrix[arr6Count] = {40,41,42,43,44,45};
 const int16_t SCount = 14;
 const int16_t SMatrix[SCount] = {9,10,11,8,7,6,80,79,78,77,76,75,74,73};
 
-const int16_t TCount = 5;
-const int16_t TMatrix[TCount] = {12,13,14,72,71};
+const int16_t TCount = 6;
+const int16_t TMatrix[TCount] = {12,13,14,15,72,71};
 
-const int16_t OCount = 18;
-const int16_t OMatrix[OCount] = {19,20,18,21,17,22,15,16,23,70,69,68,62,67,63,66,64,65};
+const int16_t OCount = 16;
+const int16_t OMatrix[OCount] = {19,20,18,21,17,22,16,23,69,68,62,67,63,66,64,65};
 
 const int16_t RCount = 8;
 const int16_t RMatrix[RCount] = {25,26,27,24,61,60,59,58};

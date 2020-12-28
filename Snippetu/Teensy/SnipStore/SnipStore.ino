@@ -20,7 +20,7 @@ CRGB leds[NUM_LEDS];
 #define BRIGHTNESS          96
 #define FRAMES_PER_SECOND  120
 #define UPDATESEC           10
-#define UPDATEBLINK        100
+#define UPDATEBLINK        200
 #define FADEBLINK           50
 
 int arrowCount=0;
@@ -116,7 +116,7 @@ void blinkArrowsO2I()
   fadeToBlackBy( leds, NUM_LEDS, FADEBLINK);
 }
 
-// blink arrows outer to inner
+// blink arrows left right
 void blinkArrowsLR() 
 {
   EVERY_N_MILLISECONDS( UPDATEBLINK ) { 
