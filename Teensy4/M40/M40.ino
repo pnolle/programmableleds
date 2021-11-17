@@ -27,24 +27,18 @@ FASTLED_USING_NAMESPACE
 #define NUM_PATTERNS 80
 //CRGB leds[NUM_LEDS];
 
-#define BRIGHTNESS 96
-#define FRAMES_PER_SECOND 120
+#define BRIGHTNESS 255
+#define FRAMES_PER_SECOND 10
 
 // Following lines from: Testing FastLED's CRGBSet array function and using it with the fill_solid and fill_rainbow functions. by Chemdoc77
 CRGB rawleds[NUM_LEDS];
 CRGBSet leds(rawleds, NUM_LEDS);
-CRGBSet leds1(leds(0, 7));
-CRGBSet leds2(leds(8, 15));
+CRGBSet leds1(leds(0, 80));
+CRGBSet leds2(leds(81, 125));
 CRGBSet leds3(leds(126, 148));
 
 struct CRGB *ledarray[] = {leds1, leds2, leds3};
 
-// List of patterns to cycle through.  Each is defined as a separate function below.
-typedef void (*SimplePatternList[])();
-SimplePatternList gPatterns = {sinelon, rainbowWithGlitter, confetti, juggle, bpm, rainbow};
-
-uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
-uint8_t gHue = 0;                  // rotating "base color" used by many of the patterns
 
 void setup()
 {
@@ -52,38 +46,32 @@ void setup()
 
   // tell FastLED about the LED strip configuration
   //FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
-  FastLED.addLeds<NUM_STRIPS, WS2813, 19, GRB>(leds, NUM_LEDS);
-  FastLED.addLeds<NUM_STRIPS, WS2813, 17, GRB>(leds, NUM_LEDS);
+  FastLED.addLeds<NUM_STRIPS, LED_TYPE, 19, COLOR_ORDER>(leds, NUM_LEDS);
+  FastLED.addLeds<NUM_STRIPS, LED_TYPE, 17, COLOR_ORDER>(leds, NUM_LEDS);
 
   // set master brightness control
   FastLED.setBrightness(BRIGHTNESS);
-  FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
-  set_max_power_indicator_LED(13);
+  //FastLED.setMaxPowerInVoltsAndMilliamps(5, 1500);
+  //set_max_power_indicator_LED(13);
+  
+  //uhrzeiger();
 }
 
-// void loop()
-// {
 
-//   fill_solid(ledarray[0], 8, CHSV(213, 255, 255)); //8 is number of elements in the array
-//   FastLED.show();
-//   delay(700);
-//   fill_solid(ledarray[0], 8, CRGB::Black);
-//   FastLED.show();
 
-//   fill_solid(ledarray[1], 8, CRGB::Green);
-//   FastLED.show();
-//   delay(700);
-//   fill_solid(ledarray[1], 8, CRGB::Black);
-//   FastLED.show();
+// List of patterns to cycle through.  Each is defined as a separate function below.
+typedef void (*SimplePatternList[])();
+SimplePatternList gPatterns = { moColors, moColorsWithGlitter}; //, confetti, sinelon, juggle, bpm}; //rainbow, rainbowWithGlitter, 
 
-// }
+uint8_t gCurrentPatternNumber = 0; // Index number of which pattern is current
+uint8_t gHue = 0;                  // rotating "base color" used by many of the patterns
 
 void loop()
 {
   // Call the current pattern function once, updating the 'leds' array
   gPatterns[gCurrentPatternNumber]();
 
-  uhrzeiger();
+  //uhrzeiger();
 
   // send the 'leds' array out to the actual LED strip
   FastLED.show();
@@ -99,25 +87,31 @@ void loop()
 
 void uhrzeiger()
 {
-  fill_solid(ledarray[2], 22, CHSV(213, 255, 255));
-  FastLED.show();
-  // delay(700);
-  // fill_solid(ledarray[2], 22, CRGB::Black);
-  // FastLED.show();
-
-  // for (int i = 0; i < arrZeigerCount; i++)
-  // {
-  //   leds[arrZeigerMatrix[i]] = CRGB::GreenYellow; //CRGB( 0, 255, 0);
-  //   //CRGBPalette16 palette = HeatColors_p;
-  //   //leds[ arrZeigerMatrix[i] ] = ColorFromPalette(palette, 5, 1);
-  // }
-  // //fill_solid();
+  fill_solid(ledarray[2], 10, CRGB::Orange);
 }
 
 void nextPattern()
 {
   // add one to the current pattern number, and wrap around at the end
   gCurrentPatternNumber = (gCurrentPatternNumber + 1) % ARRAY_SIZE(gPatterns);
+}
+
+void moColors() 
+{
+  // FastLED's built-in rainbow generator
+  //fill_rainbow( leds, NUM_LEDS, gHue, 7);
+  //fill_gradient_RGB (CRGB *leds, uint16_t numLeds, const CRGB &c1, const CRGB &c2)
+  CRGB c1 = CRGB::DarkOliveGreen;
+  CRGB c2 = CRGB::DarkGreen;
+  fill_gradient_RGB (ledarray[0], NUM_PATTERNS, c1, c2);
+  fill_solid(ledarray[2], 20, CRGB::Green);
+}
+
+void moColorsWithGlitter() 
+{
+  // built-in FastLED rainbow, plus some random sparkly glitter
+  moColors();
+  addGlitter(80);
 }
 
 void rainbow()
