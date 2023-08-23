@@ -20,13 +20,17 @@ FASTLED_USING_NAMESPACE
 #define DATA_PIN    19
 //#define CLK_PIN   4
 #define LED_TYPE    WS2813
-#define COLOR_ORDER GRB
+#define COLOR_ORDER RGB
 #define NUM_LEDS    150
 #define NUM_PATTERN 80
 CRGB leds[NUM_LEDS];
 
 #define BRIGHTNESS         128
 #define FRAMES_PER_SECOND  120
+
+
+const int16_t zeigerCount = 25;
+const int16_t zeigerMatrix[zeigerCount] = {149,148,147,146,145,144,143,142,141,140,139,138,137,136,135,134,133,132,131,130,129,128,127,126,125};
 
 void setup() {
   delay(3000); // 3 second delay for recovery
@@ -54,6 +58,8 @@ void loop()
   // Call the current pattern function once, updating the 'leds' array
   gPatterns[gCurrentPatternNumber]();
 
+  uhrzeiger(CRGB(1,100,50));
+
   // send the 'leds' array out to the actual LED strip
   FastLED.show();  
   // insert a delay to keep the framerate modest
@@ -65,6 +71,12 @@ void loop()
 }
 
 #define ARRAY_SIZE(A) (sizeof(A) / sizeof((A)[0]))
+
+void uhrzeiger(CRGB color) {
+  for (int i=0; i<zeigerCount; i++) {
+    leds[ zeigerMatrix[i] ] = color;
+  }
+}
 
 void nextPattern()
 {
