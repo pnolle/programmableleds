@@ -25,8 +25,10 @@ void setup() {
   	  //FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
 	//LEDS.addLeds<WS2812,DATA_PIN,RGB>(leds,NUM_LEDS);
  
-  FastLED.addLeds<NUM_STRIPS, WS2813, 19, GRB>(leds, NUM_LEDS_PER_STRIP);
-  FastLED.addLeds<NUM_STRIPS, WS2813, 17, GRB>(leds, NUM_LEDS_PER_STRIP);
+  //FastLED.addLeds<NUM_STRIPS, WS2813, 19, GRB>(leds, NUM_LEDS_PER_STRIP);
+  //FastLED.addLeds<NUM_STRIPS, WS2813, 17, GRB>(leds, NUM_LEDS_PER_STRIP);
+  FastLED.addLeds<WS2812B, 19, GRB>(leds, NUM_LEDS_PER_STRIP);
+  FastLED.addLeds<WS2812B, 17, GRB>(leds, NUM_LEDS_PER_STRIP);
 	FastLED.setBrightness(40);
 }
 
