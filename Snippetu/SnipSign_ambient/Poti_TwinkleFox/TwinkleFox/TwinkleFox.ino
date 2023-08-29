@@ -167,8 +167,9 @@ void setup()
   FastLED.setMaxPowerInVoltsAndMilliamps(VOLTS, MAX_MA);
   FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS)
       .setCorrection(TypicalLEDStrip);
+  FastLED.setBrightness(255);
 
-  chooseNextColorPalette(gTargetPalette);
+//  chooseNextColorPalette(gTargetPalette);
   Serial.begin(115200);
   Serial.println("Start");
 
@@ -385,6 +386,13 @@ const TProgmemRGBPalette16 RedWhite_p FL_PROGMEM =
      CRGB::Red, CRGB::Red, CRGB::Red, CRGB::Red,
      CRGB::Gray, CRGB::Gray, CRGB::Gray, CRGB::Gray};
 
+// Warm White
+const TProgmemRGBPalette16 WarmWhite_p FL_PROGMEM =
+    {CRGB::Snow, CRGB::Snow, CRGB::Snow, CRGB::Snow,
+     CRGB::White, CRGB::White, CRGB::White, CRGB::White,
+     CRGB::White, CRGB::White, CRGB::White, CRGB::White,
+     CRGB::Gray, CRGB::Gray, CRGB::Gray, CRGB::Gray};
+     
 // A mostly blue palette with white accents.
 // "CRGB::Gray" is used as white to keep the brightness more uniform.
 const TProgmemRGBPalette16 BlueWhite_p FL_PROGMEM =
@@ -439,6 +447,7 @@ const TProgmemRGBPalette16 Ice_p FL_PROGMEM =
 const TProgmemRGBPalette16 *ActivePaletteList[] = {
     &RetroC9_p,
     &BlueWhite_p,
+    &WarmWhite_p,
     &RainbowColors_p,
     &FairyLight_p,
     &RedGreenWhite_p,
