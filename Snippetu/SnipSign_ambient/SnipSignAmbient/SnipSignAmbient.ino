@@ -1,5 +1,6 @@
 #include "FastLED.h"
 #include "twinkleFox.h"
+#include "constants.h"
 
 // LedUtils ledUtils;
 TwinkleFox twinkleFox;
@@ -112,7 +113,6 @@ void setup()
       .setCorrection(TypicalLEDStrip);
   FastLED.setBrightness(255);
 
-//  chooseNextColorPalette(gTargetPalette);
   Serial.begin(115200);
   Serial.println("Start");
 
@@ -129,7 +129,7 @@ void loop()
   // reading input: program change btn
   readPrgChgBtn();
 
-  Serial.println(*twinkleFox.gTargetPalette);
+  // TODO: gTargetPalette needed in twinkleFox, but misused as general mode setting => fix this
   if (twinkleFox.gTargetPalette == Cylon) {
     cylonUpdateLedFrame();
   }

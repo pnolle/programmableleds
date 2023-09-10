@@ -1,5 +1,6 @@
 #include "FastLED.h"
 #include "twinkleFox.h"
+#include "constants.h"
 
 // TwinkleFox code
 
