@@ -97,7 +97,7 @@ void TwinkleFox::drawTwinkles(CRGBSet &L)
 //  should light at all during this cycle, based on the TWINKLE_DENSITY.
 CRGB TwinkleFox::computeOneTwinkle(uint32_t ms, uint8_t salt)
 {
-  uint16_t ticks = ms >> (8 - TWINKLE_SPEED);
+  uint16_t ticks = ms >> (8 - twinkleSpeed);
   uint8_t fastcycle8 = ticks;
   uint16_t slowcycle16 = (ticks >> 8) + salt;
   slowcycle16 += sin8(slowcycle16);

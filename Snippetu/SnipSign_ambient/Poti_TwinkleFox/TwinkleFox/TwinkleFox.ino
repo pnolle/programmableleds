@@ -73,7 +73,7 @@ CRGBArray<NUM_LEDS> leds;
 // Overall twinkle speed.
 // 0 (VERY slow) to 8 (VERY fast).
 // 4, 5, and 6 are recommended, default is 4.
-int TWINKLE_SPEED = 4;
+int twinkleSpeed = 4;
 
 // Overall twinkle density.
 // 0 (NONE lit) to 8 (ALL lit at once).
@@ -181,7 +181,7 @@ void loop()
 {
   // reading input: speed poti
   int spdPotiVal = analogRead(SPEED_POTI_PIN);
-  TWINKLE_SPEED = round(floatMap(spdPotiVal, 0, 4095, 0, 8)); // Rescale to possible speed values (0-8)
+  twinkleSpeed = round(floatMap(spdPotiVal, 0, 4095, 0, 8)); // Rescale to possible speed values (0-8)
 
   // reading input: program change btn
   readPrgChgBtn();

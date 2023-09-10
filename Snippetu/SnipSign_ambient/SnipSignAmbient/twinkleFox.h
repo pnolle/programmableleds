@@ -6,11 +6,6 @@
 
 // TwinkleFOX Settings: Twinkling 'holiday' lights that fade in and out.
 
-// Overall twinkle speed.
-// 0 (VERY slow) to 8 (VERY fast).
-// 4, 5, and 6 are recommended, default is 4.
-static int TWINKLE_SPEED = 4;
-
 // Overall twinkle density.
 // 0 (NONE lit) to 8 (ALL lit at once).
 // Default is 5.
@@ -91,6 +86,10 @@ static const TProgmemRGBPalette16 *ActivePaletteList[] = {
 class TwinkleFox
 {
     public:
+    // Overall twinkle speed.
+    // 0 (VERY slow) to 8 (VERY fast).
+    // 4, 5, and 6 are recommended, default is 4.
+    int twinkleSpeed = 4;
     CRGBPalette16 gCurrentPalette;
     CRGBPalette16 gTargetPalette;
 

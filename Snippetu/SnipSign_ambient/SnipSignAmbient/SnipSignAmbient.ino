@@ -124,7 +124,7 @@ void loop()
 {
   // reading input: speed poti
   int spdPotiVal = analogRead(SPEED_POTI_PIN);
-  TWINKLE_SPEED = round(floatMap(spdPotiVal, 0, 4095, 0, 8)); // Rescale to possible speed values (0-8)
+  twinkleFox.twinkleSpeed = round(floatMap(spdPotiVal, 0, 4095, 0, 8)); // Rescale to possible speed values (0-8)
 
   // reading input: program change btn
   readPrgChgBtn();
