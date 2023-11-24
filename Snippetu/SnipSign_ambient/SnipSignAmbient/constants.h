@@ -2,7 +2,8 @@
 #define CONSTANTS
 
 // Cylon mode
-static const TProgmemRGBPalette16 Cylon FL_PROGMEM = {};
+static const TProgmemRGBPalette16 Cylon FL_PROGMEM = {0};
+static const TProgmemRGBPalette16 RowsMovingDown FL_PROGMEM = {1};
 
 // Warm White
 static const TProgmemRGBPalette16 WarmWhite_p FL_PROGMEM =
@@ -41,6 +42,7 @@ static const TProgmemRGBPalette16 Ice_p FL_PROGMEM =
 // palettes are used, and in what order.
 static const TProgmemRGBPalette16 *ActivePaletteList[] = {
     &Cylon,
+    &RowsMovingDown,
     &BlueWhite_p,
     &WarmWhite_p,
     &Snow_p,

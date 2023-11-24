@@ -164,12 +164,13 @@ void TwinkleFox::coolLikeIncandescent(CRGB &c, uint8_t phase)
   c.b = qsub8(c.b, cooling * 2);
 }
 
-// Advance to the next color palette in the list (above).
+// Advance to the next color palette in the list (ActivePaletteList in constants.h).
 void TwinkleFox::chooseNextColorPalette(CRGBPalette16 &pal)
 {
   const uint8_t numberOfPalettes = sizeof(ActivePaletteList) / sizeof(ActivePaletteList[0]);
   static uint8_t whichPalette = -1;
   whichPalette = addmod8(whichPalette, 1, numberOfPalettes);
 
+  Serial.println(whichPalette);
   pal = *(ActivePaletteList[whichPalette]);
 }

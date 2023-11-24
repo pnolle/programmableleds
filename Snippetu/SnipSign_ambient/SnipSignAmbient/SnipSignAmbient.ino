@@ -1,6 +1,9 @@
 #include "FastLED.h"
 #include "twinkleFox.h"
 #include "constants.h"
+#include "constMatrix.h"
+#include "fragmentRowMovingDown.h"
+#include "fragmentProperties.h"
 
 // LedUtils ledUtils;
 TwinkleFox twinkleFox;
@@ -13,10 +16,21 @@ TwinkleFox twinkleFox;
 #define VOLTS 12
 #define MAX_MA 4000
 
-
 // System variables
-
+LedUtils ledUtils;
 CRGBArray<NUM_LEDS> leds;
+RowMovingDown rmd1(ledUtils, millis());
+
+uint8_t fragmentsSaturation = 127;
+uint8_t fragmentsBrightness = 127;
+uint8_t regionsSaturation = 127;
+uint8_t regionsBrightness = 127;
+uint8_t fragmentsFade = 120;
+uint8_t fragmentsWait = 30;
+uint8_t regionsFade = 120;
+uint8_t regionsHueInc = 0;
+uint8_t fragmentsStart = 0;
+uint8_t fragmentsLength = 0;
 
 // Input pins
 #define SPEED_POTI_PIN 34
@@ -31,6 +45,15 @@ int currentState;               // the current reading from the input pin
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
 unsigned long lastDebounceTime = 0; // the last time the output pin was toggled
+
+
+
+
+void startRmd1(FragmentProperties fP)
+{
+  rmd1.setColorProperties(fP.hue, fP.sat, fP.bri, fP.hueIncrement);
+  rmd1.setAnimationProperties(fP.wait, fP.fade, fP.reverse, fP.length, fP.start);
+}
 
 
 
@@ -99,8 +122,25 @@ void cylonUpdateLedFrame() {
 }
 
 
+FragmentProperties getFragmentProperties(byte channel, byte data2) {
+  FragmentProperties fP;
+  fP.hue = data2*2;
+  fP.sat = fragmentsSaturation*2;
+  fP.bri = fragmentsBrightness*2;
+  fP.hueIncrement = 0.0;
+  fP.wait = fragmentsWait;
+  fP.fade = fragmentsFade*2;
+  if (channel == 1) {
+    fP.reverse = false;
+  }
+  else {
+    fP.reverse = true;
+  }
+  fP.length = fragmentsLength;
+  fP.start = fragmentsStart;
 
-
+  return fP;
+}
 
 
 
@@ -118,10 +158,14 @@ void setup()
 
   // configure btn pin
   pinMode(PRGCHG_BTN_PIN, INPUT_PULLUP);
+  
+  startRmd1(getFragmentProperties(1, 100));
 }
 
 void loop()
 {
+  vector<PixelUpdate> matrixUpdate; 
+
   // reading input: speed poti
   int spdPotiVal = analogRead(SPEED_POTI_PIN);
   twinkleFox.twinkleSpeed = round(floatMap(spdPotiVal, 0, 4095, 0, 8)); // Rescale to possible speed values (0-8)
@@ -132,6 +176,10 @@ void loop()
   // TODO: gTargetPalette needed in twinkleFox, but misused as general mode setting => fix this
   if (twinkleFox.gTargetPalette == Cylon) {
     cylonUpdateLedFrame();
+  }
+  else if (twinkleFox.gTargetPalette == RowsMovingDown) {
+    Serial.print("r");
+    rmd1.nextFrame(millis(), matrixUpdate);
   }
   else {
     nblendPaletteTowardPalette(twinkleFox.gCurrentPalette, twinkleFox.gTargetPalette, 60);
